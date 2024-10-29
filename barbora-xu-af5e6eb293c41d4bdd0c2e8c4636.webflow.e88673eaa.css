@@ -3577,7 +3577,6 @@ a {
     font-family: Georgia, Times, Times New Roman, serif;
     font-size: 35px;
     font-weight: 400;
-    line-height: 100px;
 }
 
 .brand-link {
@@ -3809,6 +3808,7 @@ a {
     width: 102px;
     height: 100px;
     margin-right: 10px;
+    min-inline-size: 50px;
 }
 
 .cart-container {
@@ -4016,7 +4016,7 @@ a {
     justify-content: center;
     align-items: center;
     height: 100px;
-    margin-top: 10px;
+    margin: 28px;
     display: flex;
 }
 
@@ -4515,10 +4515,6 @@ a {
 
     .album-art {
         margin-right: auto;
-    }
-
-    .logo {
-        font-size: 48px;
     }
 
     .album-columns {
