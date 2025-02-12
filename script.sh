@@ -20,6 +20,10 @@ wget --recursive \
 echo "Committing changes..."
 git config --global user.name "GitHub Actions Bot"
 git config --global user.email "actions@github.com"
+
+# Configure git to use the token for authentication
+git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/Old-Forest-Echoes/ofe.github.io.git"
+
 git add .
 git commit -m "Update from Webflow [skip ci]"
 git push
