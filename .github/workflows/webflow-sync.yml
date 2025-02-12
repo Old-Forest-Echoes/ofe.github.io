@@ -1,0 +1,16 @@
+name: Webflow Sync
+
+on:
+  repository_dispatch:
+    types: [webflow_updated]
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Run sync script
+        run: ./script.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
