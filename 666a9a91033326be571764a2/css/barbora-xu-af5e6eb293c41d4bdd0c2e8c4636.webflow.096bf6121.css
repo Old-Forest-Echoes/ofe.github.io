@@ -3395,7 +3395,7 @@ a {
   flex-flow: column;
   justify-content: space-around;
   align-items: flex-start;
-  margin-top: 79px;
+  margin-top: 20px;
   display: flex;
 }
 
@@ -4183,7 +4183,7 @@ a {
   margin-top: 20px;
 }
 
-.heading-6 {
+.team-heading {
   margin-top: 100px;
   font-family: Palatino Linotype, Book Antiqua, Palatino, serif;
 }
@@ -4215,7 +4215,7 @@ a {
   max-width: 70%;
 }
 
-.image-12 {
+.team-image {
   align-self: center;
   max-width: 70%;
 }
