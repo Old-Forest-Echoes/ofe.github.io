@@ -2942,6 +2942,7 @@ h6 {
 
 p {
   margin-bottom: 10px;
+  font-family: Montserrat, sans-serif;
   font-weight: 300;
   line-height: 24px;
 }
@@ -2967,6 +2968,7 @@ a {
   text-shadow: 0 0 20px #000;
   overflow-wrap: normal;
   padding: 26px 13px;
+  font-family: Leonetta Serif, Palatino Linotype, sans-serif;
   font-size: 20px;
   line-height: 20px;
 }
@@ -2977,6 +2979,7 @@ a {
 
 .nav-link.w--current {
   color: var(--khaki);
+  font-family: Leonetta Serif, Palatino Linotype, sans-serif;
   text-decoration: none;
 }
 
@@ -2989,12 +2992,7 @@ a {
 }
 
 .nav-bar {
-  text-shadow: 1px 1px 1px #fffddd33;
-  overflow-wrap: normal;
   background-color: #ffe69400;
-  font-style: normal;
-  font-weight: 500;
-  text-decoration: none;
   box-shadow: 0 0 5px #0003;
 }
 
@@ -3321,13 +3319,10 @@ a {
 
 .logo {
   color: #fdfdfd;
-  letter-spacing: 3px;
-  text-transform: uppercase;
+  letter-spacing: 1.5px;
   margin-top: 0;
   margin-bottom: 0;
-  font-family: Georgia, Times, Times New Roman, serif;
-  font-size: 35px;
-  font-weight: 400;
+  font-family: Leonetta Serif, Palatino Linotype, sans-serif;
   line-height: 100px;
 }
 
@@ -3341,7 +3336,6 @@ a {
   float: none;
   padding-top: 0;
   padding-bottom: 0;
-  font-family: Roboto, sans-serif;
 }
 
 .hero-container {
@@ -3401,7 +3395,7 @@ a {
 
 .content-wrapper.vertical-wrapper {
   outline-offset: 0px;
-  color: #ffffffc7;
+  color: #fffffff0;
   background-color: #ffe6940d;
   border: 1px #0000;
   border-radius: 3px;
@@ -3559,7 +3553,7 @@ a {
 }
 
 .logo-image {
-  width: 102px;
+  width: 100px;
   height: 100px;
   margin-right: 10px;
 }
@@ -4221,6 +4215,10 @@ a {
   max-width: 70%;
 }
 
+.paragraph-12 {
+  font-family: Leonetta Serif, Palatino Linotype, sans-serif;
+}
+
 @media screen and (max-width: 991px) {
   .nav-menu {
     background-color: #000000d9;
@@ -4512,4 +4510,12 @@ a {
   .team {
     flex-flow: column;
   }
+}
+
+@font-face {
+  font-family: 'Leonetta Serif';
+  src: url('../67be32a281a72ef4200dd903_Leonetta-Serif.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
