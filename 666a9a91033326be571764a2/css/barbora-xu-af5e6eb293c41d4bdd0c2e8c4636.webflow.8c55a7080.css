@@ -3394,7 +3394,7 @@ a {
 .content-wrapper {
   flex-flow: column;
   justify-content: space-around;
-  align-items: flex-start;
+  align-items: center;
   margin-top: 20px;
   display: flex;
 }
