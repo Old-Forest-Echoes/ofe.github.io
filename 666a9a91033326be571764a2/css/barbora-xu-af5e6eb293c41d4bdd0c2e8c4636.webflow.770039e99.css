@@ -3547,6 +3547,7 @@ a {
 
 .rich-text-block {
   text-align: justify;
+  margin-top: 20px;
   font-family: Roboto, sans-serif;
   font-size: 17px;
   font-weight: 300;
