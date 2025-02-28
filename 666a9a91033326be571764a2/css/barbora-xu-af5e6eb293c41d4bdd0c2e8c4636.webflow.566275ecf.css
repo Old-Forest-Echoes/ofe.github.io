@@ -2993,6 +2993,7 @@ a {
 
 .nav-bar {
   background-color: #ffe69400;
+  font-family: Leonetta Serif, Palatino Linotype, sans-serif;
   box-shadow: 0 0 5px #0003;
 }
 
@@ -3542,7 +3543,7 @@ a {
 .rich-text-block {
   text-align: justify;
   margin-top: 20px;
-  font-family: Roboto, sans-serif;
+  font-family: Spectral, sans-serif;
   font-size: 17px;
   font-weight: 300;
 }
@@ -4051,6 +4052,7 @@ a {
   text-align: center;
   background-color: #a58f100f;
   padding: 20px;
+  font-family: Spectral, sans-serif;
   font-size: 16px;
   text-decoration: none;
 }
@@ -4179,8 +4181,9 @@ a {
 }
 
 .team-heading {
-  margin-top: 100px;
-  font-family: Palatino Linotype, Book Antiqua, Palatino, serif;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  font-family: Leonetta Serif, Palatino Linotype, sans-serif;
 }
 
 .heading-7 {
@@ -4213,10 +4216,34 @@ a {
 .team-image {
   align-self: center;
   max-width: 70%;
+  margin-bottom: 20px;
 }
 
 .paragraph-12 {
   font-family: Leonetta Serif, Palatino Linotype, sans-serif;
+}
+
+.paragraph-14, .paragraph-15, .paragraph-16, .paragraph-17, .paragraph-18, .paragraph-19, .paragraph-20, .paragraph-21 {
+  font-family: Spectral, sans-serif;
+}
+
+.paragraph-22 {
+  margin-top: 10px;
+  margin-bottom: 0;
+  font-family: Spectral, sans-serif;
+}
+
+.paragraph-23, .paragraph-24, .paragraph-25, .paragraph-26 {
+  font-family: Spectral, sans-serif;
+}
+
+.paragraph-27 {
+  margin-bottom: 0;
+  font-family: Spectral, sans-serif;
+}
+
+.paragraph-28, .paragraph-29, .paragraph-30, .paragraph-31 {
+  font-family: Spectral, sans-serif;
 }
 
 @media screen and (max-width: 991px) {
