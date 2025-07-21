@@ -2046,12 +2046,12 @@ textarea.w-input, textarea.w-select {
   display: grid;
 }
 
-.w-code-component > * {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
+@font-face {
+  font-family: Leonetta Serif;
+  src: url("../67be32a281a72ef4200dd903_Leonetta-Serif.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
 :root {
@@ -4538,12 +4538,4 @@ a {
   .team {
     flex-flow: column;
   }
-}
-
-@font-face {
-  font-family: 'Leonetta Serif';
-  src: url('../67be32a281a72ef4200dd903_Leonetta-Serif.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
 }
