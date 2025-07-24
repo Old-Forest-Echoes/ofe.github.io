@@ -4418,6 +4418,10 @@ a {
   .logo-image {
     margin-right: 0;
   }
+
+  .div-block-7 {
+    max-width: 100%;
+  }
 }
 
 @media screen and (max-width: 479px) {
