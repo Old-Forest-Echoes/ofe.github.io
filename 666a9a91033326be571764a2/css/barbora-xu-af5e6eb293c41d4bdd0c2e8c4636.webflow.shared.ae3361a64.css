@@ -4535,6 +4535,10 @@ a {
     max-width: 100vw;
   }
 
+  .div-block-7 {
+    max-width: 100%;
+  }
+
   .team {
     flex-flow: column;
   }
