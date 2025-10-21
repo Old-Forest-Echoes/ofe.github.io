@@ -2890,14 +2890,6 @@ textarea.w-input, textarea.w-select {
   }
 }
 
-body {
-  color: #fff;
-  background-color: #000;
-  font-family: Spectral, sans-serif;
-  font-size: 14px;
-  line-height: 20px;
-}
-
 h1 {
   margin-top: 20px;
   margin-bottom: 10px;
