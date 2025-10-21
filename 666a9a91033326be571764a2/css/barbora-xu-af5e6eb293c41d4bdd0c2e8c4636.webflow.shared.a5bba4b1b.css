@@ -4212,6 +4212,10 @@ a {
   margin-bottom: 20px;
 }
 
+.team-section.ensemble {
+  display: none;
+}
+
 .paragraph-12 {
   font-family: Leonetta Serif, Palatino Linotype, sans-serif;
 }
@@ -4237,6 +4241,11 @@ a {
 
 .paragraph-28, .paragraph-29, .paragraph-30, .paragraph-31 {
   font-family: Spectral, sans-serif;
+}
+
+.rich-text-block-4 {
+  font-family: Spectral, sans-serif;
+  font-weight: 400;
 }
 
 @media screen and (max-width: 991px) {
