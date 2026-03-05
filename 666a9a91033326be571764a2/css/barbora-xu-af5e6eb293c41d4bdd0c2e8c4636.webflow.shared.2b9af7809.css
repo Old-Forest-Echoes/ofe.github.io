@@ -2983,6 +2983,10 @@ a {
   font-weight: 400;
 }
 
+.nav-link.event-link {
+  display: inline;
+}
+
 .nav-bar {
   background-color: #ffe69400;
   font-family: Leonetta Serif, Palatino Linotype, sans-serif;
@@ -4042,7 +4046,7 @@ a {
 
 .paragraph-7 {
   color: #dddcdc;
-  text-align: center;
+  text-align: left;
   background-color: #a58f100f;
   padding: 20px;
   font-family: Spectral, sans-serif;
@@ -4246,6 +4250,35 @@ a {
 .rich-text-block-4 {
   font-family: Spectral, sans-serif;
   font-weight: 400;
+}
+
+.event-heading {
+  font-size: 16px;
+}
+
+.link-11 {
+  font-family: Vollkorn, serif;
+}
+
+.link-11.w--current, .link-12 {
+  color: #ebffef;
+  font-family: Leonetta Serif, Palatino Linotype, sans-serif;
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.link-13 {
+  color: #ebffef;
+  font-family: Leonetta Serif, Palatino Linotype, sans-serif;
+  text-decoration: none;
+}
+
+.italic-text {
+  font-size: 20px;
+}
+
+.text-span-2 {
+  font-family: Leonetta Serif, Palatino Linotype, sans-serif;
 }
 
 @media screen and (max-width: 991px) {
