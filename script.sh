@@ -18,8 +18,8 @@ wget --recursive \
 
 # Remove integrity attributes from HTML files
 echo "Removing integrity attributes from HTML files..."
-find . -name "*.html" -type f -exec sed -i '' 's/ integrity="[^"]*"//g' {} +
-find . -name "*.html" -type f -exec sed -i '' 's/<\/body>/<style>.w-webflow-badge { display: none !important; }<\/style><\/body>/g' {} +
+find . -name "*.html" -type f -exec sed -i 's/ integrity="[^"]*"//g' {} +
+find . -name "*.html" -type f -exec sed -i 's/<\/body>/<style>.w-webflow-badge { display: none !important; }<\/style><\/body>/g' {} +
 
 # Deploy
 echo "Committing changes..."
