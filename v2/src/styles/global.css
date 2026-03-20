@@ -386,6 +386,11 @@ p {
   height: 23px;
 }
 
+.footer-socials img[alt="Linktree"] {
+  width: 100px;
+  height: auto;
+}
+
 .footer-socials svg {
   height: auto;
 }
