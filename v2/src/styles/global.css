@@ -202,6 +202,10 @@ p {
     display: block;
   }
 
+  .nav-logo {
+    height: 50px;
+  }
+
   .nav-links {
     position: fixed;
     inset: 0;
@@ -209,18 +213,21 @@ p {
     align-items: center;
     justify-content: center;
     gap: 2rem;
+    padding: 4rem 2rem;
     background-color: rgba(0, 0, 0, 0.95);
-    transform: translateY(-100%);
-    transition: transform 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
     z-index: 99;
   }
 
   .nav-links a {
-    font-size: 1rem;
+    font-size: 1.25rem;
   }
 
   .nav-toggle-checkbox:checked ~ .nav-links {
-    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
   }
 
   .nav-toggle-checkbox:checked ~ .nav-toggle {
@@ -328,10 +335,13 @@ p {
   opacity: 1;
 }
 
-.footer-socials img,
-.footer-socials svg {
+.footer-socials img {
   width: 23px;
   height: 23px;
+}
+
+.footer-socials svg {
+  height: auto;
 }
 
 .footer-text {
