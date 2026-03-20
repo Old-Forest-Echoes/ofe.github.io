@@ -221,10 +221,6 @@ p {
   color: var(--color-gold);
 }
 
-.nav-links a[aria-current="page"] {
-  font-family: var(--font-display);
-}
-
 /* Mobile nav toggle */
 .nav-toggle {
   display: none;
