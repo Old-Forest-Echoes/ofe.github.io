@@ -14,8 +14,7 @@ const links = [
       <img src="/logo.svg" alt="" class="nav-logo" width="80" height="80" />
       <span class="nav-title">Old Forest Echoes</span>
     </a>
-    <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox" />
-    <label for="nav-toggle" class="nav-toggle" role="button" aria-controls="nav-menu" aria-expanded="false" tabindex="0">Menu</label>
+    <button class="nav-toggle" aria-controls="nav-menu" aria-expanded="false" type="button">Menu</button>
     <ul id="nav-menu" class="nav-links">
       {links.map(({ href, label }) => (
         <li>
@@ -29,51 +28,57 @@ const links = [
 </nav>
 
 <script>
-  const checkbox = document.getElementById('nav-toggle') as HTMLInputElement;
-  const label = document.querySelector('.nav-toggle') as HTMLLabelElement;
+  const nav = document.querySelector('.nav') as HTMLElement;
+  const toggle = document.querySelector('.nav-toggle') as HTMLButtonElement;
   const menu = document.getElementById('nav-menu') as HTMLUListElement;
 
-  if (checkbox && label && menu) {
-    function closeMenu() {
-      checkbox.checked = false;
-      label.setAttribute('aria-expanded', 'false');
+  if (nav && toggle && menu) {
+    let isOpen = false;
+
+    function openMenu() {
+      isOpen = true;
+      nav.classList.add('nav-open');
+      toggle.setAttribute('aria-expanded', 'true');
+      const firstLink = menu.querySelector('a');
+      firstLink?.focus();
     }
 
-    checkbox.addEventListener('change', () => {
-      const isOpen = checkbox.checked;
-      label.setAttribute('aria-expanded', String(isOpen));
-      if (isOpen) {
-        const firstLink = menu.querySelector('a');
-        firstLink?.focus();
-      }
+    function closeMenu() {
+      isOpen = false;
+      nav.classList.remove('nav-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+
+    toggle.addEventListener('click', () => {
+      isOpen ? closeMenu() : openMenu();
     });
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && checkbox.checked) {
+      if (e.key === 'Escape' && isOpen) {
         closeMenu();
-        label.focus();
+        toggle.focus();
       }
     });
 
     // Focus trapping within open menu
     menu.addEventListener('keydown', (e) => {
-      if (!checkbox.checked || e.key !== 'Tab') return;
+      if (!isOpen || e.key !== 'Tab') return;
       const focusable = menu.querySelectorAll('a');
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
       if (e.shiftKey && document.activeElement === first) {
         e.preventDefault();
-        label.focus();
+        toggle.focus();
       } else if (!e.shiftKey && document.activeElement === last) {
         e.preventDefault();
-        label.focus();
+        toggle.focus();
       }
     });
 
-    // Trap focus back into menu from label
-    label.addEventListener('keydown', (e) => {
-      if (!checkbox.checked || e.key !== 'Tab') return;
-      if (e.shiftKey) return; // Let shift+tab leave nav naturally
+    // Trap focus back into menu from toggle button
+    toggle.addEventListener('keydown', (e) => {
+      if (!isOpen || e.key !== 'Tab') return;
+      if (e.shiftKey) return;
       e.preventDefault();
       const firstLink = menu.querySelector('a');
       firstLink?.focus();

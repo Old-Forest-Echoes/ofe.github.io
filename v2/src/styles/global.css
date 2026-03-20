@@ -239,10 +239,6 @@ p {
   padding: 0.5rem;
 }
 
-.nav-toggle-checkbox {
-  display: none;
-}
-
 @media (max-width: 768px) {
   .nav-toggle {
     display: block;
@@ -274,12 +270,12 @@ p {
     font-size: 1.5rem;
   }
 
-  .nav-toggle-checkbox:checked ~ .nav-links {
+  .nav.nav-open .nav-links {
     opacity: 1;
     visibility: visible;
   }
 
-  .nav-toggle-checkbox:checked ~ .nav-toggle {
+  .nav.nav-open .nav-toggle {
     position: fixed;
     top: 1.5rem;
     right: var(--content-padding);
