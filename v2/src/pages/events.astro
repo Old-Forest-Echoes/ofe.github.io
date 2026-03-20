@@ -66,7 +66,7 @@ function isPast(event: EventEntry): boolean {
     <h2>Event Calendar 2026</h2>
     <ul class="event-list">
       {typedEvents.map((event) => (
-        <li class={isPast(event) ? 'event-past' : ''}>
+        <li class={isPast(event) ? 'event-past' : ''} data-end={event.endDate || event.date}>
           <time class="event-date" datetime={event.date}>
             {formatDate(event.date, event.endDate)}
           </time>
@@ -106,4 +106,12 @@ function isPast(event: EventEntry): boolean {
       <p>Event length: 2 hrs</p>
     </div>
   </section>
+
+  <script>
+    const today = new Date().toISOString().slice(0, 10);
+    document.querySelectorAll('.event-list li[data-end]').forEach((li) => {
+      const end = (li as HTMLElement).dataset.end!;
+      if (end < today) li.classList.add('event-past');
+    });
+  </script>
 </Base>

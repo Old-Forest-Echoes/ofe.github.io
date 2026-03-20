@@ -147,6 +147,13 @@ h2 {
   margin-block: 2rem 1.5rem;
 }
 
+h3 {
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  color: var(--color-gold);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
 p {
   margin-bottom: 1em;
 }

@@ -84,6 +84,7 @@ const personSchemas = sorted.map((artist) => ({
               {img && (
                 <Image src={img.default} alt={artist.data.name} widths={[500, 800, 1080]} sizes="(max-width: 768px) 100vw, 70vw" loading="lazy" />
               )}
+              <h3>{artist.data.name}</h3>
               <div class="prose">
                 <Content />
               </div>

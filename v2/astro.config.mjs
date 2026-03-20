@@ -5,5 +5,12 @@ export default defineConfig({
   site: 'https://oldforestechoes.com',
   output: 'static',
   compressHTML: true,
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      serialize(item) {
+        item.lastmod = new Date().toISOString();
+        return item;
+      },
+    }),
+  ],
 });
