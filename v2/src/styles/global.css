@@ -28,7 +28,6 @@
 
   --font-display: 'Leonetta Serif', 'Palatino Linotype', serif;
   --font-body: 'Montserrat', sans-serif;
-  --font-nav: 'Leonetta Serif', 'Palatino Linotype', serif;
 
   --max-width: 940px;
   --content-padding: 1rem;
@@ -164,7 +163,7 @@ p {
   top: 0;
   z-index: 100;
   padding-block: 1rem;
-  font-family: var(--font-nav);
+  font-family: var(--font-display);
   background-color: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -191,7 +190,6 @@ p {
 
 .nav-title {
   color: #fdfdfd;
-  font-family: var(--font-display);
   font-size: clamp(1rem, 2.5vw, 1.5rem);
   font-weight: normal;
   letter-spacing: 1.5px;
@@ -206,7 +204,6 @@ p {
 
 .nav-links a {
   color: var(--color-gold-muted);
-  font-family: var(--font-nav);
   font-size: 20px;
   font-weight: normal;
   letter-spacing: 2px;
@@ -227,7 +224,6 @@ p {
   background: none;
   border: none;
   color: var(--color-text);
-  font-family: var(--font-nav);
   font-size: 0.7rem;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -382,12 +378,8 @@ p {
   height: 23px;
 }
 
-.footer-socials img[alt="Linktree"] {
+.footer-socials .linktree-logo {
   width: 100px;
-  height: auto;
-}
-
-.footer-socials svg {
   height: auto;
 }
 
