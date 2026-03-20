@@ -8,15 +8,15 @@ const links = [
 ];
 ---
 
-<nav class="nav">
+<nav class="nav" aria-label="Main">
   <div class="container">
     <a href="/" class="nav-brand">
       <img src="/logo.svg" alt="" class="nav-logo" width="80" height="80" />
       <span class="nav-title">Old Forest Echoes</span>
     </a>
     <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox" />
-    <label for="nav-toggle" class="nav-toggle">Menu</label>
-    <ul class="nav-links">
+    <label for="nav-toggle" class="nav-toggle" role="button" aria-controls="nav-menu" aria-expanded="false">Menu</label>
+    <ul id="nav-menu" class="nav-links">
       {links.map(({ href, label }) => (
         <li>
           <a href={href} aria-current={currentPath === href ? 'page' : undefined}>
@@ -27,3 +27,13 @@ const links = [
     </ul>
   </div>
 </nav>
+
+<script>
+  const checkbox = document.getElementById('nav-toggle') as HTMLInputElement;
+  const label = document.querySelector('.nav-toggle') as HTMLLabelElement;
+  if (checkbox && label) {
+    checkbox.addEventListener('change', () => {
+      label.setAttribute('aria-expanded', String(checkbox.checked));
+    });
+  }
+</script>

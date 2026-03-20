@@ -19,13 +19,15 @@ function formatDate(dateStr: string, endDateStr?: string): string {
 }
 ---
 
-<Base title="Events — Old Forest Echoes">
+<Base title="Events — Old Forest Echoes" description="Old Forest Echoes 2026 event calendar: forest concerts, venue performances, and workshops across Finland, Czechia, and Germany.">
   <section class="section" id="calendar">
     <h2>Event Calendar 2026</h2>
     <ul class="event-list">
       {events.map((event: any) => (
         <li>
-          <span class="event-date">{formatDate(event.date, event.endDate)}</span>
+          <time class="event-date" datetime={event.endDate ? `${event.date}/${event.endDate}` : event.date}>
+            {formatDate(event.date, event.endDate)}
+          </time>
           {event.venue}, {event.country}
         </li>
       ))}

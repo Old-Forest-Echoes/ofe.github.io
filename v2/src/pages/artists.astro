@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import Contact from '../components/Contact.astro';
 import { getCollection, render } from 'astro:content';
 import { Image } from 'astro:assets';
 
@@ -31,7 +32,7 @@ const rendered = await Promise.all(
 );
 ---
 
-<Base title="Artists — Old Forest Echoes">
+<Base title="Artists — Old Forest Echoes" description="Meet the artists of Old Forest Echoes: Barbora Xu, Ilkka Heinonen, Joni Vierre, Minna Koskenlahti, Wiebke Pandikow, and Mikko H. Haapoja.">
   <section class="section">
     <div class="prose">
       <p>Old Forest Echoes is the vision of internationally renowned singer, composer and multi-instrumentalist Barbora Xu (CZ/FI), who spends prolonged periods in endangered old growth forest areas of Finland. Conducting artistic research involving deep personal songwriting journeys, Barbora and her team also explore the forest to locate the best wilderness concert venues. The venues are transformed into a living piece of art by Wiebke Pandikow and become the Old Forest Echoes forest tour venues open to public. To bring the music from the old growth forests to festivals and venues, experienced sound artist Mikko Haapoja prepares surround system soundscape installations to stand alone or encapsulate a live concert. Barbora collaborates with numerous renowned artists such as Niklas Winter, Ilkka Heinonen, Jenni Venäläinen, Petra Jelenkova, making every single concert a unique event.</p>
@@ -72,18 +73,5 @@ const rendered = await Promise.all(
     );
   })}
 
-  <section class="section">
-    <div class="contact-grid">
-      <p>
-        <strong>General Inquiries</strong><br />
-        Carly Markkanen<br />
-        info(at)oldforestechoes.com
-      </p>
-      <p>
-        <strong>Director</strong><br />
-        Barbora Silhanova<br />
-        barbora(at)oldforestechoes.com
-      </p>
-    </div>
-  </section>
+  <Contact />
 </Base>
