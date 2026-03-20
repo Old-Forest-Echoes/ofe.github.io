@@ -17,6 +17,12 @@ const roleLabels: Record<string, string> = {
 
 const roles = ['music', 'featured', 'land-art', 'soundscapes'] as const;
 
+const ensembleImg = images['/src/assets/images/ensemble.jpg'];
+
+const roleIntros: Record<string, string> = {
+  featured: 'Except for live improvisations recorded during Barbora\u2019s stay in the forests, a number of acknowledged artists come onto the project as guests. Among others, a world known jazz guitarist Niklas Winter, Czech folk violinist Petra Jelénková, kantele player Jenni Venäläinen.',
+};
+
 const rendered = await Promise.all(
   sorted.map(async (artist) => {
     const { Content } = await render(artist);
@@ -36,6 +42,16 @@ const rendered = await Promise.all(
     return (
       <section class="section" id={role}>
         <h2>{roleLabels[role]}</h2>
+        {role === 'featured' && ensembleImg && (
+          <div class="artist-card">
+            <Image src={ensembleImg.default} alt="Old Forest Echoes ensemble" widths={[500, 800, 1080, 1600]} sizes="(max-width: 768px) 100vw, 70vw" loading="lazy" />
+          </div>
+        )}
+        {roleIntros[role] && (
+          <div class="prose" style="margin-bottom: 2rem;">
+            <p>{roleIntros[role]}</p>
+          </div>
+        )}
         {group.map(({ artist, Content }) => {
           const imgPath = `/src/assets/images/${artist.data.image}`;
           const img = images[imgPath];
@@ -53,4 +69,19 @@ const rendered = await Promise.all(
       </section>
     );
   })}
+
+  <section class="section">
+    <div class="contact-grid">
+      <p>
+        <strong>General Inquiries</strong><br />
+        Carly Markkanen<br />
+        info(at)oldforestechoes.com
+      </p>
+      <p>
+        <strong>Director</strong><br />
+        Barbora Silhanova<br />
+        barbora(at)oldforestechoes.com
+      </p>
+    </div>
+  </section>
 </Base>
