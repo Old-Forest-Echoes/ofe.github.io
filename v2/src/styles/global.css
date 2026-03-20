@@ -208,21 +208,24 @@ p {
 
   .nav-links {
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 2rem;
-    padding: 4rem 2rem;
-    background-color: rgba(0, 0, 0, 0.95);
+    gap: 2.5rem;
+    background-color: #000000;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
-    z-index: 99;
+    z-index: 200;
   }
 
   .nav-links a {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
   }
 
   .nav-toggle-checkbox:checked ~ .nav-links {
@@ -232,9 +235,9 @@ p {
 
   .nav-toggle-checkbox:checked ~ .nav-toggle {
     position: fixed;
-    top: 1rem;
+    top: 1.5rem;
     right: var(--content-padding);
-    z-index: 101;
+    z-index: 201;
   }
 }
 
