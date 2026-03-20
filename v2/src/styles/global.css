@@ -19,8 +19,8 @@
   --color-overlay-gradient: rgba(0, 0, 0, 0.62);
 
   --font-display: 'Leonetta Serif', 'Palatino Linotype', serif;
-  --font-body: 'Spectral', Georgia, serif;
-  --font-nav: 'Montserrat', sans-serif;
+  --font-body: 'Montserrat', sans-serif;
+  --font-nav: 'Leonetta Serif', 'Palatino Linotype', serif;
 
   --max-width: 940px;
   --content-padding: 1rem;
@@ -41,8 +41,9 @@ html {
 
 body {
   font-family: var(--font-body);
+  font-weight: 300;
   color: var(--color-text);
-  line-height: 1.7;
+  line-height: 24px;
   background-color: var(--color-bg);
   min-height: 100vh;
 }
@@ -103,6 +104,7 @@ h1 {
 h2 {
   font-size: clamp(1.5rem, 3vw, 2.5rem);
   color: var(--color-gold);
+  text-align: center;
   margin-block: 2rem 1.5rem;
 }
 
@@ -137,7 +139,7 @@ p {
 }
 
 .nav-logo {
-  height: 40px;
+  height: 80px;
   width: auto;
 }
 
@@ -158,11 +160,13 @@ p {
 
 .nav-links a {
   color: var(--color-gold-muted);
-  font-size: 0.75rem;
-  font-weight: 500;
+  font-family: var(--font-nav);
+  font-size: 20px;
+  font-weight: normal;
   letter-spacing: 2px;
   text-transform: uppercase;
   text-decoration: none;
+  text-shadow: 0 0 20px #000;
   transition: color 0.2s;
 }
 
