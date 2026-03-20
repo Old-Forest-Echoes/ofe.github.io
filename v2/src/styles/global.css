@@ -1,0 +1,349 @@
+/* === Fonts === */
+@font-face {
+  font-family: 'Leonetta Serif';
+  src: url('/fonts/Leonetta-Serif.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* === Custom Properties === */
+:root {
+  --color-bg: #0a0a08;
+  --color-gold: #ffe694;
+  --color-gold-muted: rgba(255, 230, 148, 0.7);
+  --color-gold-faint: rgba(255, 230, 148, 0.05);
+  --color-text: #ebffef;
+  --color-text-muted: rgba(255, 255, 255, 0.43);
+  --color-overlay: rgba(0, 0, 0, 0.5);
+  --color-overlay-gradient: rgba(0, 0, 0, 0.62);
+
+  --font-display: 'Leonetta Serif', 'Palatino Linotype', serif;
+  --font-body: 'Spectral', Georgia, serif;
+  --font-nav: 'Montserrat', sans-serif;
+
+  --max-width: 940px;
+  --content-padding: 1rem;
+}
+
+/* === Reset === */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-text);
+  line-height: 1.7;
+  background-color: var(--color-bg);
+  min-height: 100vh;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--color-gold);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: #fff;
+}
+
+/* === Background === */
+.page-background {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.page-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--color-overlay);
+  background-image: radial-gradient(circle at 50% 0, rgba(0, 0, 0, 0.46), var(--color-overlay-gradient) 91%);
+}
+
+/* === Layout === */
+.container {
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--content-padding);
+}
+
+/* === Typography === */
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: normal;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  color: var(--color-gold);
+}
+
+h2 {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  color: var(--color-gold);
+  margin-block: 2rem 1.5rem;
+}
+
+p {
+  margin-bottom: 1em;
+}
+
+/* === Nav === */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding-block: 1rem;
+  font-family: var(--font-nav);
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.nav .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.nav-logo {
+  height: 40px;
+  width: auto;
+}
+
+.nav-title {
+  color: #fdfdfd;
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  font-weight: normal;
+  letter-spacing: 1.5px;
+  margin: 0;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--color-gold-muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover,
+.nav-links a[aria-current="page"] {
+  color: var(--color-gold);
+}
+
+.nav-links a[aria-current="page"] {
+  font-family: var(--font-display);
+}
+
+/* Mobile nav toggle */
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--color-text);
+  font-family: var(--font-nav);
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.nav-toggle-checkbox {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .nav-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    position: fixed;
+    inset: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    background-color: rgba(0, 0, 0, 0.95);
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+    z-index: 99;
+  }
+
+  .nav-links a {
+    font-size: 1rem;
+  }
+
+  .nav-toggle-checkbox:checked ~ .nav-links {
+    transform: translateY(0);
+  }
+
+  .nav-toggle-checkbox:checked ~ .nav-toggle {
+    position: fixed;
+    top: 1rem;
+    right: var(--content-padding);
+    z-index: 101;
+  }
+}
+
+/* === Content sections === */
+.section {
+  padding-block: 3rem;
+}
+
+.section + .section {
+  border-top: 1px solid rgba(255, 230, 148, 0.08);
+}
+
+/* === Artist cards === */
+.artist-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+.artist-card img {
+  max-width: min(70%, 660px);
+  margin-bottom: 1.5rem;
+  box-shadow: 1px 1px 3px 1px rgba(255, 255, 255, 0.11);
+}
+
+.artist-card .prose {
+  max-width: 70ch;
+}
+
+/* === Video embed === */
+.video-embed {
+  position: relative;
+  padding-top: 56.25%;
+  margin-bottom: 2rem;
+  background-color: var(--color-gold-faint);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 1px 1px 3px 3px rgba(13, 7, 3, 0.88);
+}
+
+.video-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* === Event calendar === */
+.event-list {
+  list-style: none;
+  margin-bottom: 2rem;
+}
+
+.event-list li {
+  padding-block: 0.35rem;
+}
+
+.event-date {
+  display: inline-block;
+  min-width: 5em;
+  color: var(--color-gold-muted);
+}
+
+/* === Contact === */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-block: 2rem;
+}
+
+.contact-grid p {
+  line-height: 1.8;
+}
+
+/* === Footer === */
+.footer {
+  text-align: center;
+  padding-block: 2rem 3rem;
+  margin-top: 4rem;
+}
+
+.footer-socials {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.footer-socials a {
+  opacity: 0.82;
+  transition: opacity 0.2s;
+}
+
+.footer-socials a:hover {
+  opacity: 1;
+}
+
+.footer-socials img,
+.footer-socials svg {
+  width: 23px;
+  height: 23px;
+}
+
+.footer-text {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+/* === Prose (markdown content) === */
+.prose p {
+  margin-bottom: 1em;
+}
+
+.prose strong {
+  color: var(--color-gold);
+}
+
+.prose em {
+  font-style: italic;
+}
