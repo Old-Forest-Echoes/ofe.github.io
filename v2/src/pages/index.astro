@@ -2,9 +2,32 @@
 import Base from '../layouts/Base.astro';
 import YouTubeEmbed from '../components/YouTubeEmbed.astro';
 import Contact from '../components/Contact.astro';
+import JsonLd from '../components/JsonLd.astro';
+
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Old Forest Echoes',
+  alternateName: 'Ikimetsän kaiku',
+  url: 'https://oldforestechoes.com',
+  logo: 'https://oldforestechoes.com/logo.svg',
+  description: 'Music and art composed in Finnish old growth forests, aspiring to raise awareness and protect threatened forests.',
+  email: 'info@oldforestechoes.com',
+  sameAs: [
+    'https://www.facebook.com/oldforestechoes',
+    'https://www.instagram.com/oldforestechoes/',
+    'https://www.youtube.com/channel/UCXpK5IHy4k0DY2e6t7daA1g',
+    'https://linktr.ee/Barboraxu',
+  ],
+  funder: {
+    '@type': 'Organization',
+    name: 'KONE Foundation',
+  },
+};
 ---
 
 <Base title="Old Forest Echoes — Music for Protection of Old Growth Forests">
+  <JsonLd data={orgSchema} />
   <section class="section">
     <YouTubeEmbed videoId="4q2-op45wkU" title="Old Forest Echoes: Music for Protection of Old Growth Forests" />
 
