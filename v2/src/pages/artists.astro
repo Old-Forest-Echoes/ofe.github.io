@@ -1,0 +1,56 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+
+const allArtists = await getCollection('artists');
+const sorted = allArtists.sort((a, b) => a.data.order - b.data.order);
+
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/*.{jpg,jpeg}', { eager: true });
+
+const roleLabels: Record<string, string> = {
+  music: 'Music',
+  featured: 'Featured Artists',
+  'land-art': 'Land Art',
+  soundscapes: 'Soundscapes',
+};
+
+const roles = ['music', 'featured', 'land-art', 'soundscapes'] as const;
+
+const rendered = await Promise.all(
+  sorted.map(async (artist) => {
+    const { Content } = await render(artist);
+    return { artist, Content };
+  })
+);
+---
+
+<Base title="Artists — Old Forest Echoes">
+  <div class="prose" style="margin-bottom: 2rem;">
+    <p>Old Forest Echoes is the vision of internationally renowned singer, composer and multi-instrumentalist Barbora Xu (CZ/FI), who spends prolonged periods in endangered old growth forest areas of Finland. Conducting artistic research involving deep personal songwriting journeys, Barbora and her team also explore the forest to locate the best wilderness concert venues. The venues are transformed into a living piece of art by Wiebke Pandikow and become the Old Forest Echoes forest tour venues open to public. To bring the music from the old growth forests to festivals and venues, experienced sound artist Mikko Haapoja prepares surround system soundscape installations to stand alone or encapsulate a live concert. Barbora collaborates with numerous renowned artists such as Niklas Winter, Ilkka Heinonen, Jenni Venäläinen, Petra Jelenkova, making every single concert a unique event.</p>
+  </div>
+
+  {roles.map((role) => {
+    const group = rendered.filter(({ artist }) => artist.data.role === role);
+    if (group.length === 0) return null;
+    return (
+      <section class="section" id={role}>
+        <h2>{roleLabels[role]}</h2>
+        {group.map(({ artist, Content }) => {
+          const imgPath = `/src/assets/images/${artist.data.image}`;
+          const img = images[imgPath];
+          return (
+            <article class="artist-card">
+              {img && (
+                <Image src={img.default} alt={artist.data.name} widths={[500, 800, 1080]} sizes="(max-width: 768px) 100vw, 70vw" loading="lazy" />
+              )}
+              <div class="prose">
+                <Content />
+              </div>
+            </article>
+          );
+        })}
+      </section>
+    );
+  })}
+</Base>
