@@ -1,0 +1,17 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  name: string;
+  imageSrc: ImageMetadata;
+}
+
+const { name, imageSrc } = Astro.props;
+---
+
+<article class="artist-card">
+  <Image src={imageSrc} alt={name} widths={[500, 800, 1080]} sizes="(max-width: 768px) 100vw, 70vw" loading="lazy" />
+  <div class="prose">
+    <slot />
+  </div>
+</article>

@@ -1,0 +1,29 @@
+---
+const currentPath = Astro.url.pathname;
+
+const links = [
+  { href: '/', label: 'About' },
+  { href: '/artists/', label: 'Artists' },
+  { href: '/events/', label: 'Events' },
+];
+---
+
+<nav class="nav">
+  <div class="container">
+    <a href="/" class="nav-brand">
+      <img src="/logo.svg" alt="" class="nav-logo" width="40" height="40" />
+      <span class="nav-title">Old Forest Echoes</span>
+    </a>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox" />
+    <label for="nav-toggle" class="nav-toggle">Menu</label>
+    <ul class="nav-links">
+      {links.map(({ href, label }) => (
+        <li>
+          <a href={href} aria-current={currentPath === href ? 'page' : undefined}>
+            {label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</nav>
