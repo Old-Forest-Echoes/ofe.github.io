@@ -1,1 +1,6 @@
 .ssh
+node_modules
+.astro
+dist
+.idea
+docs
