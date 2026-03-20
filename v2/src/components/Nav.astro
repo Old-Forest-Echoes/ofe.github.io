@@ -15,7 +15,7 @@ const links = [
       <span class="nav-title">Old Forest Echoes</span>
     </a>
     <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox" />
-    <label for="nav-toggle" class="nav-toggle" role="button" aria-controls="nav-menu" aria-expanded="false">Menu</label>
+    <label for="nav-toggle" class="nav-toggle" role="button" aria-controls="nav-menu" aria-expanded="false" tabindex="0">Menu</label>
     <ul id="nav-menu" class="nav-links">
       {links.map(({ href, label }) => (
         <li>
@@ -31,9 +31,52 @@ const links = [
 <script>
   const checkbox = document.getElementById('nav-toggle') as HTMLInputElement;
   const label = document.querySelector('.nav-toggle') as HTMLLabelElement;
-  if (checkbox && label) {
+  const menu = document.getElementById('nav-menu') as HTMLUListElement;
+
+  if (checkbox && label && menu) {
+    function closeMenu() {
+      checkbox.checked = false;
+      label.setAttribute('aria-expanded', 'false');
+    }
+
     checkbox.addEventListener('change', () => {
-      label.setAttribute('aria-expanded', String(checkbox.checked));
+      const isOpen = checkbox.checked;
+      label.setAttribute('aria-expanded', String(isOpen));
+      if (isOpen) {
+        const firstLink = menu.querySelector('a');
+        firstLink?.focus();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && checkbox.checked) {
+        closeMenu();
+        label.focus();
+      }
+    });
+
+    // Focus trapping within open menu
+    menu.addEventListener('keydown', (e) => {
+      if (!checkbox.checked || e.key !== 'Tab') return;
+      const focusable = menu.querySelectorAll('a');
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        label.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        label.focus();
+      }
+    });
+
+    // Trap focus back into menu from label
+    label.addEventListener('keydown', (e) => {
+      if (!checkbox.checked || e.key !== 'Tab') return;
+      if (e.shiftKey) return; // Let shift+tab leave nav naturally
+      e.preventDefault();
+      const firstLink = menu.querySelector('a');
+      firstLink?.focus();
     });
   }
 </script>

@@ -3,7 +3,6 @@ name: Mikko H. Haapoja
 role: soundscapes
 order: 6
 image: mikko-haapoja.jpg
-featured: false
 ---
 
 Mikko H. Haapoja is a media artist, music producer and multi-instrumentalist from Helsinki, Finland. Haapoja works with various music genres – from acoustic to electronic. In his solo project Unheard Landscapes, Haapoja plays Finnish traditional bowed lyres and live electronics combined with his field-recordings from around the globe. Since 2010 Haapoja has captured the sonic image of Helsinki in his project Helsingin reitit – The Routes of Helsinki. The latest piece of the series 'Keskusmetsä' (The Central Forest) represented Finland in EBU's Prix Palma Ars Acustica competition in 2023.

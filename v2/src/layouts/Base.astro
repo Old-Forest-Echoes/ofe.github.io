@@ -7,12 +7,14 @@ interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  noindex?: boolean;
 }
 
 const {
   title = 'Old Forest Echoes',
   description = 'Music and art composed in Finnish old growth forests. A project by Barbora Xu in collaboration with the Finnish Nature League, aspiring to raise awareness and protect threatened forests.',
   ogImage = '/images/forest-bg.webp',
+  noindex = false,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -25,12 +27,14 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title}</title>
   <meta name="description" content={description} />
+  {noindex ? <meta name="robots" content="noindex" /> : <meta name="robots" content="index, follow" />}
   <link rel="canonical" href={canonicalURL} />
   <link rel="icon" href="/logo.svg" type="image/svg+xml" />
   <link rel="sitemap" href="/sitemap-index.xml" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
+  <meta property="og:locale" content="en_US" />
   <meta property="og:url" content={canonicalURL} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
@@ -46,6 +50,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   <!-- Fonts (self-hosted, no third-party requests) -->
   <link rel="preload" href="/fonts/Leonetta-Serif.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/fonts/Montserrat.woff2" as="font" type="font/woff2" crossorigin />
+
+  <!-- Preload LCP background image -->
+  <link rel="preload" href="/images/forest-bg.webp" as="image" type="image/webp" />
 </head>
 <body>
   <div class="page-background" style="background-image: url('/images/forest-bg.webp')"></div>

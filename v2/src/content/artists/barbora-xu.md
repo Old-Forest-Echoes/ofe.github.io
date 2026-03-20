@@ -3,7 +3,6 @@ name: Barbora Xu
 role: music
 order: 1
 image: barbora.jpg
-featured: true
 ---
 
 Czech singer and multi-instrumentalist Barbora Xu (Barbora Šilhánová) has been working in Europe and Asia, exploring local poetry, string instruments, vocal techniques while composing music. Her work is deeply inspired by nature, the calmness, fragility and softness experienced in the natural light and soundscapes of forests, the fullness of human voice and handmade instruments combined.

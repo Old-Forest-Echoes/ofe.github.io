@@ -32,12 +32,19 @@ const rendered = await Promise.all(
   })
 );
 
+const roleJobTitles: Record<string, string> = {
+  music: 'Musician',
+  featured: 'Musician',
+  'land-art': 'Visual Artist',
+  soundscapes: 'Sound Artist',
+};
+
 const personSchemas = sorted.map((artist) => ({
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: artist.data.name,
   url: `https://oldforestechoes.com/artists/#${artist.data.role}`,
-  jobTitle: 'Musician',
+  jobTitle: roleJobTitles[artist.data.role] || 'Artist',
   memberOf: {
     '@type': 'Organization',
     name: 'Old Forest Echoes',

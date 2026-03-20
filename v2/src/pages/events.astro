@@ -3,7 +3,17 @@ import Base from '../layouts/Base.astro';
 import JsonLd from '../components/JsonLd.astro';
 import events from '../data/events-2026.json';
 
-const eventSchemas = events.map((event: any) => ({
+interface EventEntry {
+  date: string;
+  endDate?: string;
+  venue: string;
+  country: string;
+}
+
+const typedEvents = events as EventEntry[];
+const today = new Date().toISOString().slice(0, 10);
+
+const eventSchemas = typedEvents.map((event) => ({
   '@context': 'https://schema.org',
   '@type': 'MusicEvent',
   name: `Old Forest Echoes — ${event.venue}`,
@@ -43,18 +53,24 @@ function formatDate(dateStr: string, endDateStr?: string): string {
   }
   return `${day}.${month}.`;
 }
+
+function isPast(event: EventEntry): boolean {
+  const endOrStart = event.endDate || event.date;
+  return endOrStart < today;
+}
 ---
 
 <Base title="Events — Old Forest Echoes" description="Old Forest Echoes 2026 event calendar: forest concerts, venue performances, and workshops across Finland, Czechia, and Germany.">
-  {eventSchemas.map((schema: any) => <JsonLd data={schema} />)}
+  {eventSchemas.map((schema) => <JsonLd data={schema} />)}
   <section class="section" id="calendar">
     <h2>Event Calendar 2026</h2>
     <ul class="event-list">
-      {events.map((event: any) => (
-        <li>
-          <time class="event-date" datetime={event.endDate ? `${event.date}/${event.endDate}` : event.date}>
+      {typedEvents.map((event) => (
+        <li class={isPast(event) ? 'event-past' : ''}>
+          <time class="event-date" datetime={event.date}>
             {formatDate(event.date, event.endDate)}
           </time>
+          {event.endDate && <time datetime={event.endDate} class="sr-only">to {event.endDate}</time>}
           {event.venue}, {event.country}
         </li>
       ))}

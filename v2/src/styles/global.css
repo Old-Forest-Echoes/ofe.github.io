@@ -1,8 +1,7 @@
 /* === Fonts === */
 @font-face {
   font-family: 'Leonetta Serif';
-  src: url('/fonts/Leonetta-Serif.woff2') format('woff2'),
-       url('/fonts/Leonetta-Serif.otf') format('opentype');
+  src: url('/fonts/Leonetta-Serif.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -71,6 +70,19 @@ a {
 
 a:hover {
   color: #fff;
+}
+
+/* === Utilities === */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* === Skip link === */
@@ -328,6 +340,10 @@ p {
   display: inline-block;
   min-width: 5em;
   color: var(--color-gold-muted);
+}
+
+.event-past {
+  opacity: 0.5;
 }
 
 /* === Contact === */
