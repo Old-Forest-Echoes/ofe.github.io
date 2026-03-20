@@ -276,9 +276,6 @@ p {
   }
 
   .nav.nav-open .nav-toggle {
-    position: fixed;
-    top: 1.5rem;
-    right: var(--content-padding);
     z-index: 201;
   }
 }
