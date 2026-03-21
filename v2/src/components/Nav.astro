@@ -16,7 +16,7 @@ const links = [
       <span class="nav-title">Old Forest Echoes</span>
     </a>
     <button class="nav-toggle" aria-controls="nav-menu" aria-expanded="false" type="button">Menu</button>
-    <ul id="nav-menu" class="nav-links">
+    <ul id="nav-menu" class="nav-links" role="list">
       {links.map(({ href, label }) => (
         <li>
           <a href={href} aria-current={normalize(currentPath) === normalize(href) ? 'page' : undefined}>
@@ -46,6 +46,9 @@ const links = [
       nav.classList.add('nav-open');
       toggle.setAttribute('aria-expanded', 'true');
       toggle.textContent = 'Close';
+      menu.setAttribute('role', 'dialog');
+      menu.setAttribute('aria-modal', 'true');
+      menu.setAttribute('aria-label', 'Navigation');
       brand?.setAttribute('inert', '');
       mainContent?.setAttribute('inert', '');
       footer?.setAttribute('inert', '');
@@ -58,6 +61,9 @@ const links = [
       nav.classList.remove('nav-open');
       toggle.setAttribute('aria-expanded', 'false');
       toggle.textContent = 'Menu';
+      menu.removeAttribute('role');
+      menu.removeAttribute('aria-modal');
+      menu.removeAttribute('aria-label');
       brand?.removeAttribute('inert');
       mainContent?.removeAttribute('inert');
       footer?.removeAttribute('inert');

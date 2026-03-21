@@ -30,8 +30,6 @@ const { videoId, title, thumbnail } = Astro.props;
       const iframe = document.createElement('iframe');
       iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`;
       iframe.title = container.dataset.videoTitle || '';
-      iframe.width = '560';
-      iframe.height = '315';
       iframe.setAttribute('allowfullscreen', '');
       iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
       container.replaceChild(iframe, button);

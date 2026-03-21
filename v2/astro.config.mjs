@@ -38,6 +38,7 @@ export default defineConfig({
   site: 'https://oldforestechoes.com',
   output: 'static',
   compressHTML: true,
+  trailingSlash: 'always',
   integrations: [
     sitemap({
       serialize(item) {

@@ -1,15 +1,23 @@
+---
+function obfuscate(email: string): string {
+  return email.split('').map(c => `&#${c.charCodeAt(0)};`).join('');
+}
+
+const contacts = [
+  { title: 'General Inquiries', name: 'Carly Markkanen', email: 'info@oldforestechoes.com' },
+  { title: 'Director', name: 'Barbora Silhanova', email: 'barbora@oldforestechoes.com' },
+];
+---
+
 <section class="section" aria-labelledby="contact-heading">
   <h2 id="contact-heading" class="sr-only">Contact</h2>
   <div class="contact-grid">
-    <p>
-      <strong>General Inquiries</strong><br />
-      Carly Markkanen<br />
-      <a href="mailto:info@oldforestechoes.com">info@oldforestechoes.com</a>
-    </p>
-    <p>
-      <strong>Director</strong><br />
-      Barbora Silhanova<br />
-      <a href="mailto:barbora@oldforestechoes.com">barbora@oldforestechoes.com</a>
-    </p>
+    {contacts.map(({ title, name, email }) => (
+      <p>
+        <strong>{title}</strong><br />
+        {name}<br />
+        <Fragment set:html={`<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;${obfuscate(email)}">${obfuscate(email)}</a>`} />
+      </p>
+    ))}
   </div>
 </section>

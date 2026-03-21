@@ -124,11 +124,8 @@ a:focus-visible {
   border-radius: 0 0 4px 4px;
 }
 
-.skip-link:focus {
-  top: 0;
-}
-
 .skip-link:focus-visible {
+  top: 0;
   outline: 2px solid var(--color-bg);
   outline-offset: 2px;
 }
@@ -493,6 +490,7 @@ p {
 
 /* === Prose (markdown content) === */
 .prose strong {
+  font-weight: 400;
   color: var(--color-gold);
 }
 
