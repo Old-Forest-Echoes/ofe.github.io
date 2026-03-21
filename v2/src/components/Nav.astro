@@ -16,7 +16,6 @@ const links = [
       <span class="nav-title">Old Forest Echoes</span>
     </a>
     <button class="nav-toggle" aria-controls="nav-menu" aria-expanded="false" type="button">Menu</button>
-    <noscript><style>.nav-links{position:static!important;opacity:1!important;visibility:visible!important;background-color:transparent!important;flex-wrap:wrap!important}</style></noscript>
     <ul id="nav-menu" class="nav-links">
       {links.map(({ href, label }) => (
         <li>
@@ -35,6 +34,7 @@ const links = [
   const menu = document.getElementById('nav-menu');
 
   if (nav && toggle && menu) {
+    nav.classList.add('js-nav');
     let isOpen = false;
 
     const brand = nav.querySelector<HTMLAnchorElement>('.nav-brand');

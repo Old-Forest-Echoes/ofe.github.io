@@ -279,9 +279,13 @@ p {
     height: 50px;
   }
 
-  .nav-links {
+  /* Without JS (.js-nav not added), nav-links stays a visible flex row (noscript fallback).
+     With JS, it becomes a full-screen overlay hidden until .nav-open is toggled.
+     Explicit height needed because position:sticky on .nav constrains fixed children. */
+  .js-nav .nav-links {
     position: fixed;
     inset: 0;
+    height: 100dvh;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -297,13 +301,18 @@ p {
     font-size: 1.5rem;
   }
 
-  .nav.nav-open .nav-links {
+  .js-nav.nav-open .nav-links {
     opacity: 1;
     visibility: visible;
   }
 
-  .nav.nav-open .nav-toggle {
+  .js-nav.nav-open .nav-toggle {
     z-index: 201;
+  }
+
+  /* noscript: wrap nav links and hide toggle */
+  .nav-links {
+    flex-wrap: wrap;
   }
 }
 
@@ -405,11 +414,12 @@ p {
 }
 
 .event-list li {
+  display: grid;
+  grid-template-columns: auto 1fr;
   padding-block: 0.35rem;
 }
 
 .event-date {
-  display: inline-block;
   min-width: 5em;
   color: var(--color-gold-muted);
 }

@@ -143,11 +143,13 @@ function formatDate(dateStr: string, endDateStr?: string): string {
           <time class="event-date" datetime={event.date}>
             {formatDate(event.date, event.endDate)}
           </time>
-          {event.description && <Fragment>{event.description}{event.location ? ', ' : ''}</Fragment>}{event.location && (
-            event.locationLanguage
-              ? <span lang={event.locationLanguage}>{event.location}</span>
-              : <Fragment>{event.location}</Fragment>
-          )}, {event.country}
+          <span class="event-info">
+            {event.description && <Fragment>{event.description}{event.location ? ', ' : ''}</Fragment>}{event.location && (
+              event.locationLanguage
+                ? <span lang={event.locationLanguage}>{event.location}</span>
+                : <Fragment>{event.location}</Fragment>
+            )}, {event.country}
+          </span>
         </li>
       ))}
     </ul>
