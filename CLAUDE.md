@@ -5,7 +5,6 @@ Website for Old Forest Echoes (Ikimetsän kaiku), a music and nature conservatio
 ## Commands
 
 ```bash
-cd v2
 nvm use             # Required — reads .nvmrc to select Node version
 npm run dev         # Dev server at localhost:4321
 npm run build       # Production build to dist/
@@ -25,7 +24,6 @@ npm run preview     # Preview production build
 ## Project Structure
 
 ```
-v2/
 ├── astro.config.mjs              # Site config, sitemap with git-based lastmod
 ├── src/
 │   ├── layouts/Base.astro        # HTML shell, SEO meta, OG tags, responsive bg
@@ -49,7 +47,7 @@ v2/
 ├── public/
 │   ├── fonts/                    # Leonetta-Serif.woff2, Spectral-{Light,Regular}.woff2
 │   ├── icons/                    # facebook.svg, instagram.svg, youtube.svg, linktree.svg
-│   ├── images/og-image.webp      # OG image for social sharing
+│   ├── images/og-image*.webp     # OG images for social sharing
 │   ├── logo.svg                  # SVG logo (also used as favicon)
 │   ├── apple-touch-icon.png      # 180x180 iOS icon
 │   ├── robots.txt
