@@ -11,11 +11,12 @@ const links = [
 
 <nav class="nav" aria-label="Main">
   <div class="container">
-    <a href="/" class="nav-brand">
+    <a href="/" class="nav-brand" aria-label="Old Forest Echoes — Home">
       <img src="/logo.svg" alt="" class="nav-logo" width="80" height="80" />
       <span class="nav-title">Old Forest Echoes</span>
     </a>
     <button class="nav-toggle" aria-controls="nav-menu" aria-expanded="false" type="button">Menu</button>
+    <noscript><style>.nav-links{position:static!important;opacity:1!important;visibility:visible!important;background-color:transparent!important;flex-wrap:wrap!important}</style></noscript>
     <ul id="nav-menu" class="nav-links">
       {links.map(({ href, label }) => (
         <li>
@@ -29,14 +30,14 @@ const links = [
 </nav>
 
 <script>
-  const nav = document.querySelector('.nav') as HTMLElement;
-  const toggle = document.querySelector('.nav-toggle') as HTMLButtonElement;
-  const menu = document.getElementById('nav-menu') as HTMLUListElement;
+  const nav = document.querySelector<HTMLElement>('.nav');
+  const toggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
+  const menu = document.getElementById('nav-menu');
 
   if (nav && toggle && menu) {
     let isOpen = false;
 
-    const brand = nav.querySelector('.nav-brand') as HTMLAnchorElement | null;
+    const brand = nav.querySelector<HTMLAnchorElement>('.nav-brand');
     const mainContent = document.getElementById('main-content');
     const footer = document.querySelector('.footer');
 
@@ -91,10 +92,15 @@ const links = [
     // Trap focus back into menu from toggle button
     toggle.addEventListener('keydown', (e) => {
       if (!isOpen || e.key !== 'Tab') return;
-      if (e.shiftKey) return;
-      e.preventDefault();
-      const firstLink = menu.querySelector('a');
-      firstLink?.focus();
+      if (e.shiftKey) {
+        e.preventDefault();
+        const links = menu.querySelectorAll('a');
+        links[links.length - 1]?.focus();
+      } else {
+        e.preventDefault();
+        const firstLink = menu.querySelector('a');
+        firstLink?.focus();
+      }
     });
   }
 </script>

@@ -18,7 +18,7 @@ npm run preview     # Preview production build
 - **Single CSS file** (`src/styles/global.css`) — all styling, ~5KB, CSS custom properties
 - **Self-hosted fonts** — Leonetta Serif (WOFF2) + Montserrat (WOFF2 variable), no Google Fonts
 - **Content Collections** for artists (Markdown with Zod schema)
-- **JSON data** for events (`src/data/events-2026.json`)
+- **Typed inline data** for events (in `src/pages/events.astro`)
 - **Astro Image pipeline** for all images (responsive WebP srcsets)
 - **YouTube lite facade** — thumbnail + play button, iframe only on click
 
@@ -41,8 +41,8 @@ v2/
 │   │   ├── events.astro          # Event calendar + MusicEvent schemas (inline data)
 │   │   └── 404.astro             # Custom 404 (noindex)
 │   ├── content/
-│   │   ├── config.ts             # Zod schema: name, role, order, image
 │   │   └── artists/*.md          # 6 artist bios with frontmatter
+│   ├── content.config.ts         # Zod schema: name, role, order, image
 │   ├── data/social-links.ts      # Social media links (shared by Footer + index)
 │   ├── assets/images/            # Source images (processed by Astro)
 │   └── styles/global.css         # Single stylesheet
@@ -74,9 +74,15 @@ Body is Markdown prose. Images are auto-optimized to WebP with responsive srcset
 ### Events
 Edit the `events` array in `src/pages/events.astro`. Each entry is typed as `EventEntry`:
 ```ts
-{ date: "2026-03-06", venue: "Sipoo", country: "Finland" }
-{ date: "2026-05-23", endDate: "2026-05-24", venue: "Festival Name", country: "Finland" }
+{ date: "2026-03-06", location: "Sipoo", locationLanguage: "fi", country: "Finland" }
+{ date: "2026-05-23", endDate: "2026-05-24", description: "Garden Festival", location: "Koroinen", locationLanguage: "fi", country: "Finland" }
+{ date: "2026-08-08", endDate: "2026-08-09", description: "Norpas festival", country: "Finland" }
 ```
+- `description` (optional): English venue/event name — rendered without a `lang` attribute
+- `location` (optional): Local-language place name — wrapped in `<span lang>` using `locationLanguage`
+- `locationLanguage` (optional): BCP 47 language tag for the `location` field (e.g. `"fi"`, `"cs"`, `"de"`)
+- At least one of `description` or `location` is required per event
+
 Dates must be ISO `YYYY-MM-DD` format (validated at build time). Past events are automatically dimmed (build-time + client-side check). Past events are excluded from JSON-LD structured data. A daily GitHub Actions cron rebuild keeps this current.
 
 ### Adding a new artist
@@ -91,7 +97,7 @@ Dates must be ISO `YYYY-MM-DD` format (validated at build time). Past events are
 - **Images in `src/assets/`**: Processed by Astro (responsive WebP). Use for content images.
 - **Images in `public/`**: Served as-is. Use for icons, logos, OG images.
 - **External links**: Always use `target="_blank" rel="noopener noreferrer"`.
-- **Finnish text**: Wrap in `<span lang="fi">` for screen reader pronunciation.
+- **Non-English text**: Wrap in `<span lang="xx">` for screen reader pronunciation (e.g. `fi`, `cs`, `de`). Events use per-entry `locationLanguage`.
 - **No inline styles** except on the 404 page.
 - **Semantic HTML**: `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>`, `<time>`.
 - **Accessibility**: Skip link, ARIA attributes on nav toggle, focus trapping in mobile menu.
@@ -107,4 +113,4 @@ JSON-LD structured data is added per-page:
 
 ## Deployment
 
-GitHub Pages from the `v2/dist/` directory. The CNAME file maps to oldforestechoes.com. Build with `npm run build` in the `v2/` directory.
+GitHub Actions (`.github/workflows/deploy.yml`) builds and deploys to GitHub Pages automatically on push to `master` and daily at 04:00 UTC (to keep past-event styling and structured data current). Manual deploys via `workflow_dispatch`. The CNAME file maps to oldforestechoes.com.

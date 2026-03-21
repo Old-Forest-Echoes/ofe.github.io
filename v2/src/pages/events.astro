@@ -5,47 +5,72 @@ import JsonLd from '../components/JsonLd.astro';
 interface EventEntry {
   date: string;
   endDate?: string;
-  venue: string;
+  description?: string;
+  location?: string;
+  locationLanguage?: string;
   country: string;
 }
 
 const isoDate = /^\d{4}-\d{2}-\d{2}$/;
 
 const events: EventEntry[] = [
-  { date: "2026-03-06", venue: "Sipoo", country: "Finland" },
-  { date: "2026-03-27", venue: "Porvoo", country: "Finland" },
-  { date: "2026-04-11", venue: "Circus Lounge Turku", country: "Finland" },
-  { date: "2026-05-23", endDate: "2026-05-24", venue: "Koroinen, Garden Festival", country: "Finland" },
-  { date: "2026-06-14", venue: "Brno", country: "Czechia" },
-  { date: "2026-06-18", venue: "Praha", country: "Czechia" },
-  { date: "2026-06-20", venue: "Napajedla Solstice Festival", country: "Czechia" },
-  { date: "2026-06-25", venue: "Akcent & Barbora Xu: Lidove Sady, Liberec", country: "Czechia" },
-  { date: "2026-07-01", endDate: "2026-07-12", venue: "Forest Residency, Waldhof Freiburg", country: "Germany" },
-  { date: "2026-07-27", endDate: "2026-07-31", venue: "Festival Folk Holidays Namest nad Oslavou", country: "Czechia" },
-  { date: "2026-08-08", endDate: "2026-08-09", venue: "Norpas festival", country: "Finland" },
-  { date: "2026-08-15", venue: "Aalistunturi Forest concert", country: "Finland" },
-  { date: "2026-08-20", venue: "Paateri church", country: "Finland" },
-  { date: "2026-08-22", venue: "Haarikko Forest concert", country: "Finland" },
-  { date: "2026-08-30", venue: "Stansvik Forest concert", country: "Finland" },
-  { date: "2026-09-05", venue: "Helsinki", country: "Finland" },
-  { date: "2026-09-06", venue: "Turku", country: "Finland" },
-  { date: "2026-09-20", venue: "Waldhof Freiburg", country: "Germany" },
-  { date: "2026-09-23", venue: "Sibelius Museo", country: "Finland" },
+  { date: "2026-03-06", location: "Sipoo", locationLanguage: "fi", country: "Finland" },
+  { date: "2026-03-27", location: "Porvoo", locationLanguage: "fi", country: "Finland" },
+  { date: "2026-04-11", description: "Circus Lounge", location: "Turku", locationLanguage: "fi", country: "Finland" },
+  { date: "2026-05-23", endDate: "2026-05-24", description: "Garden Festival", location: "Koroinen", locationLanguage: "fi", country: "Finland" },
+  { date: "2026-06-14", location: "Brno", locationLanguage: "cs", country: "Czechia" },
+  { date: "2026-06-18", location: "Praha", locationLanguage: "cs", country: "Czechia" },
+  { date: "2026-06-20", description: "Solstice Festival", location: "Napajedla", locationLanguage: "cs", country: "Czechia" },
+  { date: "2026-06-25", description: "Akcent & Barbora Xu", location: "Lidove Sady, Liberec", locationLanguage: "cs", country: "Czechia" },
+  { date: "2026-07-01", endDate: "2026-07-12", description: "Forest Residency", location: "Waldhof Freiburg", locationLanguage: "de", country: "Germany" },
+  { date: "2026-07-27", endDate: "2026-07-31", description: "Festival Folk Holidays", location: "Namest nad Oslavou", locationLanguage: "cs", country: "Czechia" },
+  { date: "2026-08-08", endDate: "2026-08-09", description: "Norpas festival", country: "Finland" },
+  { date: "2026-08-15", description: "Forest concert", location: "Aalistunturi", locationLanguage: "fi", country: "Finland" },
+  { date: "2026-08-20", description: "Paateri church", country: "Finland" },
+  { date: "2026-08-22", description: "Forest concert", location: "Haarikko", locationLanguage: "fi", country: "Finland" },
+  { date: "2026-08-30", description: "Forest concert", location: "Stansvik", locationLanguage: "fi", country: "Finland" },
+  { date: "2026-09-05", location: "Helsinki", locationLanguage: "fi", country: "Finland" },
+  { date: "2026-09-06", location: "Turku", locationLanguage: "fi", country: "Finland" },
+  { date: "2026-09-20", location: "Waldhof Freiburg", locationLanguage: "de", country: "Germany" },
+  { date: "2026-09-23", location: "Sibelius Museo", locationLanguage: "fi", country: "Finland" },
 ];
 
-for (const e of events) {
-  if (!isoDate.test(e.date)) throw new Error(`Invalid date format: ${e.date}`);
-  if (e.endDate && !isoDate.test(e.endDate)) throw new Error(`Invalid endDate format: ${e.endDate}`);
+function venueName(event: EventEntry): string {
+  if (event.description && event.location) return `${event.description}, ${event.location}`;
+  if (event.description) return event.description;
+  if (event.location) return event.location;
+  throw new Error(`Event on ${event.date} has no description or location`);
 }
 
-const countryLangs: Record<string, string> = {
-  Finland: 'fi',
-  Czechia: 'cs',
-  Germany: 'de',
+const countryCodes: Record<string, string> = {
+  Finland: 'FI',
+  Czechia: 'CZ',
+  Germany: 'DE',
 };
 
-const now = new Date();
-const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+for (let i = 0; i < events.length; i++) {
+  const e = events[i];
+  if (!isoDate.test(e.date)) throw new Error(`Invalid date format: ${e.date}`);
+  if (e.endDate && !isoDate.test(e.endDate)) throw new Error(`Invalid endDate format: ${e.endDate}`);
+  if (e.endDate && e.endDate < e.date) throw new Error(`endDate ${e.endDate} is before date ${e.date}`);
+  if (!e.description && !e.location) throw new Error(`Event on ${e.date} must have at least a description or location`);
+  if (e.locationLanguage && !e.location) throw new Error(`Event on ${e.date} has locationLanguage without location`);
+  if (!(e.country in countryCodes)) throw new Error(`Unknown country "${e.country}" on event ${e.date} — add it to countryCodes`);
+  if (i > 0 && e.date < events[i - 1].date) throw new Error(`Events out of chronological order: ${events[i - 1].date} before ${e.date}`);
+}
+
+// UTC date — matches the daily 04:00 UTC cron rebuild and ISO date string comparison
+const today = new Date().toISOString().slice(0, 10);
+
+const eventYears = [...new Set(events.map((e) => e.date.slice(0, 4)))].sort();
+
+function formatYearRange(years: string[]): string {
+  if (years.length === 0) return '';
+  if (years.length === 1) return years[0];
+  return `${years[0]}–${years[years.length - 1]}`;
+}
+
+const calendarYear = formatYearRange(eventYears);
 
 function isPast(event: EventEntry): boolean {
   return (event.endDate || event.date) < today;
@@ -53,34 +78,41 @@ function isPast(event: EventEntry): boolean {
 
 const upcomingEvents = events.filter((event) => !isPast(event));
 
-const eventSchemas = upcomingEvents.map((event) => ({
-  '@context': 'https://schema.org',
-  '@type': 'MusicEvent',
-  name: `Old Forest Echoes — ${event.venue}`,
-  description: `Live performance by Barbora Xu at ${event.venue}, ${event.country}.`,
-  image: 'https://oldforestechoes.com/images/og-image.webp',
-  startDate: event.date,
-  endDate: event.endDate || event.date,
-  eventStatus: 'https://schema.org/EventScheduled',
-  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-  location: {
-    '@type': 'Place',
-    name: event.venue,
-    address: {
-      '@type': 'PostalAddress',
-      addressCountry: event.country,
+const siteUrl = Astro.site;
+if (!siteUrl) throw new Error('Astro.site must be configured in astro.config.mjs');
+
+const eventSchemas = upcomingEvents.map((event) => {
+  const venue = venueName(event);
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'MusicEvent',
+    name: `Old Forest Echoes — ${venue}`,
+    description: `Live performance by Barbora Xu at ${venue}, ${event.country}.`,
+    image: new URL('/images/og-image.webp', siteUrl).href,
+    url: new URL('/events/#calendar', siteUrl).href,
+    startDate: event.date,
+    ...(event.endDate ? { endDate: event.endDate } : {}),
+    eventStatus: 'https://schema.org/EventScheduled',
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    location: {
+      '@type': 'Place',
+      name: venue,
+      address: {
+        '@type': 'PostalAddress',
+        addressCountry: countryCodes[event.country],
+      },
     },
-  },
-  performer: {
-    '@type': 'Person',
-    name: 'Barbora Xu',
-  },
-  organizer: {
-    '@type': 'Organization',
-    name: 'Old Forest Echoes',
-    url: 'https://oldforestechoes.com',
-  },
-}));
+    performer: {
+      '@type': 'Person',
+      name: 'Barbora Xu',
+    },
+    organizer: {
+      '@type': 'Organization',
+      name: 'Old Forest Echoes',
+      url: siteUrl.href,
+    },
+  };
+});
 
 function parseDayMonth(s: string) {
   const [, m, d] = s.split('-');
@@ -100,28 +132,29 @@ function formatDate(dateStr: string, endDateStr?: string): string {
 }
 ---
 
-<Base title="Events — Old Forest Echoes" description="Old Forest Echoes 2026 event calendar: forest concerts, venue performances, and workshops across Finland, Czechia, and Germany.">
+<Base title="Events — Old Forest Echoes" description={`Old Forest Echoes ${calendarYear} event calendar: forest concerts, venue performances, and workshops across Finland, Czechia, and Germany.`}>
   {eventSchemas.map((schema) => <JsonLd data={schema} />)}
-  <section class="section" id="calendar">
-    <h1>Events</h1>
-    <h2>Event Calendar 2026</h2>
-    <ul class="event-list">
+  <section class="section" id="calendar" aria-labelledby="calendar-heading">
+    <h1 id="calendar-heading">Events</h1>
+    <h2 class="calendar-subtitle">Event Calendar {calendarYear}</h2>
+    <ul class="event-list" role="list">
       {events.map((event) => (
-        <li class={isPast(event) ? 'event-past' : ''} data-end={event.endDate || event.date}>
+        <li class:list={[{ 'event-past': isPast(event) }]} data-end={event.endDate || event.date}>
           <time class="event-date" datetime={event.date}>
             {formatDate(event.date, event.endDate)}
           </time>
-          {event.endDate && <time datetime={event.endDate} class="sr-only">to {formatDate(event.endDate)}</time>}
-          {countryLangs[event.country]
-            ? <span lang={countryLangs[event.country]}>{event.venue}</span>
-            : event.venue}, {event.country}
+          {event.description && <Fragment>{event.description}{event.location ? ', ' : ''}</Fragment>}{event.location && (
+            event.locationLanguage
+              ? <span lang={event.locationLanguage}>{event.location}</span>
+              : <Fragment>{event.location}</Fragment>
+          )}, {event.country}
         </li>
       ))}
     </ul>
   </section>
 
-  <section class="section" id="forest">
-    <h2>Forest Concerts</h2>
+  <section class="section" id="forest" aria-labelledby="forest-heading">
+    <h2 id="forest-heading">Forest Concerts</h2>
     <div class="prose">
       <p>After composing music in the threatened old growth forests, Barbora holds a limited number of concerts in those very places.</p>
       <p>A forest concert consists of a nature walk and a concert. The forest path to the concert stage is marked with land art created by a renowned international artist Wiebke Pandikow, who creates visual art using local materials. The land art, as it is created using natural materials exclusively, will be left in the forest to degrade with the rhythm of seasons and become a part of the local landscape.</p>
@@ -131,8 +164,8 @@ function formatDate(dateStr: string, endDateStr?: string): string {
     </div>
   </section>
 
-  <section class="section" id="venue">
-    <h2>Venue Concerts</h2>
+  <section class="section" id="venue" aria-labelledby="venue-heading">
+    <h2 id="venue-heading">Venue Concerts</h2>
     <div class="prose">
       <p>While forest concerts are unique and offer a direct connection for people in nature, our mission is to bring the essence of these stunning areas inspiring our work to audiences in urban settings as well. The venue concerts are our tool to do that and are catered to fit the particular venues, festivals, events.</p>
       <p>Venue concert is a music performance on a stage, using soundscape recordings and projections to complement the music itself and to deepen the multisensory experience of the audience. The concert sound is set into a surround sound system, which is designated to provide immersive experience for the audience. In this set up, the soundscapes come from all directions and the music comes from the direction of the performer.</p>
@@ -141,8 +174,8 @@ function formatDate(dateStr: string, endDateStr?: string): string {
     </div>
   </section>
 
-  <section class="section" id="workshops">
-    <h2>Workshops</h2>
+  <section class="section" id="workshops" aria-labelledby="workshops-heading">
+    <h2 id="workshops-heading">Workshops</h2>
     <div class="prose">
       <p>As our forest concerts include an interactive walk through the old growth forest to the forest venue, we also offer a direct forest music workshop experience for people who are interested in music making, the forest and want to learn more about the forest composition methods. We provide workshops for music school students and also for wider public at festivals, venues and events.</p>
       <p>The workshops include a guided tour in the forest by a forest expert and a music composition workshop held by the main artist and composer, Barbora Silhanova. The work we do together focuses on offering new perspectives on nature as a place of inspiration, connection, musicality of common sounds and recording of sound for music making. The event includes a short music performance by Barbora.</p>
@@ -151,8 +184,8 @@ function formatDate(dateStr: string, endDateStr?: string): string {
   </section>
 
   <script>
-    const now = new Date();
-    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    // UTC date intentionally matches build-time check and daily 04:00 UTC cron rebuild
+    const today = new Date().toISOString().slice(0, 10);
     document.querySelectorAll<HTMLElement>('.event-list li[data-end]').forEach((li) => {
       const end = li.dataset.end ?? '';
       if (end < today) li.classList.add('event-past');

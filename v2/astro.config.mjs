@@ -1,8 +1,9 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import { execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
-const cwd = new URL('.', import.meta.url).pathname;
+const cwd = fileURLToPath(new URL('.', import.meta.url));
 
 function getLastCommitDate(filePath) {
   try {

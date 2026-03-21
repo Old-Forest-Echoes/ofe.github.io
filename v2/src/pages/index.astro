@@ -6,13 +6,19 @@ import JsonLd from '../components/JsonLd.astro';
 import ytThumb from '../assets/images/youtube-thumbnail.jpg';
 import { socialLinks } from '../data/social-links';
 
+const siteUrl = Astro.site;
+if (!siteUrl) throw new Error('Astro.site must be configured in astro.config.mjs');
+
 const orgSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'Old Forest Echoes',
   alternateName: 'Ikimetsän kaiku',
-  url: 'https://oldforestechoes.com',
-  logo: 'https://oldforestechoes.com/logo.svg',
+  url: siteUrl.href,
+  logo: {
+    '@type': 'ImageObject',
+    url: new URL('/logo.svg', siteUrl).href,
+  },
   description: 'Music and art composed in Finnish old growth forests, aspiring to raise awareness and protect threatened forests.',
   email: 'info@oldforestechoes.com',
   sameAs: socialLinks.map(({ href }) => href),

@@ -3,29 +3,30 @@ import Base from '../layouts/Base.astro';
 import Contact from '../components/Contact.astro';
 import JsonLd from '../components/JsonLd.astro';
 import { getCollection, render } from 'astro:content';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 
 const allArtists = await getCollection('artists');
 const sorted = [...allArtists].sort((a, b) => a.data.order - b.data.order);
 
 const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/*.{jpg,jpeg,png,webp}', { eager: true });
 
-const roleLabels: Record<string, string> = {
+const roleLabels = {
   music: 'Music',
   featured: 'Featured Artists',
   'land-art': 'Land Art',
   soundscapes: 'Soundscapes',
-};
+} as const;
 
-const roles = ['music', 'featured', 'land-art', 'soundscapes'] as const;
+type Role = keyof typeof roleLabels;
+const roles = Object.keys(roleLabels) as Role[];
 
 const ensembleImg = images['/src/assets/images/ensemble.jpg'];
 
-const roleIntros: Record<string, string> = {
+const roleIntros: Partial<Record<Role, string>> = {
   featured: 'Except for live improvisations recorded during Barbora\u2019s stay in the forests, a number of acknowledged artists come onto the project as guests. Among others, a world known jazz guitarist Niklas Winter, Czech folk violinist Petra Jelénková, kantele player Jenni Venäläinen.',
 };
 
-const roleJobTitles: Record<string, string> = {
+const roleJobTitles: Record<Role, string> = {
   music: 'Musician',
   featured: 'Musician',
   'land-art': 'Visual Artist',
@@ -40,23 +41,33 @@ const rendered = await Promise.all(
 );
 
 const artistNames = sorted.map((a) => a.data.name);
-const artistDescription = artistNames.length > 1
-  ? `Meet the artists of Old Forest Echoes: ${artistNames.slice(0, -1).join(', ')}, and ${artistNames[artistNames.length - 1]}.`
-  : artistNames.length === 1
-    ? `Meet ${artistNames[0]}, artist of Old Forest Echoes.`
-    : 'Meet the artists of Old Forest Echoes.';
+const formatter = new Intl.ListFormat('en', { style: 'long', type: 'conjunction' });
+const artistDescription = artistNames.length > 0
+  ? `Meet the artists of Old Forest Echoes: ${formatter.format(artistNames)}.`
+  : 'Meet the artists of Old Forest Echoes.';
 
-const personSchemas = sorted.map((artist) => ({
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: artist.data.name,
-  url: `https://oldforestechoes.com/artists/#${artist.id}`,
-  jobTitle: roleJobTitles[artist.data.role] || 'Artist',
-  memberOf: {
-    '@type': 'Organization',
-    name: 'Old Forest Echoes',
-  },
-}));
+const siteUrl = Astro.site;
+if (!siteUrl) throw new Error('Astro.site must be configured in astro.config.mjs');
+
+const personSchemas = await Promise.all(
+  sorted.map(async (artist) => {
+    const imgPath = `/src/assets/images/${artist.data.image}`;
+    const img = images[imgPath];
+    const resolved = img ? await getImage({ src: img.default, width: 800, format: 'webp' }) : null;
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: artist.data.name,
+      url: new URL(`/artists/#${artist.id}`, siteUrl).href,
+      jobTitle: roleJobTitles[artist.data.role],
+      ...(resolved ? { image: new URL(resolved.src, siteUrl).href } : {}),
+      memberOf: {
+        '@type': 'Organization',
+        name: 'Old Forest Echoes',
+      },
+    };
+  })
+);
 ---
 
 <Base title="Artists — Old Forest Echoes" description={artistDescription}>
@@ -72,8 +83,8 @@ const personSchemas = sorted.map((artist) => ({
     const group = rendered.filter(({ artist }) => artist.data.role === role);
     if (group.length === 0) return null;
     return (
-      <section class="section" id={role}>
-        <h2>{roleLabels[role]}</h2>
+      <section class="section" id={role} aria-labelledby={`${role}-heading`}>
+        <h2 id={`${role}-heading`}>{roleLabels[role]}</h2>
         {role === 'featured' && ensembleImg && (
           <div class="artist-card">
             <Image src={ensembleImg.default} alt="Old Forest Echoes ensemble" widths={[500, 800, 1080, 1600]} sizes="(max-width: 768px) 100vw, 70vw" loading="lazy" />
@@ -87,12 +98,13 @@ const personSchemas = sorted.map((artist) => ({
         {group.map(({ artist, Content }) => {
           const imgPath = `/src/assets/images/${artist.data.image}`;
           const img = images[imgPath];
+          if (!img) console.warn(`Missing image for artist "${artist.data.name}": ${imgPath}`);
           return (
-            <article class="artist-card" id={artist.id}>
+            <article class="artist-card" id={artist.id} aria-labelledby={`artist-${artist.id}`}>
               {img && (
                 <Image src={img.default} alt={artist.data.name} widths={[500, 800, 1080]} sizes="(max-width: 768px) 100vw, 70vw" loading="lazy" />
               )}
-              <h3>{artist.data.name}</h3>
+              <h3 id={`artist-${artist.id}`}>{artist.data.name}</h3>
               <div class="prose">
                 <Content />
               </div>

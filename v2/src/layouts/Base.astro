@@ -36,40 +36,43 @@ const bgLarge = await getImage({ src: forestBgSrc, width: 1920, format: 'webp' }
   <title>{title}</title>
   <meta name="description" content={description} />
   {noindex && <meta name="robots" content="noindex, nofollow" />}
-  <link rel="canonical" href={canonicalURL} />
+  {!noindex && <link rel="canonical" href={canonicalURL} />}
   <meta name="theme-color" content="#0a0a08" />
   <link rel="icon" href="/logo.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="sitemap" href="/sitemap-index.xml" />
 
-  <!-- Open Graph -->
+  {/* Open Graph */}
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="en_US" />
-  <meta property="og:url" content={canonicalURL} />
+  {!noindex && <meta property="og:url" content={canonicalURL} />}
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:image" content={new URL(ogImage, Astro.site)} />
   <meta property="og:image:width" content="1334" />
   <meta property="og:image:height" content="2000" />
+  <meta property="og:image:type" content="image/webp" />
   <meta property="og:image:alt" content={ogImageAlt} />
   <meta property="og:site_name" content="Old Forest Echoes" />
 
-  <!-- Twitter Card -->
+  {/* Twitter Card */}
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
   <meta name="twitter:image:alt" content={ogImageAlt} />
 
-  <!-- Fonts (self-hosted, no third-party requests) -->
+  {/* Fonts (self-hosted, no third-party requests) */}
   <link rel="preload" href="/fonts/Leonetta-Serif.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/fonts/Montserrat.woff2" as="font" type="font/woff2" crossorigin />
 
-  <!-- Preload LCP background image per viewport -->
+  {/* Preload LCP background image per viewport */}
   <link rel="preload" href={bgSmall.src} as="image" type="image/webp" media="(max-width: 640px)" fetchpriority="high" />
   <link rel="preload" href={bgMedium.src} as="image" type="image/webp" media="(min-width: 641px) and (max-width: 1024px)" fetchpriority="high" />
   <link rel="preload" href={bgLarge.src} as="image" type="image/webp" media="(min-width: 1025px)" fetchpriority="high" />
 
+  {/* set:html is needed because Astro <style> blocks don't support variable interpolation.
+     Values are build-time image paths from Astro's asset pipeline — not user input, so no XSS risk. */}
   <style set:html={`
     .page-background { background-image: url(${bgSmall.src}); }
     @media (min-width: 641px) { .page-background { background-image: url(${bgMedium.src}); } }

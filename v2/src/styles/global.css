@@ -17,6 +17,7 @@
 
 /* === Custom Properties === */
 :root {
+  color-scheme: dark;
   --color-bg: #0a0a08;
   --color-gold: #ffe694;
   --color-gold-muted: rgba(255, 230, 148, 0.7);
@@ -30,6 +31,8 @@
   --color-shadow-card: rgba(255, 255, 255, 0.11);
   --color-shadow-video: rgba(13, 7, 3, 0.88);
   --color-shadow-text: #000;
+  --color-past-text: rgba(255, 255, 255, 0.5);
+  --color-past-date: rgba(255, 230, 148, 0.45);
 
   --font-display: 'Leonetta Serif', 'Palatino Linotype', serif;
   --font-body: 'Montserrat', sans-serif;
@@ -161,15 +164,15 @@ h1 {
   margin-bottom: 1.5rem;
 }
 
-h1 + h2 {
-  margin-top: 0.5rem;
-}
-
 h2 {
   font-size: clamp(1.5rem, 3vw, 2.5rem);
   color: var(--color-gold);
   text-align: center;
   margin-block: 2rem 1.5rem;
+}
+
+.calendar-subtitle {
+  margin-top: 0.5rem;
 }
 
 h3 {
@@ -254,7 +257,7 @@ p {
   border: none;
   color: var(--color-text);
   font-family: inherit;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   letter-spacing: 2px;
   text-transform: uppercase;
   cursor: pointer;
@@ -279,7 +282,6 @@ p {
   .nav-links {
     position: fixed;
     inset: 0;
-    height: 100dvh;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -339,7 +341,7 @@ p {
 /* === Video embed === */
 .video-embed {
   position: relative;
-  padding-top: 56.25%;
+  aspect-ratio: 16 / 9;
   margin-bottom: 2rem;
   background-color: var(--color-bg);
   border-radius: 4px;
@@ -413,7 +415,11 @@ p {
 }
 
 .event-past {
-  opacity: 0.5;
+  color: var(--color-past-text);
+}
+
+.event-past .event-date {
+  color: var(--color-past-date);
 }
 
 /* === Contact === */
@@ -487,4 +493,16 @@ p {
 
 .prose a:hover {
   color: var(--color-text);
+}
+
+/* === Reduced motion === */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

@@ -6,12 +6,12 @@ const artists = defineCollection({
   schema: z.object({
     name: z.string(),
     role: z.enum(["music", "featured", "land-art", "soundscapes"]),
-    order: z.number(),
+    order: z.number().int().positive(),
     image: z
       .string()
       .regex(
-        /\.(jpg|jpeg|png|webp)$/,
-        "Must be a .jpg, .jpeg, .png, or .webp filename",
+        /^[a-zA-Z0-9._-]+\.(jpg|jpeg|png|webp)$/,
+        "Must be a safe filename ending in .jpg, .jpeg, .png, or .webp",
       ),
   }),
 });
