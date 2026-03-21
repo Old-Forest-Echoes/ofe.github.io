@@ -304,7 +304,7 @@ p {
   position: relative;
   padding-top: 56.25%;
   margin-bottom: 2rem;
-  background-color: var(--color-gold-faint);
+  background-color: var(--color-bg);
   border-radius: 4px;
   overflow: hidden;
   box-shadow: 1px 1px 3px 3px rgba(13, 7, 3, 0.88);
@@ -316,6 +316,38 @@ p {
   width: 100%;
   height: 100%;
   border: none;
+}
+
+.video-facade {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.video-facade img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 68px;
+  height: 48px;
+  transform: translate(-50%, -50%);
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.video-facade:hover .video-play {
+  opacity: 1;
 }
 
 /* === Event calendar === */
