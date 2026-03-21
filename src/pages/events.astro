@@ -115,21 +115,20 @@ const eventSchemas = upcomingEvents.map((event) => {
   };
 });
 
-function parseDayMonth(s: string) {
-  const [, m, d] = s.split('-');
-  return { day: Number(d), month: Number(m) };
-}
+const dateFormatShort = new Intl.DateTimeFormat('fi', { month: 'numeric', day: 'numeric', timeZone: 'UTC' });
 
 function formatDate(dateStr: string, endDateStr?: string): string {
-  const { day, month } = parseDayMonth(dateStr);
+  const start = new Date(dateStr + 'T00:00:00Z');
   if (endDateStr) {
-    const end = parseDayMonth(endDateStr);
-    if (month === end.month) {
-      return `${day}.–${end.day}.${month}.`;
+    const end = new Date(endDateStr + 'T00:00:00Z');
+    const startMonth = start.getUTCMonth();
+    const endMonth = end.getUTCMonth();
+    if (startMonth === endMonth) {
+      return `${start.getUTCDate()}–${dateFormatShort.format(end)}`;
     }
-    return `${day}.${month}.–${end.day}.${end.month}.`;
+    return `${dateFormatShort.format(start)}–${dateFormatShort.format(end)}`;
   }
-  return `${day}.${month}.`;
+  return dateFormatShort.format(start);
 }
 
 const dateFormatLong = new Intl.DateTimeFormat('en', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
