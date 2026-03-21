@@ -62,21 +62,11 @@ const bgLarge = await getImage({ src: forestBgSrc, width: 1920, format: 'webp' }
   <!-- Preload LCP background image (medium size for most viewports) -->
   <link rel="preload" href={bgMedium.src} as="image" type="image/webp" fetchpriority="high" />
 
-  <style define:vars={{ bgSmall: `url(${bgSmall.src})`, bgMedium: `url(${bgMedium.src})`, bgLarge: `url(${bgLarge.src})` }}>
-    .page-background {
-      background-image: var(--bgSmall);
-    }
-    @media (min-width: 641px) {
-      .page-background {
-        background-image: var(--bgMedium);
-      }
-    }
-    @media (min-width: 1025px) {
-      .page-background {
-        background-image: var(--bgLarge);
-      }
-    }
-  </style>
+  <style set:html={`
+    .page-background { background-image: url(${bgSmall.src}); }
+    @media (min-width: 641px) { .page-background { background-image: url(${bgMedium.src}); } }
+    @media (min-width: 1025px) { .page-background { background-image: url(${bgLarge.src}); } }
+  `} />
 </head>
 <body>
   <div class="page-background"></div>
