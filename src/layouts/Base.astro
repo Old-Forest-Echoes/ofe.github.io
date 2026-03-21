@@ -9,6 +9,8 @@ interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  ogImageWidth?: number;
+  ogImageHeight?: number;
   ogImageAlt?: string;
   noindex?: boolean;
 }
@@ -17,6 +19,8 @@ const {
   title = 'Old Forest Echoes',
   description = 'Music and art composed in Finnish old growth forests by Barbora Xu, aspiring to raise awareness and protect threatened forests.',
   ogImage = '/images/og-image-landscape.webp',
+  ogImageWidth = 1200,
+  ogImageHeight = 630,
   ogImageAlt = 'Old Forest Echoes — music composed in Finnish old growth forests',
   noindex = false,
 } = Astro.props;
@@ -50,8 +54,8 @@ const bgLarge = await getImage({ src: forestBgSrc, width: 1920, format: 'webp' }
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:image" content={new URL(ogImage, Astro.site)} />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
+  <meta property="og:image:width" content={String(ogImageWidth)} />
+  <meta property="og:image:height" content={String(ogImageHeight)} />
   <meta property="og:image:type" content="image/webp" />
   <meta property="og:image:alt" content={ogImageAlt} />
   <meta property="og:site_name" content="Old Forest Echoes" />
@@ -66,7 +70,7 @@ const bgLarge = await getImage({ src: forestBgSrc, width: 1920, format: 'webp' }
   {/* Fonts (self-hosted, no third-party requests) */}
   <link rel="preload" href="/fonts/Leonetta-Serif.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/fonts/Spectral-Light.woff2" as="font" type="font/woff2" crossorigin />
-
+  <link rel="preload" href="/fonts/Spectral-Regular.woff2" as="font" type="font/woff2" crossorigin />
 
   {/* Preload LCP background image per viewport */}
   <link rel="preload" href={bgSmall.src} as="image" type="image/webp" media="(max-width: 640px)" fetchpriority="high" />

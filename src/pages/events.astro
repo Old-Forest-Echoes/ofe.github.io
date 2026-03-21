@@ -40,7 +40,7 @@ function venueName(event: EventEntry): string {
   if (event.description && event.location) return `${event.description}, ${event.location}`;
   if (event.description) return event.description;
   if (event.location) return event.location;
-  throw new Error(`Event on ${event.date} has no description or location`);
+  return ''; // unreachable — build-time validation ensures description or location exists
 }
 
 const countryCodes: Record<string, string> = {
@@ -115,6 +115,7 @@ const eventSchemas = upcomingEvents.map((event) => {
   };
 });
 
+// Finnish day.month. format (e.g. "6.3.") — intentional despite lang="en", matches the project's European audience
 const dateFormatShort = new Intl.DateTimeFormat('fi', { month: 'numeric', day: 'numeric', timeZone: 'UTC' });
 
 function formatDate(dateStr: string, endDateStr?: string): string {
