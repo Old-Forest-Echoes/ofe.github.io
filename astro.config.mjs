@@ -43,6 +43,7 @@ export default defineConfig({
   trailingSlash: 'always',
   integrations: [
     sitemap({
+      filter: (page) => !page.includes('/404'),
       serialize(item) {
         const path = new URL(item.url).pathname;
         const lastmod = lastmodMap[path];

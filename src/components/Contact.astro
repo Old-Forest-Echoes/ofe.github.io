@@ -5,17 +5,17 @@ function obfuscate(email: string): string {
 
 const contacts = [
   { title: 'General Inquiries', name: 'Carly Markkanen', email: 'info@oldforestechoes.com' },
-  { title: 'Director', name: 'Barbora Silhanova', email: 'barbora@oldforestechoes.com' },
+  { title: 'Director', name: 'Barbora Šilhánová', nameHtml: '<span lang="cs">Barbora Šilhánová</span>', email: 'barbora@oldforestechoes.com' },
 ];
 ---
 
 <section class="section" aria-labelledby="contact-heading">
   <h2 id="contact-heading" class="sr-only">Contact</h2>
   <div class="contact-grid">
-    {contacts.map(({ title, name, email }) => (
+    {contacts.map(({ title, name, nameHtml, email }) => (
       <p>
         <strong>{title}</strong><br />
-        {name}<br />
+        {nameHtml ? <Fragment set:html={nameHtml} /> : name}<br />
         <Fragment set:html={`<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;${obfuscate(email)}">${obfuscate(email)}</a>`} />
       </p>
     ))}

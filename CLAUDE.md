@@ -47,7 +47,7 @@ npm run preview     # Preview production build
 ├── public/
 │   ├── fonts/                    # Leonetta-Serif.woff2, Spectral-{Light,Regular}.woff2
 │   ├── icons/                    # facebook.svg, instagram.svg, youtube.svg, linktree.svg
-│   ├── images/og-image*.webp     # OG images for social sharing
+│   ├── images/og-image-landscape.webp  # OG image for social sharing (1200x630)
 │   ├── logo.svg                  # SVG logo (also used as favicon)
 │   ├── apple-touch-icon.png      # 180x180 iOS icon
 │   ├── robots.txt

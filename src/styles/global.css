@@ -123,8 +123,10 @@ a:focus-visible {
   border-radius: 0 0 4px 4px;
 }
 
+.skip-link:hover,
 .skip-link:focus-visible {
   top: 0;
+  color: var(--color-bg);
   outline: 2px solid var(--color-bg);
   outline-offset: 2px;
 }
@@ -203,6 +205,10 @@ p {
   -webkit-backdrop-filter: blur(10px);
 }
 
+body:has(.nav-open) {
+  overflow: hidden;
+}
+
 .nav .container {
   display: flex;
   align-items: center;
@@ -226,7 +232,6 @@ p {
   font-size: clamp(1rem, 2.5vw, 1.5rem);
   font-weight: normal;
   letter-spacing: 1.5px;
-  margin: 0;
 }
 
 .nav-links {
@@ -242,7 +247,6 @@ p {
   letter-spacing: 2px;
   text-transform: uppercase;
   text-shadow: 0 0 20px var(--color-shadow-text);
-  transition: color 0.2s;
 }
 
 .nav-links a:hover,
@@ -267,6 +271,7 @@ p {
   text-transform: uppercase;
   cursor: pointer;
   padding: 0.5rem;
+  min-width: 44px;
   min-height: 44px;
 }
 
@@ -352,6 +357,10 @@ p {
   box-shadow: 1px 1px 3px 1px var(--color-shadow-card);
 }
 
+.artist-card img:last-child {
+  margin-block-end: 0;
+}
+
 .artist-card .prose {
   max-width: 70ch;
 }
@@ -365,6 +374,13 @@ p {
   border-radius: 4px;
   overflow: hidden;
   box-shadow: 1px 1px 3px 3px var(--color-shadow-video);
+}
+
+.video-embed noscript {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .video-embed iframe {
@@ -403,7 +419,8 @@ p {
   transition: opacity 0.2s;
 }
 
-.video-facade:hover .video-play {
+.video-facade:hover .video-play,
+.video-facade:active .video-play {
   opacity: 1;
 }
 
@@ -441,10 +458,6 @@ p {
   color: var(--color-past-date);
 }
 
-.event-past .event-info {
-  color: var(--color-past-text);
-}
-
 /* === Contact === */
 .contact-grid {
   display: grid;
@@ -478,7 +491,7 @@ p {
   min-width: 44px;
   min-height: 44px;
   opacity: 0.82;
-  transition: opacity 0.2s;
+  transition: opacity 0.2s, color 0.2s;
 }
 
 .footer-socials a:hover,
@@ -507,12 +520,6 @@ strong {
   color: var(--color-gold);
 }
 
-.prose ul,
-.prose ol {
-  margin-block-end: 1em;
-  padding-inline-start: 1.5em;
-}
-
 .prose a {
   color: var(--color-gold);
   text-decoration: underline;
@@ -526,6 +533,16 @@ strong {
 
 /* === Print === */
 @media print {
+  :root {
+    color-scheme: light;
+    --color-gold: black;
+    --color-gold-muted: black;
+    --color-text: black;
+    --color-text-muted: #666;
+    --color-past-text: #666;
+    --color-past-date: #666;
+  }
+
   .page-background,
   .page-overlay,
   .nav,
@@ -536,34 +553,11 @@ strong {
 
   body {
     background: white;
-    color: black;
   }
 
   a {
     color: black;
     text-decoration: underline;
-  }
-
-  h1, h2, h3 {
-    color: black;
-  }
-
-  strong {
-    color: black;
-  }
-
-  .event-date {
-    color: black;
-  }
-
-  .footer-text {
-    color: black;
-  }
-
-  .event-past,
-  .event-past .event-date,
-  .event-past .event-info {
-    color: #666;
   }
 
   .video-embed {
@@ -578,19 +572,32 @@ strong {
     box-shadow: none;
   }
 
-  .contact-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* === Forced colors (Windows High Contrast Mode) === */
 @media (forced-colors: active) {
+  .skip-link {
+    border: 2px solid ButtonText;
+  }
+
   .nav-toggle {
     border: 1px solid ButtonText;
   }
 
+  .artist-card img {
+    border: 1px solid CanvasText;
+  }
+
   .video-facade {
     border: 2px solid ButtonText;
+  }
+
+  .video-play {
+    forced-color-adjust: none;
+  }
+
+  .event-past {
+    text-decoration: line-through;
   }
 }
 
