@@ -8,9 +8,25 @@
 }
 
 @font-face {
-  font-family: 'Montserrat';
-  src: url('/fonts/Montserrat.woff2') format('woff2');
-  font-weight: 300 500;
+  font-family: 'Spectral';
+  src: url('/fonts/Spectral-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Spectral';
+  src: url('/fonts/Spectral-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Spectral';
+  src: url('/fonts/Spectral-Medium.woff2') format('woff2');
+  font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
@@ -35,7 +51,7 @@
   --color-past-date: rgba(255, 230, 148, 0.45);
 
   --font-display: 'Leonetta Serif', 'Palatino Linotype', serif;
-  --font-body: 'Montserrat', sans-serif;
+  --font-body: 'Spectral', 'Georgia', serif;
 
   --max-width: 940px;
   --content-padding: 1rem;
