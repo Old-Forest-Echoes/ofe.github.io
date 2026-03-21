@@ -102,5 +102,11 @@ const links = [
         firstLink?.focus();
       }
     });
+
+    // Close menu if viewport grows past mobile breakpoint (e.g. device rotation)
+    // to prevent inert attributes from persisting on main content
+    window.matchMedia('(min-width: 769px)').addEventListener('change', (e) => {
+      if (e.matches && isOpen) closeMenu();
+    });
   }
 </script>

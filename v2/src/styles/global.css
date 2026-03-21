@@ -289,7 +289,8 @@ p {
 
   /* Without JS (.js-nav not added), nav-links stays a visible flex row (noscript fallback).
      With JS, it becomes a full-screen overlay hidden until .nav-open is toggled.
-     Explicit height needed because position:sticky on .nav constrains fixed children. */
+     Explicit height needed because backdrop-filter on .nav creates a containing block,
+     which constrains fixed-position children — inset:0 alone would size to .nav, not the viewport. */
   .js-nav .nav-links {
     position: fixed;
     inset: 0;

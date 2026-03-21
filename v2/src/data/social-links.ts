@@ -34,7 +34,7 @@ export const socialLinks: SocialLink[] = [
     label: "Linktree",
     icon: "/icons/linktree.svg",
     width: 100,
-    height: 24,
+    height: 20,
     className: "linktree-logo",
   },
 ];
