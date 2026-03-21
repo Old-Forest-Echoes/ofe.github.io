@@ -6,10 +6,16 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check": "astro check"
+  },
+  "engines": {
+    "node": ">=22"
   },
   "dependencies": {
+    "@astrojs/check": "^0.9.8",
     "@astrojs/sitemap": "^3.7.1",
-    "astro": "^6.0.0"
+    "astro": "^6.0.0",
+    "typescript": "^5.9.3"
   }
 }

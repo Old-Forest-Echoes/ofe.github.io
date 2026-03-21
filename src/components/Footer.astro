@@ -7,7 +7,7 @@ import { socialLinks } from '../data/social-links';
     <div class="footer-socials">
       {socialLinks.map(({ href, label, icon, width, height, className }) => (
         <a href={href} aria-label={label} target="_blank" rel="noopener noreferrer">
-          <img src={icon} alt="" class:list={[className]} width={width} height={height} />
+          <img src={icon} alt="" class:list={[className]} width={width} height={height} decoding="async" />
         </a>
       ))}
     </div>

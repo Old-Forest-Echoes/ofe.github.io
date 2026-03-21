@@ -105,7 +105,6 @@ a:focus-visible {
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
   clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
@@ -160,13 +159,14 @@ h1, h2, h3 {
   font-family: var(--font-display);
   font-weight: normal;
   line-height: 1.2;
+  text-wrap: balance;
 }
 
 h1 {
   font-size: clamp(2rem, 5vw, 3.5rem);
   color: var(--color-gold);
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-block-end: 1.5rem;
 }
 
 h2 {
@@ -177,18 +177,18 @@ h2 {
 }
 
 .calendar-subtitle {
-  margin-top: 0.5rem;
+  margin-block-start: 0.5rem;
 }
 
 h3 {
   font-size: clamp(1.2rem, 2vw, 1.5rem);
   color: var(--color-gold);
   text-align: center;
-  margin-bottom: 1rem;
+  margin-block-end: 1rem;
 }
 
 p {
-  margin-bottom: 1em;
+  margin-block-end: 1em;
 }
 
 /* === Nav === */
@@ -319,6 +319,7 @@ p {
   /* noscript: wrap nav links and hide toggle */
   .nav-links {
     flex-wrap: wrap;
+    justify-content: center;
   }
 }
 
@@ -332,7 +333,7 @@ p {
 }
 
 .role-intro {
-  margin-bottom: 2rem;
+  margin-block-end: 2rem;
 }
 
 /* === Artist cards === */
@@ -340,12 +341,12 @@ p {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 3rem;
+  margin-block-end: 3rem;
 }
 
 .artist-card img {
   max-width: min(70%, 660px);
-  margin-bottom: 1.5rem;
+  margin-block-end: 1.5rem;
   box-shadow: 1px 1px 3px 1px var(--color-shadow-card);
 }
 
@@ -357,7 +358,7 @@ p {
 .video-embed {
   position: relative;
   aspect-ratio: 16 / 9;
-  margin-bottom: 2rem;
+  margin-block-end: 2rem;
   background-color: var(--color-bg);
   border-radius: 4px;
   overflow: hidden;
@@ -416,7 +417,7 @@ p {
 /* === Event calendar === */
 .event-list {
   list-style: none;
-  margin-bottom: 2rem;
+  margin-block-end: 2rem;
 }
 
 .event-list li {
@@ -438,6 +439,10 @@ p {
   color: var(--color-past-date);
 }
 
+.event-past .event-info {
+  color: var(--color-past-text);
+}
+
 /* === Contact === */
 .contact-grid {
   display: grid;
@@ -454,14 +459,14 @@ p {
 .footer {
   text-align: center;
   padding-block: 2rem 3rem;
-  margin-top: 4rem;
+  margin-block-start: 4rem;
 }
 
 .footer-socials {
   display: flex;
   justify-content: center;
   gap: 1rem;
-  margin-bottom: 1rem;
+  margin-block-end: 1rem;
 }
 
 .footer-socials a {
@@ -481,6 +486,7 @@ p {
 
 .footer-socials .linktree-logo {
   width: 100px;
+  height: auto;
 }
 
 .footer-text {
@@ -488,16 +494,16 @@ p {
   font-size: 0.85rem;
 }
 
-/* === Prose (markdown content) === */
-.prose strong {
+/* Spectral only ships weights 300 (Light) and 400 (Regular), so strong = Regular weight */
+strong {
   font-weight: 400;
   color: var(--color-gold);
 }
 
 .prose ul,
 .prose ol {
-  margin-bottom: 1em;
-  padding-left: 1.5em;
+  margin-block-end: 1em;
+  padding-inline-start: 1.5em;
 }
 
 .prose a {
@@ -509,6 +515,39 @@ p {
 
 .prose a:hover {
   color: var(--color-text);
+}
+
+/* === Print === */
+@media print {
+  .page-background,
+  .page-overlay,
+  .nav,
+  .skip-link,
+  .footer-socials {
+    display: none;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  a {
+    color: black;
+    text-decoration: underline;
+  }
+
+  h1, h2, h3 {
+    color: black;
+  }
+
+  strong {
+    color: black;
+  }
+
+  .event-date {
+    color: black;
+  }
 }
 
 /* === Reduced motion === */

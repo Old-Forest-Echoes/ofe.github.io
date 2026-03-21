@@ -12,7 +12,7 @@ const links = [
 <nav class="nav" aria-label="Main">
   <div class="container">
     <a href="/" class="nav-brand" aria-label="Old Forest Echoes — Home">
-      <img src="/logo.svg" alt="" class="nav-logo" width="80" height="80" />
+      <img src="/logo.svg" alt="" class="nav-logo" width="80" height="80" decoding="async" />
       <span class="nav-title">Old Forest Echoes</span>
     </a>
     <button class="nav-toggle" aria-controls="nav-menu" aria-expanded="false" type="button">Menu</button>
@@ -29,11 +29,15 @@ const links = [
 </nav>
 
 <script>
-  const nav = document.querySelector<HTMLElement>('.nav');
-  const toggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
-  const menu = document.getElementById('nav-menu');
+  const navEl = document.querySelector<HTMLElement>('.nav');
+  const toggleEl = document.querySelector<HTMLButtonElement>('.nav-toggle');
+  const menuEl = document.getElementById('nav-menu');
 
-  if (nav && toggle && menu) {
+  if (navEl && toggleEl && menuEl) {
+    const nav = navEl;
+    const toggle = toggleEl;
+    const menu = menuEl;
+
     nav.classList.add('js-nav');
     let isOpen = false;
 
@@ -61,7 +65,7 @@ const links = [
       nav.classList.remove('nav-open');
       toggle.setAttribute('aria-expanded', 'false');
       toggle.textContent = 'Menu';
-      menu.removeAttribute('role');
+      menu.setAttribute('role', 'list');
       menu.removeAttribute('aria-modal');
       menu.removeAttribute('aria-label');
       brand?.removeAttribute('inert');

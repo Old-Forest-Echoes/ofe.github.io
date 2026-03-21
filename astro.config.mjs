@@ -24,6 +24,8 @@ function getLatestCommitDate(filePaths) {
   return dates.reduce((a, b) => (a > b ? a : b));
 }
 
+// When adding a new page to src/pages/, add its route and source files here
+// so the sitemap gets a git-based lastmod for it.
 const pageInputs = {
   '/': ['src/pages/index.astro'],
   '/artists/': ['src/pages/artists.astro', 'src/content/artists'],

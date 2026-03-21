@@ -22,9 +22,9 @@ const events: EventEntry[] = [
   { date: "2026-06-14", location: "Brno", locationLanguage: "cs", country: "Czechia" },
   { date: "2026-06-18", location: "Praha", locationLanguage: "cs", country: "Czechia" },
   { date: "2026-06-20", description: "Solstice Festival", location: "Napajedla", locationLanguage: "cs", country: "Czechia" },
-  { date: "2026-06-25", description: "Akcent & Barbora Xu", location: "Lidove Sady, Liberec", locationLanguage: "cs", country: "Czechia" },
+  { date: "2026-06-25", description: "Akcent & Barbora Xu", location: "Lidové Sady, Liberec", locationLanguage: "cs", country: "Czechia" },
   { date: "2026-07-01", endDate: "2026-07-12", description: "Forest Residency", location: "Waldhof Freiburg", locationLanguage: "de", country: "Germany" },
-  { date: "2026-07-27", endDate: "2026-07-31", description: "Festival Folk Holidays", location: "Namest nad Oslavou", locationLanguage: "cs", country: "Czechia" },
+  { date: "2026-07-27", endDate: "2026-07-31", description: "Festival Folk Holidays", location: "Náměšť nad Oslavou", locationLanguage: "cs", country: "Czechia" },
   { date: "2026-08-08", endDate: "2026-08-09", description: "Norpas festival", country: "Finland" },
   { date: "2026-08-15", description: "Forest concert", location: "Aalistunturi", locationLanguage: "fi", country: "Finland" },
   { date: "2026-08-20", description: "Paateri church", country: "Finland" },
@@ -146,7 +146,7 @@ function formatDateAccessible(dateStr: string, endDateStr?: string): string {
 
 <Base title="Events — Old Forest Echoes" description={`Old Forest Echoes ${calendarYear} event calendar: forest concerts, venue performances, and workshops across Finland, Czechia, and Germany.`}>
   {eventSchemas.map((schema) => <JsonLd data={schema} />)}
-  <section class="section" id="calendar">
+  <section class="section" id="calendar" aria-labelledby="calendar-heading">
     <h1 id="calendar-heading">Events</h1>
     <h2 class="calendar-subtitle">Event Calendar {calendarYear}</h2>
     <ul class="event-list" role="list" aria-labelledby="calendar-heading">
