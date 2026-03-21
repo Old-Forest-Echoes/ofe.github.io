@@ -1,21 +1,15 @@
 ---
+import { socialLinks } from '../data/social-links';
 ---
 
 <footer class="footer">
   <div class="container">
     <div class="footer-socials">
-      <a href="https://www.facebook.com/oldforestechoes" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
-        <img src="/icons/facebook.svg" alt="" width="23" height="23" />
-      </a>
-      <a href="https://www.instagram.com/oldforestechoes/" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
-        <img src="/icons/instagram.svg" alt="" width="23" height="23" />
-      </a>
-      <a href="https://www.youtube.com/channel/UCXpK5IHy4k0DY2e6t7daA1g" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
-        <img src="/icons/youtube.svg" alt="" width="23" height="23" />
-      </a>
-      <a href="https://linktr.ee/Barboraxu" aria-label="Linktree" target="_blank" rel="noopener noreferrer">
-        <img src="/icons/linktree.svg" alt="" class="linktree-logo" width="100" height="20" />
-      </a>
+      {socialLinks.map(({ href, label, icon, width, height, className }) => (
+        <a href={href} aria-label={label} target="_blank" rel="noopener noreferrer">
+          <img src={icon} alt="" class={className} width={width} height={height} />
+        </a>
+      ))}
     </div>
     <p class="footer-text">Old Forest Echoes &copy; {new Date().getFullYear()}</p>
   </div>

@@ -3,6 +3,8 @@ import Base from '../layouts/Base.astro';
 import YouTubeEmbed from '../components/YouTubeEmbed.astro';
 import Contact from '../components/Contact.astro';
 import JsonLd from '../components/JsonLd.astro';
+import ytThumb from '../assets/images/youtube-thumbnail.jpg';
+import { socialLinks } from '../data/social-links';
 
 const orgSchema = {
   '@context': 'https://schema.org',
@@ -13,12 +15,7 @@ const orgSchema = {
   logo: 'https://oldforestechoes.com/logo.svg',
   description: 'Music and art composed in Finnish old growth forests, aspiring to raise awareness and protect threatened forests.',
   email: 'info@oldforestechoes.com',
-  sameAs: [
-    'https://www.facebook.com/oldforestechoes',
-    'https://www.instagram.com/oldforestechoes/',
-    'https://www.youtube.com/channel/UCXpK5IHy4k0DY2e6t7daA1g',
-    'https://linktr.ee/Barboraxu',
-  ],
+  sameAs: socialLinks.map(({ href }) => href),
   funder: {
     '@type': 'Organization',
     name: 'KONE Foundation',
@@ -26,11 +23,11 @@ const orgSchema = {
 };
 ---
 
-<Base title="Old Forest Echoes — Music for Protection of Old Growth Forests">
+<Base title="Old Forest Echoes — Music for Protection of Old Growth Forests" description="Old Forest Echoes — music and art composed in Finnish old growth forests by Barbora Xu, raising awareness to protect threatened forests.">
   <JsonLd data={orgSchema} />
   <section class="section">
     <h1>Music for Protection of Old Growth Forests</h1>
-    <YouTubeEmbed videoId="4q2-op45wkU" title="Old Forest Echoes: Music for Protection of Old Growth Forests" />
+    <YouTubeEmbed videoId="4q2-op45wkU" title="Old Forest Echoes: Music for Protection of Old Growth Forests" thumbnail={ytThumb} />
 
     <div class="prose">
       <p>The Old Forest Echoes (<span lang="fi">Ikimetsän kaiku</span>) aims to make you fall in love with old growth forest via music and art composed and performed there.</p>

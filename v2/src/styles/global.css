@@ -20,15 +20,16 @@
   --color-bg: #0a0a08;
   --color-gold: #ffe694;
   --color-gold-muted: rgba(255, 230, 148, 0.7);
-  --color-gold-faint: rgba(255, 230, 148, 0.05);
   --color-text: #ebffef;
   --color-text-muted: rgba(255, 255, 255, 0.6);
   --color-overlay: rgba(0, 0, 0, 0.5);
   --color-overlay-gradient: rgba(0, 0, 0, 0.62);
+  --color-overlay-inner: rgba(0, 0, 0, 0.46);
   --color-nav-bg: rgba(0, 0, 0, 0.3);
   --color-section-border: rgba(255, 230, 148, 0.08);
   --color-shadow-card: rgba(255, 255, 255, 0.11);
   --color-shadow-video: rgba(13, 7, 3, 0.88);
+  --color-shadow-text: #000;
 
   --font-display: 'Leonetta Serif', 'Palatino Linotype', serif;
   --font-body: 'Montserrat', sans-serif;
@@ -65,6 +66,11 @@ img {
   display: block;
 }
 
+::selection {
+  background: var(--color-gold);
+  color: var(--color-bg);
+}
+
 a {
   color: var(--color-gold);
   text-decoration: none;
@@ -73,6 +79,11 @@ a {
 
 a:hover {
   color: var(--color-text);
+}
+
+a:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
 }
 
 /* === Utilities === */
@@ -91,7 +102,7 @@ a:hover {
 
 /* === Skip link === */
 .skip-link {
-  position: absolute;
+  position: fixed;
   top: -100%;
   left: 1rem;
   z-index: 300;
@@ -104,6 +115,11 @@ a:hover {
 
 .skip-link:focus {
   top: 0;
+}
+
+.skip-link:focus-visible {
+  outline: 2px solid var(--color-bg);
+  outline-offset: 2px;
 }
 
 /* === Background === */
@@ -121,7 +137,7 @@ a:hover {
   inset: 0;
   z-index: -1;
   background-color: var(--color-overlay);
-  background-image: radial-gradient(circle at 50% 0, rgba(0, 0, 0, 0.46), var(--color-overlay-gradient) 91%);
+  background-image: radial-gradient(circle at 50% 0, var(--color-overlay-inner), var(--color-overlay-gradient) 91%);
 }
 
 /* === Layout === */
@@ -143,6 +159,10 @@ h1 {
   color: var(--color-gold);
   text-align: center;
   margin-bottom: 1.5rem;
+}
+
+h1 + h2 {
+  margin-top: 0.5rem;
 }
 
 h2 {
@@ -186,12 +206,11 @@ p {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  text-decoration: none;
 }
 
 .nav-logo {
+  width: 80px;
   height: 80px;
-  width: auto;
 }
 
 .nav-title {
@@ -214,8 +233,7 @@ p {
   font-weight: normal;
   letter-spacing: 2px;
   text-transform: uppercase;
-  text-decoration: none;
-  text-shadow: 0 0 20px #000;
+  text-shadow: 0 0 20px var(--color-shadow-text);
   transition: color 0.2s;
 }
 
@@ -224,17 +242,28 @@ p {
   color: var(--color-gold);
 }
 
+.nav-links a:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 4px;
+}
+
 /* Mobile nav toggle */
 .nav-toggle {
   display: none;
   background: none;
   border: none;
   color: var(--color-text);
+  font-family: inherit;
   font-size: 0.7rem;
   letter-spacing: 2px;
   text-transform: uppercase;
   cursor: pointer;
   padding: 0.5rem;
+}
+
+.nav-toggle:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
 }
 
 @media (max-width: 768px) {
@@ -243,15 +272,13 @@ p {
   }
 
   .nav-logo {
+    width: 50px;
     height: 50px;
   }
 
   .nav-links {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh; /* fallback for browsers without dvh support */
+    inset: 0;
     height: 100dvh;
     flex-direction: column;
     align-items: center;
@@ -360,6 +387,15 @@ p {
   opacity: 1;
 }
 
+.video-facade:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: -2px;
+}
+
+.video-facade:focus-visible .video-play {
+  opacity: 1;
+}
+
 /* === Event calendar === */
 .event-list {
   list-style: none;
@@ -411,7 +447,8 @@ p {
   transition: opacity 0.2s;
 }
 
-.footer-socials a:hover {
+.footer-socials a:hover,
+.footer-socials a:focus-visible {
   opacity: 1;
 }
 
@@ -433,4 +470,25 @@ p {
 /* === Prose (markdown content) === */
 .prose strong {
   color: var(--color-gold);
+}
+
+.prose em {
+  font-style: italic;
+}
+
+.prose ul,
+.prose ol {
+  margin-bottom: 1em;
+  padding-left: 1.5em;
+}
+
+.prose a {
+  color: var(--color-gold);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.prose a:hover {
+  color: var(--color-text);
 }

@@ -6,7 +6,7 @@ import { getCollection, render } from 'astro:content';
 import { Image } from 'astro:assets';
 
 const allArtists = await getCollection('artists');
-const sorted = allArtists.sort((a, b) => a.data.order - b.data.order);
+const sorted = [...allArtists].sort((a, b) => a.data.order - b.data.order);
 
 const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/*.{jpg,jpeg,png,webp}', { eager: true });
 
@@ -25,6 +25,13 @@ const roleIntros: Record<string, string> = {
   featured: 'Except for live improvisations recorded during Barbora\u2019s stay in the forests, a number of acknowledged artists come onto the project as guests. Among others, a world known jazz guitarist Niklas Winter, Czech folk violinist Petra Jelénková, kantele player Jenni Venäläinen.',
 };
 
+const roleJobTitles: Record<string, string> = {
+  music: 'Musician',
+  featured: 'Musician',
+  'land-art': 'Visual Artist',
+  soundscapes: 'Sound Artist',
+};
+
 const rendered = await Promise.all(
   sorted.map(async (artist) => {
     const { Content } = await render(artist);
@@ -32,12 +39,12 @@ const rendered = await Promise.all(
   })
 );
 
-const roleJobTitles: Record<string, string> = {
-  music: 'Musician',
-  featured: 'Musician',
-  'land-art': 'Visual Artist',
-  soundscapes: 'Sound Artist',
-};
+const artistNames = sorted.map((a) => a.data.name);
+const artistDescription = artistNames.length > 1
+  ? `Meet the artists of Old Forest Echoes: ${artistNames.slice(0, -1).join(', ')}, and ${artistNames[artistNames.length - 1]}.`
+  : artistNames.length === 1
+    ? `Meet ${artistNames[0]}, artist of Old Forest Echoes.`
+    : 'Meet the artists of Old Forest Echoes.';
 
 const personSchemas = sorted.map((artist) => ({
   '@context': 'https://schema.org',
@@ -52,7 +59,7 @@ const personSchemas = sorted.map((artist) => ({
 }));
 ---
 
-<Base title="Artists — Old Forest Echoes" description="Meet the artists of Old Forest Echoes: Barbora Xu, Ilkka Heinonen, Joni Vierre, Minna Koskenlahti, Wiebke Pandikow, and Mikko H. Haapoja.">
+<Base title="Artists — Old Forest Echoes" description={artistDescription}>
   {personSchemas.map((schema) => <JsonLd data={schema} />)}
   <section class="section">
     <h1>Artists</h1>

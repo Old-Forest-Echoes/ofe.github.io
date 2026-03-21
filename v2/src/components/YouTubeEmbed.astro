@@ -1,16 +1,18 @@
 ---
+import { Image } from 'astro:assets';
+
 interface Props {
   videoId: string;
   title: string;
+  thumbnail: ImageMetadata;
 }
 
-const { videoId, title } = Astro.props;
-const thumbnailUrl = `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`;
+const { videoId, title, thumbnail } = Astro.props;
 ---
 
 <div class="video-embed" data-video-id={videoId} data-video-title={title}>
   <button class="video-facade" aria-label={`Play: ${title}`} type="button">
-    <img src={thumbnailUrl} alt={title} width="480" height="270" loading="eager" fetchpriority="high" />
+    <Image src={thumbnail} alt={title} widths={[480, 768, 1280]} sizes="(max-width: 940px) 100vw, 940px" loading="eager" fetchpriority="high" />
     <svg class="video-play" viewBox="0 0 68 48" aria-hidden="true">
       <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55C3.97 2.33 2.27 4.81 1.48 7.74.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/>
       <path d="M45 24 27 14v20" fill="white"/>
@@ -24,13 +26,14 @@ const thumbnailUrl = `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`;
     if (!button) return;
     button.addEventListener('click', () => {
       const videoId = (container as HTMLElement).dataset.videoId;
+      if (!videoId || !/^[a-zA-Z0-9_-]{11}$/.test(videoId)) return;
       const iframe = document.createElement('iframe');
       iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`;
       iframe.title = (container as HTMLElement).dataset.videoTitle || '';
       iframe.width = '560';
       iframe.height = '315';
-      iframe.allowFullscreen = true;
-      iframe.allow = 'autoplay; encrypted-media';
+      iframe.setAttribute('allowfullscreen', '');
+      iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
       container.replaceChild(iframe, button);
     });
   });

@@ -1,7 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
 import JsonLd from '../components/JsonLd.astro';
-import events from '../data/events-2026.json';
 
 interface EventEntry {
   date: string;
@@ -10,22 +9,47 @@ interface EventEntry {
   country: string;
 }
 
-const typedEvents = events as EventEntry[];
+const events: EventEntry[] = [
+  { date: "2026-03-06", venue: "Sipoo", country: "Finland" },
+  { date: "2026-03-27", venue: "Porvoo", country: "Finland" },
+  { date: "2026-04-11", venue: "Circus Lounge Turku", country: "Finland" },
+  { date: "2026-05-23", endDate: "2026-05-24", venue: "Koroinen, Garden Festival", country: "Finland" },
+  { date: "2026-06-14", venue: "Brno", country: "Czechia" },
+  { date: "2026-06-18", venue: "Praha", country: "Czechia" },
+  { date: "2026-06-20", venue: "Napajedla Solstice Festival", country: "Czechia" },
+  { date: "2026-06-25", venue: "Akcent & Barbora Xu: Lidove Sady, Liberec", country: "Czechia" },
+  { date: "2026-07-01", endDate: "2026-07-12", venue: "Forest Residency, Waldhof Freiburg", country: "Germany" },
+  { date: "2026-07-27", endDate: "2026-07-31", venue: "Festival Folk Holidays Namest nad Oslavou", country: "Czechia" },
+  { date: "2026-08-08", endDate: "2026-08-09", venue: "Norpas festival", country: "Finland" },
+  { date: "2026-08-15", venue: "Aalistunturi Forest concert", country: "Finland" },
+  { date: "2026-08-20", venue: "Paateri church", country: "Finland" },
+  { date: "2026-08-22", venue: "Haarikko Forest concert", country: "Finland" },
+  { date: "2026-08-30", venue: "Stansvik Forest concert", country: "Finland" },
+  { date: "2026-09-05", venue: "Helsinki", country: "Finland" },
+  { date: "2026-09-06", venue: "Turku", country: "Finland" },
+  { date: "2026-09-20", venue: "Waldhof Freiburg", country: "Germany" },
+  { date: "2026-09-23", venue: "Sibelius Museo", country: "Finland" },
+];
+
 const now = new Date();
 const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 
-const countryLangs: Record<string, string> = {
-  Finland: 'fi',
-  Czechia: 'cs',
-  Germany: 'de',
-};
+function isPast(event: EventEntry): boolean {
+  return (event.endDate || event.date) < today;
+}
 
-const eventSchemas = typedEvents.map((event) => ({
+const upcomingEvents = events.filter((event) => !isPast(event));
+
+const eventSchemas = upcomingEvents.map((event) => ({
   '@context': 'https://schema.org',
   '@type': 'MusicEvent',
   name: `Old Forest Echoes — ${event.venue}`,
+  description: `Live performance by Barbora Xu at ${event.venue}, ${event.country}.`,
+  image: 'https://oldforestechoes.com/images/og-image.webp',
   startDate: event.date,
   endDate: event.endDate || event.date,
+  eventStatus: 'https://schema.org/EventScheduled',
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
   location: {
     '@type': 'Place',
     name: event.venue,
@@ -45,26 +69,21 @@ const eventSchemas = typedEvents.map((event) => ({
   },
 }));
 
-function parseDate(s: string) {
+function parseDayMonth(s: string) {
   const [, m, d] = s.split('-');
   return { day: Number(d), month: Number(m) };
 }
 
 function formatDate(dateStr: string, endDateStr?: string): string {
-  const { day, month } = parseDate(dateStr);
+  const { day, month } = parseDayMonth(dateStr);
   if (endDateStr) {
-    const end = parseDate(endDateStr);
+    const end = parseDayMonth(endDateStr);
     if (month === end.month) {
       return `${day}.–${end.day}.${month}.`;
     }
     return `${day}.${month}.–${end.day}.${end.month}.`;
   }
   return `${day}.${month}.`;
-}
-
-function isPast(event: EventEntry): boolean {
-  const endOrStart = event.endDate || event.date;
-  return endOrStart < today;
 }
 ---
 
@@ -74,15 +93,13 @@ function isPast(event: EventEntry): boolean {
     <h1>Events</h1>
     <h2>Event Calendar 2026</h2>
     <ul class="event-list">
-      {typedEvents.map((event) => (
+      {events.map((event) => (
         <li class={isPast(event) ? 'event-past' : ''} data-end={event.endDate || event.date}>
           <time class="event-date" datetime={event.date}>
             {formatDate(event.date, event.endDate)}
           </time>
-          {event.endDate && <time datetime={event.endDate} class="sr-only">to {event.endDate}</time>}
-          {countryLangs[event.country]
-            ? <span lang={countryLangs[event.country]}>{event.venue}</span>
-            : event.venue}, {event.country}
+          {event.endDate && <time datetime={event.endDate} class="sr-only">to {formatDate(event.endDate)}</time>}
+          {event.venue}, {event.country}
         </li>
       ))}
     </ul>

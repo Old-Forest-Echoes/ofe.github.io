@@ -1,4 +1,5 @@
 ---
+const normalize = (p: string) => (p.endsWith('/') ? p : p + '/');
 const currentPath = Astro.url.pathname;
 
 const links = [
@@ -18,7 +19,7 @@ const links = [
     <ul id="nav-menu" class="nav-links">
       {links.map(({ href, label }) => (
         <li>
-          <a href={href} aria-current={currentPath === href ? 'page' : undefined}>
+          <a href={href} aria-current={normalize(currentPath) === normalize(href) ? 'page' : undefined}>
             {label}
           </a>
         </li>
@@ -35,10 +36,18 @@ const links = [
   if (nav && toggle && menu) {
     let isOpen = false;
 
+    const brand = nav.querySelector('.nav-brand') as HTMLAnchorElement | null;
+    const mainContent = document.getElementById('main-content');
+    const footer = document.querySelector('.footer');
+
     function openMenu() {
       isOpen = true;
       nav.classList.add('nav-open');
       toggle.setAttribute('aria-expanded', 'true');
+      toggle.textContent = 'Close';
+      brand?.setAttribute('inert', '');
+      mainContent?.setAttribute('inert', '');
+      footer?.setAttribute('inert', '');
       const firstLink = menu.querySelector('a');
       firstLink?.focus();
     }
@@ -47,6 +56,10 @@ const links = [
       isOpen = false;
       nav.classList.remove('nav-open');
       toggle.setAttribute('aria-expanded', 'false');
+      toggle.textContent = 'Menu';
+      brand?.removeAttribute('inert');
+      mainContent?.removeAttribute('inert');
+      footer?.removeAttribute('inert');
     }
 
     toggle.addEventListener('click', () => {
