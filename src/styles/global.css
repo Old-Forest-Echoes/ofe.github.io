@@ -40,7 +40,7 @@
   --color-shadow-video: rgba(13, 7, 3, 0.88);
   --color-shadow-text: #000;
   --color-past-text: rgba(255, 255, 255, 0.5);
-  --color-past-date: rgba(255, 230, 148, 0.45);
+  --color-past-date: rgba(255, 230, 148, 0.55);
 
   --font-display: 'Leonetta Serif', 'Palatino Linotype', serif;
   --font-body: 'Spectral', 'Georgia', serif;
@@ -267,6 +267,7 @@ p {
   text-transform: uppercase;
   cursor: pointer;
   padding: 0.5rem;
+  min-height: 44px;
 }
 
 .nav-toggle:focus-visible {
@@ -291,6 +292,7 @@ p {
   .js-nav .nav-links {
     position: fixed;
     inset: 0;
+    height: 100vh;
     height: 100dvh;
     flex-direction: column;
     align-items: center;
@@ -470,6 +472,11 @@ p {
 }
 
 .footer-socials a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
   opacity: 0.82;
   transition: opacity 0.2s;
 }
@@ -547,6 +554,43 @@ strong {
 
   .event-date {
     color: black;
+  }
+
+  .footer-text {
+    color: black;
+  }
+
+  .event-past,
+  .event-past .event-date,
+  .event-past .event-info {
+    color: #666;
+  }
+
+  .video-embed {
+    display: none;
+  }
+
+  .artist-card {
+    break-inside: avoid;
+  }
+
+  .artist-card img {
+    box-shadow: none;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* === Forced colors (Windows High Contrast Mode) === */
+@media (forced-colors: active) {
+  .nav-toggle {
+    border: 1px solid ButtonText;
+  }
+
+  .video-facade {
+    border: 2px solid ButtonText;
   }
 }
 

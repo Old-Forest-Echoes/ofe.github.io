@@ -89,7 +89,7 @@ const eventSchemas = upcomingEvents.map((event) => {
     '@type': 'MusicEvent',
     name: `Old Forest Echoes — ${venue}`,
     description: `Live performance by Barbora Xu at ${venue}, ${event.country}.`,
-    image: new URL('/images/og-image.webp', siteUrl).href,
+    image: new URL('/images/og-image-landscape.webp', siteUrl).href,
     url: new URL('/events/#calendar', siteUrl).href,
     startDate: event.date,
     ...(event.endDate ? { endDate: event.endDate } : {}),
