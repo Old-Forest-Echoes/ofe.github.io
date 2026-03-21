@@ -25,6 +25,10 @@
   --color-text-muted: rgba(255, 255, 255, 0.6);
   --color-overlay: rgba(0, 0, 0, 0.5);
   --color-overlay-gradient: rgba(0, 0, 0, 0.62);
+  --color-nav-bg: rgba(0, 0, 0, 0.3);
+  --color-section-border: rgba(255, 230, 148, 0.08);
+  --color-shadow-card: rgba(255, 255, 255, 0.11);
+  --color-shadow-video: rgba(13, 7, 3, 0.88);
 
   --font-display: 'Leonetta Serif', 'Palatino Linotype', serif;
   --font-body: 'Montserrat', sans-serif;
@@ -137,6 +141,8 @@ h1, h2, h3 {
 h1 {
   font-size: clamp(2rem, 5vw, 3.5rem);
   color: var(--color-gold);
+  text-align: center;
+  margin-bottom: 1.5rem;
 }
 
 h2 {
@@ -164,7 +170,7 @@ p {
   z-index: 100;
   padding-block: 1rem;
   font-family: var(--font-display);
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: var(--color-nav-bg);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
@@ -245,7 +251,7 @@ p {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100vh; /* fallback for browsers without dvh support */
     height: 100dvh;
     flex-direction: column;
     align-items: center;
@@ -278,7 +284,11 @@ p {
 }
 
 .section + .section {
-  border-top: 1px solid rgba(255, 230, 148, 0.08);
+  border-top: 1px solid var(--color-section-border);
+}
+
+.role-intro {
+  margin-bottom: 2rem;
 }
 
 /* === Artist cards === */
@@ -292,7 +302,7 @@ p {
 .artist-card img {
   max-width: min(70%, 660px);
   margin-bottom: 1.5rem;
-  box-shadow: 1px 1px 3px 1px rgba(255, 255, 255, 0.11);
+  box-shadow: 1px 1px 3px 1px var(--color-shadow-card);
 }
 
 .artist-card .prose {
@@ -307,7 +317,7 @@ p {
   background-color: var(--color-bg);
   border-radius: 4px;
   overflow: hidden;
-  box-shadow: 1px 1px 3px 3px rgba(13, 7, 3, 0.88);
+  box-shadow: 1px 1px 3px 3px var(--color-shadow-video);
 }
 
 .video-embed iframe {

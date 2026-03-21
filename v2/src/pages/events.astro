@@ -11,14 +11,21 @@ interface EventEntry {
 }
 
 const typedEvents = events as EventEntry[];
-const today = new Date().toISOString().slice(0, 10);
+const now = new Date();
+const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
+const countryLangs: Record<string, string> = {
+  Finland: 'fi',
+  Czechia: 'cs',
+  Germany: 'de',
+};
 
 const eventSchemas = typedEvents.map((event) => ({
   '@context': 'https://schema.org',
   '@type': 'MusicEvent',
   name: `Old Forest Echoes — ${event.venue}`,
   startDate: event.date,
-  ...(event.endDate && { endDate: event.endDate }),
+  endDate: event.endDate || event.date,
   location: {
     '@type': 'Place',
     name: event.venue,
@@ -38,18 +45,19 @@ const eventSchemas = typedEvents.map((event) => ({
   },
 }));
 
+function parseDate(s: string) {
+  const [, m, d] = s.split('-');
+  return { day: Number(d), month: Number(m) };
+}
+
 function formatDate(dateStr: string, endDateStr?: string): string {
-  const d = new Date(dateStr);
-  const day = d.getDate();
-  const month = d.getMonth() + 1;
+  const { day, month } = parseDate(dateStr);
   if (endDateStr) {
-    const end = new Date(endDateStr);
-    const endDay = end.getDate();
-    const endMonth = end.getMonth() + 1;
-    if (month === endMonth) {
-      return `${day}.–${endDay}.${month}.`;
+    const end = parseDate(endDateStr);
+    if (month === end.month) {
+      return `${day}.–${end.day}.${month}.`;
     }
-    return `${day}.${month}.–${endDay}.${endMonth}.`;
+    return `${day}.${month}.–${end.day}.${end.month}.`;
   }
   return `${day}.${month}.`;
 }
@@ -63,6 +71,7 @@ function isPast(event: EventEntry): boolean {
 <Base title="Events — Old Forest Echoes" description="Old Forest Echoes 2026 event calendar: forest concerts, venue performances, and workshops across Finland, Czechia, and Germany.">
   {eventSchemas.map((schema) => <JsonLd data={schema} />)}
   <section class="section" id="calendar">
+    <h1>Events</h1>
     <h2>Event Calendar 2026</h2>
     <ul class="event-list">
       {typedEvents.map((event) => (
@@ -71,7 +80,9 @@ function isPast(event: EventEntry): boolean {
             {formatDate(event.date, event.endDate)}
           </time>
           {event.endDate && <time datetime={event.endDate} class="sr-only">to {event.endDate}</time>}
-          {event.venue}, {event.country}
+          {countryLangs[event.country]
+            ? <span lang={countryLangs[event.country]}>{event.venue}</span>
+            : event.venue}, {event.country}
         </li>
       ))}
     </ul>
@@ -108,7 +119,8 @@ function isPast(event: EventEntry): boolean {
   </section>
 
   <script>
-    const today = new Date().toISOString().slice(0, 10);
+    const now = new Date();
+    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
     document.querySelectorAll('.event-list li[data-end]').forEach((li) => {
       const end = (li as HTMLElement).dataset.end!;
       if (end < today) li.classList.add('event-past');
