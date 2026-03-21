@@ -12,7 +12,8 @@ function getLastCommitDate(filePath) {
       cwd,
     }).trim();
     return date || undefined;
-  } catch {
+  } catch (e) {
+    console.warn(`[sitemap] Could not read git log for ${filePath}:`, e instanceof Error ? e.message : e);
     return undefined;
   }
 }

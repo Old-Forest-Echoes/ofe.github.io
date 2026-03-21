@@ -6,7 +6,7 @@ Website for Old Forest Echoes (Ikimetsän kaiku), a music and nature conservatio
 
 ```bash
 cd v2
-nvm use node        # Required — node is managed via nvm
+nvm use             # Required — reads .nvmrc to select Node version
 npm run dev         # Dev server at localhost:4321
 npm run build       # Production build to dist/
 npm run preview     # Preview production build
@@ -16,7 +16,7 @@ npm run preview     # Preview production build
 
 - **Astro 6** static site, zero JS framework runtime
 - **Single CSS file** (`src/styles/global.css`) — all styling, ~5KB, CSS custom properties
-- **Self-hosted fonts** — Leonetta Serif (WOFF2) + Montserrat (WOFF2 variable), no Google Fonts
+- **Self-hosted fonts** — Leonetta Serif (WOFF2) + Spectral (WOFF2, 2 weights), no Google Fonts
 - **Content Collections** for artists (Markdown with Zod schema)
 - **Typed inline data** for events (in `src/pages/events.astro`)
 - **Astro Image pipeline** for all images (responsive WebP srcsets)
@@ -32,7 +32,7 @@ v2/
 │   ├── components/
 │   │   ├── Nav.astro             # Sticky nav, mobile menu with <button> toggle
 │   │   ├── Footer.astro          # Social links (target="_blank", rel="noopener")
-│   │   ├── Contact.astro         # Shared contact section (used on index + artists)
+│   │   ├── Contact.astro         # Shared contact section (used on all content pages)
 │   │   ├── YouTubeEmbed.astro    # Lite facade — no iframe until click
 │   │   └── JsonLd.astro          # Generic JSON-LD structured data wrapper
 │   ├── pages/
@@ -47,7 +47,7 @@ v2/
 │   ├── assets/images/            # Source images (processed by Astro)
 │   └── styles/global.css         # Single stylesheet
 ├── public/
-│   ├── fonts/                    # Leonetta-Serif.woff2, Montserrat.woff2
+│   ├── fonts/                    # Leonetta-Serif.woff2, Spectral-{Light,Regular}.woff2
 │   ├── icons/                    # facebook.svg, instagram.svg, youtube.svg, linktree.svg
 │   ├── images/og-image.webp      # OG image for social sharing
 │   ├── logo.svg                  # SVG logo (also used as favicon)
@@ -93,7 +93,7 @@ Dates must be ISO `YYYY-MM-DD` format (validated at build time). Past events are
 ## Conventions
 
 - **CSS**: All colors use custom properties from `:root`. No hardcoded colors.
-- **Fonts**: `--font-display` (Leonetta Serif) for headings/nav, `--font-body` (Montserrat) for body text.
+- **Fonts**: `--font-display` (Leonetta Serif) for headings/nav, `--font-body` (Spectral) for body text.
 - **Images in `src/assets/`**: Processed by Astro (responsive WebP). Use for content images.
 - **Images in `public/`**: Served as-is. Use for icons, logos, OG images.
 - **External links**: Always use `target="_blank" rel="noopener noreferrer"`.

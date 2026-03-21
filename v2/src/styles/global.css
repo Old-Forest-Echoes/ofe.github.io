@@ -23,14 +23,6 @@
   font-display: swap;
 }
 
-@font-face {
-  font-family: 'Spectral';
-  src: url('/fonts/Spectral-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
 /* === Custom Properties === */
 :root {
   color-scheme: dark;
@@ -128,7 +120,7 @@ a:focus-visible {
   padding: 0.5rem 1rem;
   background: var(--color-gold);
   color: var(--color-bg);
-  font-weight: 500;
+  font-weight: 400;
   border-radius: 0 0 4px 4px;
 }
 
@@ -484,14 +476,13 @@ p {
   opacity: 1;
 }
 
-.footer-socials img {
+.footer-socials img:not(.linktree-logo) {
   width: 23px;
   height: 23px;
 }
 
 .footer-socials .linktree-logo {
   width: 100px;
-  height: auto;
 }
 
 .footer-text {

@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import Contact from '../components/Contact.astro';
 import JsonLd from '../components/JsonLd.astro';
 
 interface EventEntry {
@@ -130,17 +131,28 @@ function formatDate(dateStr: string, endDateStr?: string): string {
   }
   return `${day}.${month}.`;
 }
+
+const dateFormatLong = new Intl.DateTimeFormat('en', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+
+function formatDateAccessible(dateStr: string, endDateStr?: string): string {
+  const start = new Date(dateStr + 'T00:00:00Z');
+  if (endDateStr) {
+    const end = new Date(endDateStr + 'T00:00:00Z');
+    return `${dateFormatLong.format(start)} to ${dateFormatLong.format(end)}`;
+  }
+  return dateFormatLong.format(start);
+}
 ---
 
 <Base title="Events — Old Forest Echoes" description={`Old Forest Echoes ${calendarYear} event calendar: forest concerts, venue performances, and workshops across Finland, Czechia, and Germany.`}>
   {eventSchemas.map((schema) => <JsonLd data={schema} />)}
-  <section class="section" id="calendar" aria-labelledby="calendar-heading">
+  <section class="section" id="calendar">
     <h1 id="calendar-heading">Events</h1>
     <h2 class="calendar-subtitle">Event Calendar {calendarYear}</h2>
-    <ul class="event-list" role="list">
+    <ul class="event-list" role="list" aria-labelledby="calendar-heading">
       {events.map((event) => (
         <li class:list={[{ 'event-past': isPast(event) }]} data-end={event.endDate || event.date}>
-          <time class="event-date" datetime={event.date}>
+          <time class="event-date" datetime={event.date} aria-label={formatDateAccessible(event.date, event.endDate)}>
             {formatDate(event.date, event.endDate)}
           </time>
           <span class="event-info">
@@ -184,6 +196,8 @@ function formatDate(dateStr: string, endDateStr?: string): string {
       <p>Event length: 2 hrs</p>
     </div>
   </section>
+
+  <Contact />
 
   <script>
     // UTC date intentionally matches build-time check and daily 04:00 UTC cron rebuild
