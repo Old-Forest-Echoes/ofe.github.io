@@ -472,10 +472,6 @@ p {
   color: var(--color-gold);
 }
 
-.prose em {
-  font-style: italic;
-}
-
 .prose ul,
 .prose ol {
   margin-bottom: 1em;

@@ -38,12 +38,12 @@ v2/
 │   ├── pages/
 │   │   ├── index.astro           # About page + Organization schema
 │   │   ├── artists.astro         # Content collection query + Person schemas
-│   │   ├── events.astro          # Event calendar + MusicEvent schemas
+│   │   ├── events.astro          # Event calendar + MusicEvent schemas (inline data)
 │   │   └── 404.astro             # Custom 404 (noindex)
 │   ├── content/
 │   │   ├── config.ts             # Zod schema: name, role, order, image
 │   │   └── artists/*.md          # 6 artist bios with frontmatter
-│   ├── data/events-2026.json     # Event calendar entries
+│   ├── data/social-links.ts      # Social media links (shared by Footer + index)
 │   ├── assets/images/            # Source images (processed by Astro)
 │   └── styles/global.css         # Single stylesheet
 ├── public/
@@ -72,12 +72,12 @@ image: filename.jpg  # Must exist in src/assets/images/
 Body is Markdown prose. Images are auto-optimized to WebP with responsive srcsets.
 
 ### Events
-Edit `src/data/events-2026.json`. Each entry:
-```json
-{ "date": "2026-03-06", "venue": "Sipoo", "country": "Finland" }
-{ "date": "2026-05-23", "endDate": "2026-05-24", "venue": "Festival Name", "country": "Finland" }
+Edit the `events` array in `src/pages/events.astro`. Each entry is typed as `EventEntry`:
+```ts
+{ date: "2026-03-06", venue: "Sipoo", country: "Finland" }
+{ date: "2026-05-23", endDate: "2026-05-24", venue: "Festival Name", country: "Finland" }
 ```
-Past events are automatically dimmed (build-time + client-side check).
+Dates must be ISO `YYYY-MM-DD` format (validated at build time). Past events are automatically dimmed (build-time + client-side check). Past events are excluded from JSON-LD structured data. A daily GitHub Actions cron rebuild keeps this current.
 
 ### Adding a new artist
 1. Add image to `src/assets/images/<name>.jpg`

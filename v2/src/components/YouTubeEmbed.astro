@@ -21,15 +21,15 @@ const { videoId, title, thumbnail } = Astro.props;
 </div>
 
 <script>
-  document.querySelectorAll('.video-embed[data-video-id]').forEach((container) => {
+  document.querySelectorAll<HTMLElement>('.video-embed[data-video-id]').forEach((container) => {
     const button = container.querySelector('.video-facade');
     if (!button) return;
     button.addEventListener('click', () => {
-      const videoId = (container as HTMLElement).dataset.videoId;
+      const videoId = container.dataset.videoId;
       if (!videoId || !/^[a-zA-Z0-9_-]{11}$/.test(videoId)) return;
       const iframe = document.createElement('iframe');
       iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`;
-      iframe.title = (container as HTMLElement).dataset.videoTitle || '';
+      iframe.title = container.dataset.videoTitle || '';
       iframe.width = '560';
       iframe.height = '315';
       iframe.setAttribute('allowfullscreen', '');

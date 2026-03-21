@@ -1,12 +1,12 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
-import { execSync } from 'node:child_process';
+import { execFileSync } from 'node:child_process';
 
 const cwd = new URL('.', import.meta.url).pathname;
 
 function getLastCommitDate(filePath) {
   try {
-    const date = execSync(`git log -1 --format=%cI -- "${filePath}"`, {
+    const date = execFileSync('git', ['log', '-1', '--format=%cI', '--', filePath], {
       encoding: 'utf-8',
       cwd,
     }).trim();

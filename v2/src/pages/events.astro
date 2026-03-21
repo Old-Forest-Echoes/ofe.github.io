@@ -9,6 +9,8 @@ interface EventEntry {
   country: string;
 }
 
+const isoDate = /^\d{4}-\d{2}-\d{2}$/;
+
 const events: EventEntry[] = [
   { date: "2026-03-06", venue: "Sipoo", country: "Finland" },
   { date: "2026-03-27", venue: "Porvoo", country: "Finland" },
@@ -30,6 +32,17 @@ const events: EventEntry[] = [
   { date: "2026-09-20", venue: "Waldhof Freiburg", country: "Germany" },
   { date: "2026-09-23", venue: "Sibelius Museo", country: "Finland" },
 ];
+
+for (const e of events) {
+  if (!isoDate.test(e.date)) throw new Error(`Invalid date format: ${e.date}`);
+  if (e.endDate && !isoDate.test(e.endDate)) throw new Error(`Invalid endDate format: ${e.endDate}`);
+}
+
+const countryLangs: Record<string, string> = {
+  Finland: 'fi',
+  Czechia: 'cs',
+  Germany: 'de',
+};
 
 const now = new Date();
 const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
@@ -99,7 +112,9 @@ function formatDate(dateStr: string, endDateStr?: string): string {
             {formatDate(event.date, event.endDate)}
           </time>
           {event.endDate && <time datetime={event.endDate} class="sr-only">to {formatDate(event.endDate)}</time>}
-          {event.venue}, {event.country}
+          {countryLangs[event.country]
+            ? <span lang={countryLangs[event.country]}>{event.venue}</span>
+            : event.venue}, {event.country}
         </li>
       ))}
     </ul>
@@ -138,8 +153,8 @@ function formatDate(dateStr: string, endDateStr?: string): string {
   <script>
     const now = new Date();
     const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-    document.querySelectorAll('.event-list li[data-end]').forEach((li) => {
-      const end = (li as HTMLElement).dataset.end!;
+    document.querySelectorAll<HTMLElement>('.event-list li[data-end]').forEach((li) => {
+      const end = li.dataset.end ?? '';
       if (end < today) li.classList.add('event-past');
     });
   </script>
