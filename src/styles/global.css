@@ -524,6 +524,10 @@ strong {
   color: var(--color-gold);
 }
 
+cite {
+  font-style: normal;
+}
+
 .prose a {
   color: var(--color-gold);
   text-decoration: underline;
@@ -569,7 +573,22 @@ strong {
   }
 
   .video-embed {
+    aspect-ratio: auto;
+    box-shadow: none;
+    background: none;
+  }
+
+  .video-embed iframe,
+  .video-embed .video-facade,
+  .video-embed noscript {
     display: none;
+  }
+
+  .video-embed::after {
+    content: attr(data-video-title) " — https://www.youtube.com/watch?v=" attr(data-video-id);
+    display: block;
+    text-align: center;
+    padding: 1rem;
   }
 
   .artist-card {
