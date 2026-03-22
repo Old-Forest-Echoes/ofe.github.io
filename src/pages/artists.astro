@@ -29,7 +29,7 @@ if (!ensembleImg) throw new Error('Missing ensemble image: /src/assets/images/en
 
 // Values contain HTML for <span lang> attributes — rendered via set:html
 const roleIntros: Partial<Record<Role, string>> = {
-  featured: 'In addition to live improvisations recorded during Barbora\u2019s stay in the forests, a number of acclaimed artists come onto the project as guests. Among others, world-renowned jazz guitarist Niklas Winter, Czech folk violinist <span lang="cs">Petra Jelénková</span>, kantele player <span lang="fi">Jenni Venäläinen</span>.',
+  featured: 'In addition to live improvisations recorded during Barbora\u2019s stay in the forests, a number of acclaimed artists come onto the project as guests. These include world-renowned jazz guitarist Niklas Winter, Czech folk violinist <span lang="cs">Petra Jelénková</span>, and kantele player <span lang="fi">Jenni Venäläinen</span>.',
 };
 
 const roleJobTitles: Record<Role, string> = {
@@ -56,7 +56,13 @@ const siteUrl = Astro.site;
 if (!siteUrl) throw new Error('Astro.site must be configured in astro.config.mjs');
 
 function truncateDescription(body: string, maxLength = 160): string {
-  const plain = body.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+  const plain = body
+    .replace(/<[^>]+>/g, '')           // strip HTML tags
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // [text](url) → text
+    .replace(/[*_]{1,3}(.+?)[*_]{1,3}/g, '$1') // **bold**/*italic* → text
+    .replace(/`([^`]+)`/g, '$1')       // `code` → code
+    .replace(/\s+/g, ' ')
+    .trim();
   if (plain.length <= maxLength) return plain;
   return plain.slice(0, maxLength).replace(/\s\S*$/, '') + '\u2026';
 }
@@ -86,10 +92,10 @@ const personGraph = { '@context': 'https://schema.org', '@graph': personSchemas 
 
 <Base title="Artists — Old Forest Echoes" description={artistDescription}>
   <JsonLd data={personGraph} />
-  <section class="section">
-    <h1>Artists</h1>
+  <section class="section" aria-labelledby="artists-heading">
+    <h1 id="artists-heading">Artists</h1>
     <div class="prose">
-      <p>Old Forest Echoes is the vision of internationally renowned singer, composer and multi-instrumentalist Barbora Xu (CZ/FI), who spends prolonged periods in endangered old-growth forest areas of Finland. Conducting artistic research involving deep personal songwriting journeys, Barbora and her team also explore the forest to locate the best wilderness concert venues. The venues are transformed into a living piece of art by Wiebke Pandikow and become the Old Forest Echoes forest tour venues open to the public. To bring the music from the old-growth forests to festivals and venues, experienced sound artist Mikko H. Haapoja prepares surround system soundscape installations to stand alone or encapsulate a live concert. Barbora collaborates with numerous renowned artists such as Niklas Winter, Ilkka Heinonen, <span lang="fi">Jenni Venäläinen</span>, <span lang="cs">Petra Jelénková</span> — making every single concert a unique event.</p>
+      <p>Old Forest Echoes is the vision of internationally renowned singer, composer, and multi-instrumentalist Barbora Xu (CZ/FI), who spends prolonged periods in endangered old-growth forest areas of Finland. Conducting artistic research involving deep personal songwriting journeys, Barbora and her team also explore the forest to locate the best wilderness concert venues. The venues are transformed into a living piece of art by Wiebke Pandikow and become the Old Forest Echoes forest tour venues open to the public. To bring the music from the old-growth forests to festivals and venues, experienced sound artist Mikko H. Haapoja prepares surround system soundscape installations to stand alone or encapsulate a live concert. Barbora collaborates with numerous renowned artists such as Niklas Winter, Ilkka Heinonen, <span lang="fi">Jenni Venäläinen</span>, and <span lang="cs">Petra Jelénková</span> — making every single concert a unique event.</p>
     </div>
   </section>
 

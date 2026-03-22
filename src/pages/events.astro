@@ -98,8 +98,12 @@ const eventSchemas = upcomingEvents.map((event) => {
         : `in ${event.country}`;
   return {
     '@type': event.schemaType || 'MusicEvent',
-    name: `Old Forest Echoes — ${display}`,
-    description: `${event.schemaType === 'Event' ? 'Event' : 'Live performance'} by Old Forest Echoes ${locationLabel}.`,
+    name: event.description
+      ? `Old Forest Echoes — ${display}`
+      : `Old Forest Echoes concert — ${display}`,
+    description: event.description
+      ? `${event.description} — Old Forest Echoes ${event.schemaType === 'Event' ? 'event' : 'live performance'} ${locationLabel}.`
+      : `Old Forest Echoes ${event.schemaType === 'Event' ? 'event' : 'live performance'} ${locationLabel}.`,
     image: new URL('/images/og-image-landscape.webp', siteUrl).href,
     url: new URL('/events/#calendar', siteUrl).href,
     startDate: event.date,
@@ -108,18 +112,20 @@ const eventSchemas = upcomingEvents.map((event) => {
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
     location: {
       '@type': 'Place',
-      ...(event.venue ? { name: event.venue } : {}),
+      ...(event.venue ? { name: event.venue } : event.location ? { name: event.location } : { name: event.country }),
       address: {
         '@type': 'PostalAddress',
         ...(event.location ? { addressLocality: event.location } : {}),
         addressCountry: countryCodes[event.country],
       },
     },
-    performer: {
-      '@type': 'MusicGroup',
-      name: 'Old Forest Echoes',
-      url: siteUrl.href,
-    },
+    ...(event.schemaType !== 'Event' ? {
+      performer: {
+        '@type': 'MusicGroup',
+        name: 'Old Forest Echoes',
+        url: siteUrl.href,
+      },
+    } : {}),
     organizer: {
       '@type': 'Organization',
       name: 'Old Forest Echoes',
@@ -169,10 +175,10 @@ function formatDateAccessible(dateStr: string, endDateStr?: string): string {
     <ul class="event-list" role="list" aria-labelledby="calendar-heading">
       {events.map((event) => (
         <li class:list={[{ 'event-past': isPast(event) }]} data-end={event.endDate || event.date}>
-          {/* datetime uses ISO 8601 interval for ranges (e.g. "2026-05-23/2026-05-24").
-             Not part of the HTML <time> spec, but supported by Google's structured data parser
-             and preferable to losing the end date. The aria-label provides the accessible text. */}
-          <time class="event-date" datetime={event.endDate ? `${event.date}/${event.endDate}` : event.date} aria-label={formatDateAccessible(event.date, event.endDate)}>
+          {/* datetime uses start date only (HTML spec requires a single date, not an interval).
+             The aria-label provides the full range in accessible text. End date is in data-end for client-side use
+             and in JSON-LD structured data for search engines. */}
+          <time class="event-date" datetime={event.date} aria-label={formatDateAccessible(event.date, event.endDate)}>
             {formatDate(event.date, event.endDate)}
           </time>
           <span>
@@ -205,7 +211,7 @@ function formatDateAccessible(dateStr: string, endDateStr?: string): string {
   <section class="section" id="venue" aria-labelledby="venue-heading">
     <h2 id="venue-heading">Venue Concerts</h2>
     <div class="prose">
-      <p>While forest concerts are unique and offer a direct connection for people in nature, our mission is to bring the essence of these stunning areas inspiring our work to audiences in urban settings as well. The venue concerts are our tool to do that and are tailored to fit the particular venues, festivals and events.</p>
+      <p>While forest concerts are unique and offer a direct connection for people in nature, our mission is to bring the essence of these stunning areas inspiring our work to audiences in urban settings as well. The venue concerts are our tool to do that and are tailored to fit the particular venues, festivals, and events.</p>
       <p>A venue concert is a music performance on a stage, using soundscape recordings and projections to complement the music itself and to deepen the multisensory experience of the audience. The concert sound is set into a surround sound system, which is designed to provide an immersive experience for the audience. In this setup, the soundscapes come from all directions and the music comes from the direction of the performer.</p>
       <p>Performance length: 60 mins</p>
       <p><strong>Soundscape installation</strong><br />Using the sounds captured in the old-growth forests, the project sound artist Mikko H. Haapoja prepares a surround system soundscape installation that stands separately from the concert performance. It is accompanied by visuals by award-winning documentary filmmaker Ville Tanttu.</p>
@@ -215,8 +221,8 @@ function formatDateAccessible(dateStr: string, endDateStr?: string): string {
   <section class="section" id="workshops" aria-labelledby="workshops-heading">
     <h2 id="workshops-heading">Workshops</h2>
     <div class="prose">
-      <p>As our forest concerts include an interactive walk through the old-growth forest to the forest venue, we also offer a direct forest music workshop experience for people who are interested in music making and the forest, and who want to learn more about the forest composition methods. We provide workshops for music school students and also for the wider public at festivals, venues and events.</p>
-      <p>The workshops include a guided tour in the forest by a forest expert and a music composition workshop held by the main artist and composer, <span lang="cs">Barbora Šilhánová</span>. The work we do together focuses on offering new perspectives on nature as a place of inspiration, connection, musicality of common sounds and recording of sound for music making. The event includes a short music performance by Barbora.</p>
+      <p>As our forest concerts include an interactive walk through the old-growth forest to the forest venue, we also offer a direct forest music workshop experience for people who are interested in music making and the forest, and who want to learn more about the forest composition methods. We provide workshops for music school students and also for the wider public at festivals, venues, and events.</p>
+      <p>The workshops include a guided tour in the forest by a forest expert and a music composition workshop held by the main artist and composer, <span lang="cs">Barbora Šilhánová</span>. The work we do together focuses on offering new perspectives on nature as a place of inspiration, connection, musicality of common sounds, and recording of sound for music making. The event includes a short music performance by Barbora.</p>
       <p>Event length: 2 hrs</p>
     </div>
   </section>

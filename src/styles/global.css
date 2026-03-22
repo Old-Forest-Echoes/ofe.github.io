@@ -42,7 +42,7 @@
   --color-past-text: rgba(255, 255, 255, 0.5);
   --color-past-date: rgba(255, 230, 148, 0.55);
 
-  --font-display: 'Leonetta Serif', 'Palatino Linotype', serif;
+  --font-display: 'Leonetta Serif', 'Palatino Linotype', Palatino, serif;
   --font-body: 'Spectral', 'Georgia', serif;
 
   --max-width: 940px;
@@ -75,6 +75,20 @@ img {
   max-width: 100%;
   height: auto;
   display: block;
+}
+
+address {
+  font-style: normal;
+}
+
+cite {
+  font-style: normal;
+}
+
+/* Spectral only ships weights 300 (Light) and 400 (Regular), so strong = Regular weight */
+strong {
+  font-weight: 400;
+  color: var(--color-gold);
 }
 
 ::selection {
@@ -288,7 +302,7 @@ body:has(.nav-open) {
 
 /* Keep in sync with Nav.astro matchMedia('(min-width: 769px)') listener */
 @media (max-width: 768px) {
-  .nav-toggle {
+  .js-nav .nav-toggle {
     display: block;
   }
 
@@ -450,6 +464,7 @@ body:has(.nav-open) {
 .event-list li {
   display: grid;
   grid-template-columns: auto 1fr;
+  gap: 0.75rem;
   padding-block: 0.35rem;
 }
 
@@ -467,8 +482,10 @@ body:has(.nav-open) {
 }
 
 /* === Contact === */
-address {
-  font-style: normal;
+.contact-grid a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
 }
 
 .contact-grid {
@@ -526,25 +543,10 @@ address {
   font-size: 0.85rem;
 }
 
-/* Spectral only ships weights 300 (Light) and 400 (Regular), so strong = Regular weight */
-strong {
-  font-weight: 400;
-  color: var(--color-gold);
-}
-
-cite {
-  font-style: normal;
-}
-
 .prose a {
-  color: var(--color-gold);
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
-}
-
-.prose a:hover {
-  color: var(--color-text);
 }
 
 .prose p {
@@ -555,6 +557,7 @@ cite {
 @media print {
   :root {
     color-scheme: light;
+    --color-bg: white;
     --color-gold: black;
     --color-gold-muted: black;
     --color-text: black;
@@ -572,11 +575,11 @@ cite {
   }
 
   body {
-    background: white;
+    background: var(--color-bg);
   }
 
   a {
-    color: black;
+    color: var(--color-text);
     text-decoration: underline;
   }
 
@@ -607,6 +610,10 @@ cite {
     box-shadow: none;
   }
 
+  .footer {
+    margin-block-start: 1rem;
+  }
+
   a[href^="http"]::after {
     content: " (" attr(href) ")";
     font-size: 0.8em;
@@ -634,6 +641,14 @@ cite {
 
   .video-play {
     forced-color-adjust: none;
+  }
+
+  .footer-socials a {
+    opacity: 1;
+  }
+
+  .nav-links a[aria-current="page"] {
+    text-decoration: underline;
   }
 
   .event-past {

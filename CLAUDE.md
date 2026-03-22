@@ -14,7 +14,7 @@ npm run preview     # Preview production build
 ## Architecture
 
 - **Astro 6** static site, zero JS framework runtime
-- **Single CSS file** (`src/styles/global.css`) — all styling, ~8KB, CSS custom properties
+- **Single CSS file** (`src/styles/global.css`) — all styling, CSS custom properties
 - **Self-hosted fonts** — Leonetta Serif (WOFF2) + Spectral (WOFF2, 2 weights), no Google Fonts
 - **Content Collections** for artists (Markdown with Zod schema)
 - **Typed inline data** for events (in `src/pages/events.astro`)
@@ -83,6 +83,8 @@ Edit the `events` array in `src/pages/events.astro`. Each entry is typed as `Eve
 - `venueLanguage` (optional): BCP 47 language tag for the `venue` field (e.g. `"fi"`, `"cs"`, `"de"`)
 - `location` (optional): City/locality name — used as `addressLocality` in JSON-LD, wrapped in `<span lang>` using `locationLanguage`
 - `locationLanguage` (optional): BCP 47 language tag for the `location` field (e.g. `"fi"`, `"cs"`, `"de"`)
+- `country` (required): Country name — must exist in the `countryCodes` map (validated at build time)
+- `schemaType` (optional): `'MusicEvent'` (default) or `'Event'` — controls the JSON-LD `@type` and whether a `performer` field is included
 - At least one of `description`, `venue`, or `location` is required per event
 
 Dates must be ISO `YYYY-MM-DD` format (validated at build time). Past events are automatically dimmed (build-time + client-side check). Past events are excluded from JSON-LD structured data. A daily GitHub Actions cron rebuild keeps this current.
