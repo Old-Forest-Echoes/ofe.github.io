@@ -5,26 +5,20 @@ import { fileURLToPath } from 'node:url';
 
 const cwd = fileURLToPath(new URL('.', import.meta.url));
 
-/** @param {string} filePath @returns {string | undefined} */
-function getLastCommitDate(filePath) {
+/** @param {string[]} filePaths @returns {string | undefined} */
+function getLatestCommitDate(filePaths) {
+  if (filePaths.length === 0) return undefined;
   try {
-    const date = execFileSync('git', ['log', '-1', '--format=%cI', '--', filePath], {
+    const date = execFileSync('git', ['log', '-1', '--format=%cI', '--', ...filePaths], {
       encoding: 'utf-8',
       cwd,
     }).trim();
     return date || undefined;
   } catch (e) {
     // eslint-disable-next-line no-console
-    console.warn(`[sitemap] Could not read git log for ${filePath}:`, e instanceof Error ? e.message : e);
+    console.warn(`[sitemap] Could not read git log for ${filePaths.join(', ')}:`, e instanceof Error ? e.message : e);
     return undefined;
   }
-}
-
-/** @param {string[]} filePaths @returns {string | undefined} */
-function getLatestCommitDate(filePaths) {
-  const dates = filePaths.map(getLastCommitDate).filter(Boolean);
-  if (dates.length === 0) return undefined;
-  return dates.reduce((a, b) => (a > b ? a : b), dates[0]);
 }
 
 // Shared files that affect all pages (layout, nav, footer, contact, styles)

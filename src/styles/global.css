@@ -13,7 +13,6 @@
   font-weight: 300;
   font-style: normal;
   font-display: swap;
-  size-adjust: 97%;
 }
 
 @font-face {
@@ -22,13 +21,34 @@
   font-weight: 400;
   font-style: normal;
   font-display: swap;
-  size-adjust: 97%;
+}
+
+/* Fallback @font-face declarations — adjust Georgia to match Spectral metrics,
+   reducing CLS during font swap. Values derived from glyph width measurement. */
+@font-face {
+  font-family: 'Spectral Fallback';
+  src: local('Georgia');
+  font-weight: 300;
+  size-adjust: 98.39%;
+  ascent-override: 107.63%;
+  descent-override: 47.06%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Spectral Fallback';
+  src: local('Georgia');
+  font-weight: 400;
+  size-adjust: 100.25%;
+  ascent-override: 105.64%;
+  descent-override: 46.18%;
+  line-gap-override: 0%;
 }
 
 /* === Custom Properties === */
 :root {
   color-scheme: dark;
-  --color-bg: #0a0a08;
+  --color-bg: #0a0a08; /* Keep in sync with src/data/theme.ts (used in <meta name="theme-color">) */
   --color-gold: #ffe694;
   --color-gold-muted: rgba(255, 230, 148, 0.7);
   --color-text: #ebffef;
@@ -55,7 +75,7 @@
   --z-skip: 300;
 
   --font-display: 'Leonetta Serif', Georgia, 'Palatino Linotype', Palatino, serif;
-  --font-body: 'Spectral', Georgia, serif;
+  --font-body: 'Spectral', 'Spectral Fallback', Georgia, serif;
 
   --max-width: 940px;
   --content-padding: 1rem;
@@ -644,6 +664,10 @@ body:has(.nav-open) {
     content: ' (' attr(href) ')';
     font-size: 0.8em;
     word-break: break-all;
+  }
+
+  .footer-socials a[href^='http']::after {
+    content: none;
   }
 }
 
