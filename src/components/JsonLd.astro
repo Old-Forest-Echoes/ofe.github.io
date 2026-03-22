@@ -1,6 +1,6 @@
 ---
 interface Props {
-  data: Record<string, unknown>;
+  data: Record<string, unknown> & { '@context': string; '@type': string };
 }
 
 const { data } = Astro.props;

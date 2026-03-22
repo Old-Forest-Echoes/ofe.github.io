@@ -81,7 +81,7 @@ const personSchemas = await Promise.all(
   <section class="section">
     <h1>Artists</h1>
     <div class="prose">
-      <p>Old Forest Echoes is the vision of internationally renowned singer, composer and multi-instrumentalist Barbora Xu (CZ/FI), who spends prolonged periods in endangered old-growth forest areas of Finland. Conducting artistic research involving deep personal songwriting journeys, Barbora and her team also explore the forest to locate the best wilderness concert venues. The venues are transformed into a living piece of art by Wiebke Pandikow and become the Old Forest Echoes forest tour venues open to the public. To bring the music from the old-growth forests to festivals and venues, experienced sound artist Mikko Haapoja prepares surround system soundscape installations to stand alone or encapsulate a live concert. Barbora collaborates with numerous renowned artists such as Niklas Winter, Ilkka Heinonen, <span lang="fi">Jenni Venäläinen</span>, <span lang="cs">Petra Jelénková</span>, making every single concert a unique event.</p>
+      <p>Old Forest Echoes is the vision of internationally renowned singer, composer and multi-instrumentalist Barbora Xu (CZ/FI), who spends prolonged periods in endangered old-growth forest areas of Finland. Conducting artistic research involving deep personal songwriting journeys, Barbora and her team also explore the forest to locate the best wilderness concert venues. The venues are transformed into a living piece of art by Wiebke Pandikow and become the Old Forest Echoes forest tour venues open to the public. To bring the music from the old-growth forests to festivals and venues, experienced sound artist Mikko H. Haapoja prepares surround system soundscape installations to stand alone or encapsulate a live concert. Barbora collaborates with numerous renowned artists such as Niklas Winter, Ilkka Heinonen, <span lang="fi">Jenni Venäläinen</span>, <span lang="cs">Petra Jelénková</span>, making every single concert a unique event.</p>
     </div>
   </section>
 
@@ -93,7 +93,7 @@ const personSchemas = await Promise.all(
         <h2 id={`${role}-heading`}>{roleLabels[role]}</h2>
         {role === 'featured' && ensembleImg && (
           <div class="artist-card">
-            <Image src={ensembleImg.default} alt="Old Forest Echoes ensemble performing in a forest setting" widths={[500, 800, 1080, 1600]} sizes="(max-width: 768px) 100vw, 70vw" loading="lazy" />
+            <Image src={ensembleImg.default} alt="Old Forest Echoes ensemble performing in a forest setting" widths={[500, 800, 1080]} sizes="(max-width: 768px) 100vw, 660px" loading="lazy" />
           </div>
         )}
         {roleIntros[role] && (
@@ -107,7 +107,7 @@ const personSchemas = await Promise.all(
           if (!img) throw new Error(`Missing image for artist "${artist.data.name}": ${imgPath}`);
           return (
             <article class="artist-card" id={artist.id} aria-labelledby={`artist-${artist.id}`}>
-              <Image src={img.default} alt={`Portrait of ${artist.data.name}`} widths={[500, 800, 1080]} sizes="(max-width: 768px) 100vw, 70vw" loading="lazy" />
+              <Image src={img.default} alt={`Portrait of ${artist.data.name}`} widths={[500, 800, 1080]} sizes="(max-width: 768px) 100vw, 660px" loading="lazy" />
               <h3 id={`artist-${artist.id}`}>{artist.data.name}</h3>
               <div class="prose">
                 <Content />

@@ -34,7 +34,7 @@ const { videoId, title, thumbnail } = Astro.props;
       iframe.title = container.dataset.videoTitle || '';
       iframe.setAttribute('allowfullscreen', '');
       iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
-      iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-presentation');
+      iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-presentation allow-popups');
       container.replaceChild(iframe, button);
     });
   });

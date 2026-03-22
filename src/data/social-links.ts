@@ -16,7 +16,7 @@ export const socialLinks: SocialLink[] = [
     height: 23,
   },
   {
-    href: "https://www.instagram.com/oldforestechoes/",
+    href: "https://www.instagram.com/oldforestechoes",
     label: "Old Forest Echoes on Instagram",
     icon: "/icons/instagram.svg",
     width: 23,

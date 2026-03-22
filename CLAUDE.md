@@ -14,7 +14,7 @@ npm run preview     # Preview production build
 ## Architecture
 
 - **Astro 6** static site, zero JS framework runtime
-- **Single CSS file** (`src/styles/global.css`) — all styling, ~5KB, CSS custom properties
+- **Single CSS file** (`src/styles/global.css`) — all styling, ~8KB, CSS custom properties
 - **Self-hosted fonts** — Leonetta Serif (WOFF2) + Spectral (WOFF2, 2 weights), no Google Fonts
 - **Content Collections** for artists (Markdown with Zod schema)
 - **Typed inline data** for events (in `src/pages/events.astro`)
@@ -39,7 +39,7 @@ npm run preview     # Preview production build
 │   │   ├── events.astro          # Event calendar + MusicEvent schemas (inline data)
 │   │   └── 404.astro             # Custom 404 (noindex)
 │   ├── content/
-│   │   └── artists/*.md          # 6 artist bios with frontmatter
+│   │   └── artists/*.md          # Artist bios with frontmatter
 │   ├── content.config.ts         # Zod schema: name, role, order, image
 │   ├── data/social-links.ts      # Social media links (shared by Footer + index)
 │   ├── assets/images/            # Source images (processed by Astro)
@@ -50,6 +50,7 @@ npm run preview     # Preview production build
 │   ├── images/og-image-landscape.webp  # OG image for social sharing (1200x630)
 │   ├── logo.svg                  # SVG logo (also used as favicon)
 │   ├── apple-touch-icon.png      # 180x180 iOS icon
+│   ├── favicon.ico                # Legacy ICO fallback (auto-requested by old browsers)
 │   ├── robots.txt
 │   └── CNAME                     # GitHub Pages custom domain
 └── dist/                         # Build output (gitignored)
@@ -74,12 +75,15 @@ Edit the `events` array in `src/pages/events.astro`. Each entry is typed as `Eve
 ```ts
 { date: "2026-03-06", location: "Sipoo", locationLanguage: "fi", country: "Finland" }
 { date: "2026-05-23", endDate: "2026-05-24", description: "Garden Festival", location: "Koroinen", locationLanguage: "fi", country: "Finland" }
-{ date: "2026-08-08", endDate: "2026-08-09", description: "Norpas festival", country: "Finland" }
+{ date: "2026-06-25", description: "Akcent & Barbora Xu", venue: "Lidové Sady", venueLanguage: "cs", location: "Liberec", locationLanguage: "cs", country: "Czechia" }
+{ date: "2026-08-08", endDate: "2026-08-09", description: "Norpas Festival", country: "Finland" }
 ```
-- `description` (optional): English venue/event name — rendered without a `lang` attribute
-- `location` (optional): Local-language place name — wrapped in `<span lang>` using `locationLanguage`
+- `description` (optional): English event/concert name — rendered without a `lang` attribute
+- `venue` (optional): Venue/building name — used as `Place.name` in JSON-LD structured data
+- `venueLanguage` (optional): BCP 47 language tag for the `venue` field (e.g. `"fi"`, `"cs"`, `"de"`)
+- `location` (optional): City/locality name — used as `addressLocality` in JSON-LD, wrapped in `<span lang>` using `locationLanguage`
 - `locationLanguage` (optional): BCP 47 language tag for the `location` field (e.g. `"fi"`, `"cs"`, `"de"`)
-- At least one of `description` or `location` is required per event
+- At least one of `description`, `venue`, or `location` is required per event
 
 Dates must be ISO `YYYY-MM-DD` format (validated at build time). Past events are automatically dimmed (build-time + client-side check). Past events are excluded from JSON-LD structured data. A daily GitHub Actions cron rebuild keeps this current.
 
