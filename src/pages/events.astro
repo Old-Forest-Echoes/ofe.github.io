@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Contact from '../components/Contact.astro';
 import JsonLd from '../components/JsonLd.astro';
+import { utcToday, isBeforeDate } from '../utils/date';
 
 const countryCodes = {
   Finland: 'FI',
@@ -154,12 +155,12 @@ function validateEvents(list: EventEntry[]): void {
 validateEvents(events);
 
 // UTC date — matches the daily 04:00 UTC cron rebuild and ISO date string comparison
-const today = new Date().toISOString().slice(0, 10);
+const today = utcToday();
 
 const eventYears = [...new Set(events.map((e) => e.date.slice(0, 4)))].sort();
 
 function formatYearRange(years: string[]): string {
-  if (years.length === 0) return '';
+  if (years.length === 0) return 'Upcoming';
   if (years.length === 1) return years[0];
   return `${years[0]}–${years[years.length - 1]}`;
 }
@@ -171,7 +172,7 @@ const countryFormatter = new Intl.ListFormat('en', { style: 'long', type: 'conju
 const countryList = countryFormatter.format(eventCountries);
 
 function isPast(event: EventEntry): boolean {
-  return (event.endDate || event.date) < today;
+  return isBeforeDate(event.endDate || event.date, today);
 }
 
 const upcomingEvents = events.filter((event) => !isPast(event));
@@ -387,11 +388,11 @@ function formatDateAccessible(dateStr: string, endDateStr?: string): string {
   <Contact />
 
   <script>
-    // UTC date intentionally matches build-time check and daily 04:00 UTC cron rebuild
-    const today = new Date().toISOString().slice(0, 10);
+    import { utcToday, isBeforeDate } from '../utils/date';
+    const today = utcToday();
     for (const li of document.querySelectorAll<HTMLElement>('.event-list li[data-end]')) {
       const end = li.dataset.end ?? '';
-      if (end < today) li.classList.add('event-past');
+      if (isBeforeDate(end, today)) li.classList.add('event-past');
     }
   </script>
 </Base>

@@ -7,7 +7,7 @@ image: barbora.jpg
 
 Czech singer and multi-instrumentalist Barbora Xu (<span lang="cs">Barbora Šilhánová</span>) has been working in Europe and Asia, exploring local poetry, string instruments, and vocal techniques while composing music. Her work is deeply inspired by nature — the calmness, fragility, and softness experienced in the natural light and soundscapes of forests; the fullness of the human voice combined with handmade instruments.
 
-With her latest album <cite>The Garden of <span lang="fi">Otava</span></cite> reaching no. 7 at the World Music Charts Europe in 2025, Barbora was also awarded the Mention of the International Jury at the world music competition <span lang="it">Premio Andrea Parodi</span> in Sardinia only a few months later.
+With her latest album <cite lang="en">The Garden of <span lang="fi">Otava</span></cite> reaching no. 7 at the World Music Charts Europe in 2025, Barbora was also awarded the Mention of the International Jury at the world music competition <span lang="it">Premio Andrea Parodi</span> in Sardinia only a few months later.
 
 “Barbora Xu” is an artist name combining Barbora’s actual given name and her legal Chinese name, given to her later in life. The idea behind combining those two names was to amplify her individual attraction to Chinese language, medicine, tea, music, martial arts...
 

@@ -1,4 +1,6 @@
 ---
+import { contacts } from '../data/contacts';
+
 function obfuscate(email: string): string {
   return email
     .split('')
@@ -9,29 +11,19 @@ function obfuscate(email: string): string {
 function escapeAttr(str: string): string {
   return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
-
-const contacts = [
-  { title: 'General Inquiries', name: 'Carly Markkanen', email: 'info@oldforestechoes.com' },
-  {
-    title: 'Director',
-    name: 'Barbora Šilhánová',
-    nameHtml: '<span lang="cs">Barbora Šilhánová</span>',
-    email: 'barbora@oldforestechoes.com',
-  },
-];
 ---
 
 <section class="section" aria-labelledby="contact-heading">
   <h2 id="contact-heading" class="sr-only">Contact</h2>
   <address class="contact-grid">
     {
-      contacts.map(({ title, name, nameHtml, email }) => (
+      contacts.map(({ title, name, nameLanguage, email }) => (
         <p>
           <>
             <strong>{title}</strong>
             <br />
           </>
-          {nameHtml ? <Fragment set:html={nameHtml} /> : name}
+          {nameLanguage ? <span lang={nameLanguage}>{name}</span> : name}
           <br />
           <Fragment
             set:html={`<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;${obfuscate(email)}" aria-label="${escapeAttr(email)}">${obfuscate(email)}</a>`}

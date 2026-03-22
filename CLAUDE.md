@@ -36,12 +36,12 @@ npm run validate    # Lint + type check (lint && check)
 │   ├── layouts/Base.astro        # HTML shell, SEO meta, OG tags, responsive bg
 │   ├── components/
 │   │   ├── Nav.astro             # Sticky nav, mobile menu with <button> toggle
-│   │   ├── Footer.astro          # Social links (target="_blank", rel="noopener")
+│   │   ├── Footer.astro          # Social links (target="_blank", rel="noopener" for own profiles)
 │   │   ├── Contact.astro         # Shared contact section (used on all content pages)
 │   │   ├── YouTubeEmbed.astro    # Lite facade — no iframe until click
 │   │   └── JsonLd.astro          # Generic JSON-LD structured data wrapper
 │   ├── pages/
-│   │   ├── index.astro           # About page + Organization schema
+│   │   ├── index.astro           # About page + WebSite/Organization schemas
 │   │   ├── artists.astro         # Content collection query + Person schemas
 │   │   ├── events.astro          # Event calendar + MusicEvent schemas (inline data)
 │   │   └── 404.astro             # Custom 404 (noindex)
@@ -49,6 +49,8 @@ npm run validate    # Lint + type check (lint && check)
 │   │   └── artists/*.md          # Artist bios with frontmatter
 │   ├── content.config.ts         # Zod schema: name, role, order, image
 │   ├── data/social-links.ts      # Social media links (shared by Footer + index)
+│   ├── data/contacts.ts          # Contact info (shared by Contact + index schema)
+│   ├── utils/date.ts             # Date helpers (shared by events build + client)
 │   ├── assets/images/            # Source images (processed by Astro)
 │   └── styles/global.css         # Single stylesheet
 ├── public/
@@ -114,7 +116,7 @@ Dates must be ISO `YYYY-MM-DD` format (validated at build time). Past events are
 - **Fonts**: `--font-display` (Leonetta Serif) for headings/nav, `--font-body` (Spectral) for body text.
 - **Images in `src/assets/`**: Processed by Astro (responsive WebP). Use for content images.
 - **Images in `public/`**: Served as-is. Use for icons, logos, OG images.
-- **External links**: Use `target="_blank" rel="noopener"`. Add `noreferrer` for third-party links where referrer should be hidden; omit it for own social profiles (allows referrer analytics).
+- **External links**: Use `target="_blank" rel="noopener"`. The project's own social profiles (Facebook, Instagram, YouTube, Linktree) use `rel="noopener"` without `noreferrer` to allow referrer analytics on those accounts. Add `noreferrer` for unrelated third-party links where the referrer should be hidden.
 - **Non-English text**: Wrap in `<span lang="xx">` for screen reader pronunciation (e.g. `fi`, `cs`, `de`). Events use per-entry `locationLanguage`.
 - **No inline style attributes** (`style="..."`). Scoped `<style>` blocks in Astro components are acceptable.
 - **Semantic HTML**: `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>`, `<time>`.
@@ -126,7 +128,8 @@ Each page gets via Base.astro: meta description, canonical URL, OG tags, Twitter
 
 JSON-LD structured data is added per-page:
 
-- **index.astro**: Organization schema
+- **Base.astro**: BreadcrumbList schema on non-index content pages (artists, events)
+- **index.astro**: WebSite + Organization schemas (via `@graph`)
 - **artists.astro**: Person schema per artist (jobTitle varies by role)
 - **events.astro**: MusicEvent schema per event
 

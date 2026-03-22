@@ -5,6 +5,7 @@ import Contact from '../components/Contact.astro';
 import JsonLd from '../components/JsonLd.astro';
 import ytThumb from '../assets/images/youtube-thumbnail.jpg';
 import { socialLinks } from '../data/social-links';
+import { primaryEmail } from '../data/contacts';
 
 const siteUrl = Astro.site;
 if (!siteUrl) throw new Error('Astro.site must be configured in astro.config.mjs');
@@ -34,7 +35,7 @@ const indexGraph = {
       },
       description:
         'Music and art composed in Finnish old-growth forests, aiming to raise awareness and protect threatened forests.',
-      email: 'info@oldforestechoes.com',
+      email: primaryEmail,
       sameAs: socialLinks.filter(({ href }) => !href.includes('linktr.ee')).map(({ href }) => href),
       funder: {
         '@type': 'Organization',

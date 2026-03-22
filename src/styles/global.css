@@ -52,8 +52,8 @@
   --z-menu-toggle: 201;
   --z-skip: 300;
 
-  --font-display: 'Leonetta Serif', 'Palatino Linotype', Palatino, serif;
-  --font-body: 'Spectral', 'Georgia', serif;
+  --font-display: 'Leonetta Serif', Georgia, 'Palatino Linotype', Palatino, serif;
+  --font-body: 'Spectral', Georgia, serif;
 
   --max-width: 940px;
   --content-padding: 1rem;
@@ -474,7 +474,7 @@ body:has(.nav-open) {
 
 .video-facade:focus-visible {
   outline: 2px solid var(--color-gold);
-  outline-offset: -2px;
+  outline-offset: 2px;
 }
 
 .video-facade:focus-visible .video-play {
@@ -637,7 +637,7 @@ body:has(.nav-open) {
     margin-block-start: 1rem;
   }
 
-  a[href^='http']:not([aria-label])::after {
+  a[href^='http']::after {
     content: ' (' attr(href) ')';
     font-size: 0.8em;
     word-break: break-all;
@@ -652,6 +652,14 @@ body:has(.nav-open) {
 
   .nav-toggle {
     border: 1px solid ButtonText;
+  }
+
+  .nav-links a {
+    text-shadow: none;
+  }
+
+  .nav-links a[aria-current='page'] {
+    text-decoration: underline;
   }
 
   .artist-card img {
@@ -670,12 +678,21 @@ body:has(.nav-open) {
     opacity: 1;
   }
 
-  .nav-links a[aria-current='page'] {
-    text-decoration: underline;
+  .footer-socials img {
+    forced-color-adjust: none;
   }
 
   .event-past {
+    color: GrayText;
     text-decoration: line-through;
+  }
+
+  .event-past .event-date {
+    color: GrayText;
+  }
+
+  .contact-grid a {
+    color: LinkText;
   }
 }
 

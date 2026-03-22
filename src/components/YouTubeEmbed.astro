@@ -7,8 +7,10 @@ interface Props {
   thumbnail: ImageMetadata;
 }
 
+const YOUTUBE_ID_RE = /^[a-zA-Z0-9_-]{11}$/;
+
 const { videoId, title, thumbnail } = Astro.props;
-if (!/^[a-zA-Z0-9_-]{11}$/.test(videoId)) throw new Error(`Invalid YouTube video ID: ${videoId}`);
+if (!YOUTUBE_ID_RE.test(videoId)) throw new Error(`Invalid YouTube video ID: ${videoId}`);
 ---
 
 <div class="video-embed" data-video-id={videoId} data-video-title={title}>
@@ -31,8 +33,7 @@ if (!/^[a-zA-Z0-9_-]{11}$/.test(videoId)) throw new Error(`Invalid YouTube video
   </button>
   <noscript
     ><p>
-      <a href={`https://www.youtube.com/watch?v=${videoId}`} target="_blank" rel="noopener noreferrer"
-        >Watch: {title} on YouTube</a
+      <a href={`https://www.youtube.com/watch?v=${videoId}`} target="_blank" rel="noopener">Watch: {title} on YouTube</a
       >
     </p></noscript
   >
