@@ -130,7 +130,7 @@ const eventSchemas = upcomingEvents.map((event) => {
     },
     ...(event.schemaType !== 'Event' ? {
       performer: {
-        '@type': 'MusicGroup',
+        '@type': 'PerformingGroup',
         name: 'Old Forest Echoes',
         url: siteUrl.href,
       },
@@ -208,6 +208,7 @@ function formatDateAccessible(dateStr: string, endDateStr?: string): string {
         </li>
       ))}
     </ul>
+    {upcomingEvents.length === 0 && <p class="prose calendar-subtitle">New dates will be announced soon.</p>}
   </section>
 
   <section class="section" id="forest" aria-labelledby="forest-heading">
