@@ -2,8 +2,9 @@ import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import eslintPluginAstro from 'eslint-plugin-astro';
 import eslintConfigPrettier from 'eslint-config-prettier';
+import globals from 'globals';
 
-export default tseslint.config(
+export default [
   js.configs.recommended,
   ...tseslint.configs.recommended,
   ...eslintPluginAstro.configs.recommended,
@@ -16,15 +17,13 @@ export default tseslint.config(
   {
     files: ['**/*.mjs'],
     languageOptions: {
-      globals: {
-        URL: 'readonly',
-        console: 'readonly',
-        process: 'readonly',
-      },
+      globals: globals.nodeBuiltin,
     },
   },
   {
-    // Astro frontmatter uses ambient types (ImageMetadata, etc.) provided by astro/client
+    // typescript-eslint disables no-undef for .ts files, but eslint-plugin-astro's
+    // parser does not get the same treatment — Astro frontmatter uses ambient types
+    // (ImageMetadata, etc.) from astro/client.d.ts that trigger false positives.
     files: ['**/*.astro'],
     rules: {
       'no-undef': 'off',
@@ -33,4 +32,4 @@ export default tseslint.config(
   {
     ignores: ['dist/', '.astro/'],
   },
-);
+];

@@ -84,6 +84,7 @@ const personSchemas = await Promise.all(
     const resolved = await getImage({ src: img, width: 800, format: 'webp' });
     return {
       '@type': 'Person',
+      '@id': new URL(`/artists/#${artist.id}`, siteUrl).href,
       name: artist.data.name,
       description:
         truncateDescription(artist.body ?? '') ||
@@ -92,8 +93,7 @@ const personSchemas = await Promise.all(
       jobTitle: roleJobTitles[artist.data.role],
       image: new URL(resolved.src, siteUrl).href,
       memberOf: {
-        '@type': 'Organization',
-        name: 'Old Forest Echoes',
+        '@id': new URL('#organization', siteUrl).href,
       },
     };
   }),

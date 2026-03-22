@@ -17,7 +17,7 @@ interface Props {
 
 const {
   title = 'Old Forest Echoes',
-  description = 'Music and art composed in Finnish old-growth forests by Barbora Xu, aiming to raise awareness and protect threatened forests.',
+  description = 'Old Forest Echoes — music and art composed in Finnish old-growth forests by Barbora Xu, raising awareness to protect threatened forests.',
   ogImage = '/images/og-image-landscape.webp',
   ogImageWidth = 1200,
   ogImageHeight = 630,
@@ -29,6 +29,7 @@ function ogImageMimeType(path: string): string {
   const ext = path.split('.').pop()?.toLowerCase();
   if (ext === 'png') return 'image/png';
   if (ext === 'jpg' || ext === 'jpeg') return 'image/jpeg';
+  if (ext === 'avif') return 'image/avif';
   return 'image/webp';
 }
 
@@ -118,7 +119,7 @@ const bgLarge = await getImage({ src: forestBgSrc, width: 1920, format: 'webp' }
       fetchpriority="high"
     />
 
-    <link rel="preload" href="/logo.svg" as="image" type="image/svg+xml" />
+    <link rel="preload" href="/logo.svg" as="image" type="image/svg+xml" fetchpriority="low" />
 
     {
       /* set:html is needed because Astro <style> blocks don't support variable interpolation.

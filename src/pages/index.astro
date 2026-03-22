@@ -14,11 +14,14 @@ const indexGraph = {
   '@graph': [
     {
       '@type': 'WebSite',
+      '@id': new URL('#website', siteUrl).href,
       name: 'Old Forest Echoes',
       url: siteUrl.href,
+      publisher: { '@id': new URL('#organization', siteUrl).href },
     },
     {
       '@type': 'Organization',
+      '@id': new URL('#organization', siteUrl).href,
       name: 'Old Forest Echoes',
       alternateName: 'Ikimetsän kaiku',
       url: siteUrl.href,
@@ -42,10 +45,7 @@ const indexGraph = {
 };
 ---
 
-<Base
-  title="Old Forest Echoes — Music for Protection of Old Growth Forests"
-  description="Old Forest Echoes — music and art composed in Finnish old-growth forests by Barbora Xu, raising awareness to protect threatened forests."
->
+<Base title="Old Forest Echoes — Music for Protection of Old Growth Forests">
   <JsonLd data={indexGraph} />
   <section class="section" aria-labelledby="about-heading">
     <h1 id="about-heading">Music for Protection of Old Growth Forests</h1>

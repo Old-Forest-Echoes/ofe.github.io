@@ -6,4 +6,5 @@ node_modules
 dist
 tmp
 .idea
+.eslintcache
 docs

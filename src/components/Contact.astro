@@ -6,6 +6,10 @@ function obfuscate(email: string): string {
     .join('');
 }
 
+function escapeAttr(str: string): string {
+  return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
 const contacts = [
   { title: 'General Inquiries', name: 'Carly Markkanen', email: 'info@oldforestechoes.com' },
   {
@@ -30,7 +34,7 @@ const contacts = [
           {nameHtml ? <Fragment set:html={nameHtml} /> : name}
           <br />
           <Fragment
-            set:html={`<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;${obfuscate(email)}" aria-label="${email}">${obfuscate(email)}</a>`}
+            set:html={`<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;${obfuscate(email)}" aria-label="${escapeAttr(email)}">${obfuscate(email)}</a>`}
           />
         </p>
       ))

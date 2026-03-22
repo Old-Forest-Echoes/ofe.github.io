@@ -101,7 +101,7 @@ const events: EventEntry[] = [
     date: '2026-08-30',
     description: 'Forest concert',
     location: 'Stansvik',
-    locationLanguage: 'fi',
+    locationLanguage: 'sv',
     country: 'Finland',
   },
   { date: '2026-09-05', location: 'Helsinki', locationLanguage: 'fi', country: 'Finland' },
@@ -210,22 +210,22 @@ const eventSchemas = upcomingEvents.map((event) => {
     },
     ...(event.schemaType !== 'Event'
       ? {
-          performer: {
-            '@type': 'MusicGroup',
-            name: 'Old Forest Echoes',
-            url: siteUrl.href,
-          },
+          performer: { '@id': new URL('#organization', siteUrl).href },
         }
       : {}),
-    organizer: {
-      '@type': 'Organization',
-      name: 'Old Forest Echoes',
-      url: siteUrl.href,
-    },
+    organizer: { '@id': new URL('#organization', siteUrl).href },
   };
 });
 
-const eventGraph = eventSchemas.length > 0 ? { '@context': 'https://schema.org', '@graph': eventSchemas } : null;
+const organizationRef = {
+  '@type': 'Organization',
+  '@id': new URL('#organization', siteUrl).href,
+  name: 'Old Forest Echoes',
+  url: siteUrl.href,
+};
+
+const eventGraph =
+  eventSchemas.length > 0 ? { '@context': 'https://schema.org', '@graph': [organizationRef, ...eventSchemas] } : null;
 
 // Finnish day.month. format (e.g. "6.3.") — intentional despite lang="en", matches the project's European audience
 const dateFormatShort = new Intl.DateTimeFormat('fi', { month: 'numeric', day: 'numeric', timeZone: 'UTC' });

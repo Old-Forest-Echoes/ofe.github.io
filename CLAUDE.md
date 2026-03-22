@@ -9,6 +9,10 @@ nvm use             # Required — reads .nvmrc to select Node version
 npm run dev         # Dev server at localhost:4321
 npm run build       # Production build to dist/
 npm run preview     # Preview production build
+npm run lint        # ESLint + Prettier check
+npm run format      # Auto-format with Prettier
+npm run check       # Astro type checking
+npm run validate    # Lint + type check (lint && check)
 ```
 
 ## Architecture
@@ -25,6 +29,9 @@ npm run preview     # Preview production build
 
 ```
 ├── astro.config.mjs              # Site config, sitemap with git-based lastmod
+├── eslint.config.mjs             # ESLint flat config (TS + Astro + Prettier)
+├── .prettierrc                   # Prettier config with Astro plugin
+├── tsconfig.json                 # Extends astro/tsconfigs/strict
 ├── src/
 │   ├── layouts/Base.astro        # HTML shell, SEO meta, OG tags, responsive bg
 │   ├── components/
@@ -107,9 +114,9 @@ Dates must be ISO `YYYY-MM-DD` format (validated at build time). Past events are
 - **Fonts**: `--font-display` (Leonetta Serif) for headings/nav, `--font-body` (Spectral) for body text.
 - **Images in `src/assets/`**: Processed by Astro (responsive WebP). Use for content images.
 - **Images in `public/`**: Served as-is. Use for icons, logos, OG images.
-- **External links**: Always use `target="_blank" rel="noopener noreferrer"`.
+- **External links**: Use `target="_blank" rel="noopener"`. Add `noreferrer` for third-party links where referrer should be hidden; omit it for own social profiles (allows referrer analytics).
 - **Non-English text**: Wrap in `<span lang="xx">` for screen reader pronunciation (e.g. `fi`, `cs`, `de`). Events use per-entry `locationLanguage`.
-- **No inline styles** except on the 404 page.
+- **No inline style attributes** (`style="..."`). Scoped `<style>` blocks in Astro components are acceptable.
 - **Semantic HTML**: `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>`, `<time>`.
 - **Accessibility**: Skip link, ARIA attributes on nav toggle, focus trapping in mobile menu.
 
