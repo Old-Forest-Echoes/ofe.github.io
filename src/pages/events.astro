@@ -97,7 +97,6 @@ const eventSchemas = upcomingEvents.map((event) => {
         ? `in ${event.location}, ${event.country}`
         : `in ${event.country}`;
   return {
-    '@context': 'https://schema.org',
     '@type': event.schemaType || 'MusicEvent',
     name: `Old Forest Echoes — ${display}`,
     description: `${event.schemaType === 'Event' ? 'Event' : 'Live performance'} by Old Forest Echoes ${locationLabel}.`,
@@ -129,6 +128,10 @@ const eventSchemas = upcomingEvents.map((event) => {
   };
 });
 
+const eventGraph = eventSchemas.length > 0
+  ? { '@context': 'https://schema.org', '@graph': eventSchemas }
+  : null;
+
 // Finnish day.month. format (e.g. "6.3.") — intentional despite lang="en", matches the project's European audience
 const dateFormatShort = new Intl.DateTimeFormat('fi', { month: 'numeric', day: 'numeric', timeZone: 'UTC' });
 
@@ -159,7 +162,7 @@ function formatDateAccessible(dateStr: string, endDateStr?: string): string {
 ---
 
 <Base title="Events — Old Forest Echoes" description={`Old Forest Echoes ${calendarYear} event calendar: forest concerts, venue performances, and workshops across Finland, Czechia, and Germany.`}>
-  {eventSchemas.map((schema) => <JsonLd data={schema} />)}
+  {eventGraph && <JsonLd data={eventGraph} />}
   <section class="section" id="calendar" aria-labelledby="calendar-heading">
     <h1 id="calendar-heading">Events</h1>
     <p class="calendar-subtitle">Event Calendar {calendarYear}</p>

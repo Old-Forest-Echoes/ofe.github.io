@@ -9,38 +9,48 @@ import { socialLinks } from '../data/social-links';
 const siteUrl = Astro.site;
 if (!siteUrl) throw new Error('Astro.site must be configured in astro.config.mjs');
 
-const orgSchema = {
+const indexGraph = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: 'Old Forest Echoes',
-  alternateName: 'Ikimetsän kaiku',
-  url: siteUrl.href,
-  logo: {
-    '@type': 'ImageObject',
-    url: new URL('/apple-touch-icon.png', siteUrl).href,
-    width: 180,
-    height: 180,
-  },
-  description: 'Music and art composed in Finnish old-growth forests, aiming to raise awareness and protect threatened forests.',
-  email: 'info@oldforestechoes.com',
-  sameAs: socialLinks.map(({ href }) => href),
-  funder: {
-    '@type': 'Organization',
-    name: 'KONE Foundation',
-  },
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      name: 'Old Forest Echoes',
+      url: siteUrl.href,
+    },
+    {
+      '@type': 'Organization',
+      name: 'Old Forest Echoes',
+      alternateName: 'Ikimetsän kaiku',
+      url: siteUrl.href,
+      foundingDate: '2025-01',
+      logo: {
+        '@type': 'ImageObject',
+        url: new URL('/apple-touch-icon.png', siteUrl).href,
+        width: 180,
+        height: 180,
+      },
+      description: 'Music and art composed in Finnish old-growth forests, aiming to raise awareness and protect threatened forests.',
+      email: 'info@oldforestechoes.com',
+      sameAs: socialLinks.map(({ href }) => href),
+      funder: {
+        '@type': 'Organization',
+        name: 'KONE Foundation',
+      },
+    },
+  ],
 };
 ---
 
 <Base title="Old Forest Echoes — Music for Protection of Old Growth Forests" description="Old Forest Echoes — music and art composed in Finnish old-growth forests by Barbora Xu, raising awareness to protect threatened forests.">
-  <JsonLd data={orgSchema} />
-  <section class="section">
-    <h1>Music for Protection of Old Growth Forests</h1>
+  <JsonLd data={indexGraph} />
+  <section class="section" aria-labelledby="about-heading">
+    <h1 id="about-heading">Music for Protection of Old Growth Forests</h1>
     <YouTubeEmbed videoId="4q2-op45wkU" title="Old Forest Echoes: Music for Protection of Old Growth Forests" thumbnail={ytThumb} />
 
     <div class="prose">
       <p>The Old Forest Echoes (<span lang="fi">Ikimetsän kaiku</span>) aims to make you fall in love with old-growth forests via music and art composed and performed there.</p>
 
-      <p>In official collaboration with the Finnish Nature League (<span lang="fi">Luonto-Liitto</span>) and support of the KONE Foundation, this project aspires to raise awareness and resources to protect the threatened old-growth forests in Finland. An internationally acclaimed multi-instrumentalist <span lang="cs">Barbora Šilhánová</span> (alias Barbora Xu) is recording an album rooted in a four-month-long stay in Finnish old-growth forests.</p>
+      <p>In official collaboration with the Finnish Nature League (<span lang="fi">Luonto-Liitto</span>) and the support of the KONE Foundation, this project aspires to raise awareness and resources to protect the threatened old-growth forests in Finland. An internationally acclaimed multi-instrumentalist <span lang="cs">Barbora Šilhánová</span> (alias Barbora Xu) is recording an album rooted in a four-month-long stay in Finnish old-growth forests.</p>
 
       <p>These old-growth, biodiversity-rich forest areas are spread across different parts of the country. They are unprotected and threatened to be cut down. The trips take place from spring to autumn, when Barbora travels from nearby to distant old-growth forest areas in a motorhome. The forests are also visited for a shorter period of time by the team, consisting of jewelry and land artist Wiebke Pandikow; sound engineer and soundscape artist Mikko H. Haapoja; and documentary director and videographer Ville Tanttu.</p>
 

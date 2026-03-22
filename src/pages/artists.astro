@@ -55,15 +55,21 @@ const artistDescription = artistNames.length > 0
 const siteUrl = Astro.site;
 if (!siteUrl) throw new Error('Astro.site must be configured in astro.config.mjs');
 
+function truncateDescription(body: string, maxLength = 160): string {
+  const plain = body.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+  if (plain.length <= maxLength) return plain;
+  return plain.slice(0, maxLength).replace(/\s\S*$/, '') + '\u2026';
+}
+
 const personSchemas = await Promise.all(
   sorted.map(async (artist) => {
     const imgPath = `/src/assets/images/${artist.data.image}`;
     const img = images[imgPath];
     const resolved = img ? await getImage({ src: img.default, width: 800, format: 'webp' }) : null;
     return {
-      '@context': 'https://schema.org',
       '@type': 'Person',
       name: artist.data.name,
+      description: truncateDescription(artist.body ?? ''),
       url: new URL(`/artists/#${artist.id}`, siteUrl).href,
       jobTitle: roleJobTitles[artist.data.role],
       ...(resolved ? { image: new URL(resolved.src, siteUrl).href } : {}),
@@ -74,10 +80,12 @@ const personSchemas = await Promise.all(
     };
   })
 );
+
+const personGraph = { '@context': 'https://schema.org', '@graph': personSchemas };
 ---
 
 <Base title="Artists — Old Forest Echoes" description={artistDescription}>
-  {personSchemas.map((schema) => <JsonLd data={schema} />)}
+  <JsonLd data={personGraph} />
   <section class="section">
     <h1>Artists</h1>
     <div class="prose">

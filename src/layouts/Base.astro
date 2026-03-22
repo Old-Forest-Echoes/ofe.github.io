@@ -84,14 +84,13 @@ const bgLarge = await getImage({ src: forestBgSrc, width: 1920, format: 'webp' }
   {/* Fonts (self-hosted, no third-party requests) */}
   <link rel="preload" href="/fonts/Leonetta-Serif.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/fonts/Spectral-Light.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="/fonts/Spectral-Regular.woff2" as="font" type="font/woff2" crossorigin />
 
   {/* Preload LCP background image per viewport */}
   <link rel="preload" href={bgSmall.src} as="image" type="image/webp" media="(max-width: 640px)" fetchpriority="high" />
   <link rel="preload" href={bgMedium.src} as="image" type="image/webp" media="(min-width: 641px) and (max-width: 1024px)" fetchpriority="high" />
   <link rel="preload" href={bgLarge.src} as="image" type="image/webp" media="(min-width: 1025px)" fetchpriority="high" />
 
-  <link rel="preload" href="/logo.svg" as="image" type="image/svg+xml" fetchpriority="high" />
+  <link rel="preload" href="/logo.svg" as="image" type="image/svg+xml" />
 
   {/* set:html is needed because Astro <style> blocks don't support variable interpolation.
      Values are build-time image paths from Astro's asset pipeline — not user input, so no XSS risk. */}

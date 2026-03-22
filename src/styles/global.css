@@ -179,9 +179,12 @@ h2 {
   margin-block: 2rem 1.5rem;
 }
 
+h1:has(+ .calendar-subtitle) {
+  margin-block-end: 0.5rem;
+}
+
 .calendar-subtitle {
   text-align: center;
-  margin-block-start: -1rem;
 }
 
 h3 {
@@ -283,6 +286,7 @@ body:has(.nav-open) {
   outline-offset: 2px;
 }
 
+/* Keep in sync with Nav.astro matchMedia('(min-width: 769px)') listener */
 @media (max-width: 768px) {
   .nav-toggle {
     display: block;
@@ -463,6 +467,10 @@ body:has(.nav-open) {
 }
 
 /* === Contact === */
+address {
+  font-style: normal;
+}
+
 .contact-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

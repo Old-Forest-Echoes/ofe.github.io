@@ -11,7 +11,7 @@ const contacts = [
 
 <section class="section" aria-labelledby="contact-heading">
   <h2 id="contact-heading" class="sr-only">Contact</h2>
-  <div class="contact-grid">
+  <address class="contact-grid">
     {contacts.map(({ title, name, nameHtml, email }) => (
       <p>
         <strong>{title}</strong><br />
@@ -19,5 +19,5 @@ const contacts = [
         <Fragment set:html={`<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;${obfuscate(email)}">${obfuscate(email)}</a>`} />
       </p>
     ))}
-  </div>
+  </address>
 </section>

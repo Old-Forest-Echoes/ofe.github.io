@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 const cwd = fileURLToPath(new URL('.', import.meta.url));
 
+/** @param {string} filePath @returns {string | undefined} */
 function getLastCommitDate(filePath) {
   try {
     const date = execFileSync('git', ['log', '-1', '--format=%cI', '--', filePath], {
@@ -18,6 +19,7 @@ function getLastCommitDate(filePath) {
   }
 }
 
+/** @param {string[]} filePaths @returns {string | undefined} */
 function getLatestCommitDate(filePaths) {
   const dates = filePaths.map(getLastCommitDate).filter(Boolean);
   if (dates.length === 0) return undefined;
