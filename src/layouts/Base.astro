@@ -4,6 +4,8 @@ import Footer from '../components/Footer.astro';
 import JsonLd from '../components/JsonLd.astro';
 import { getImage } from 'astro:assets';
 import forestBgSrc from '../assets/images/forest-bg.webp';
+import { navLinks } from '../data/nav-links';
+import { colorBg } from '../data/theme';
 import '../styles/global.css';
 
 interface Props {
@@ -14,6 +16,7 @@ interface Props {
   ogImageHeight?: number;
   ogImageAlt?: string;
   noindex?: boolean;
+  preloadImages?: { src: string; type: string }[];
 }
 
 const {
@@ -24,6 +27,7 @@ const {
   ogImageHeight = 630,
   ogImageAlt = 'Old Forest Echoes — music composed in Finnish old-growth forests',
   noindex = false,
+  preloadImages = [],
 } = Astro.props;
 
 const ogMimeTypes = {
@@ -43,14 +47,10 @@ function ogImageMimeType(path: string): string {
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const pageNames: Record<string, string> = {
-  '/': 'About',
-  '/artists/': 'Artists',
-  '/events/': 'Events',
-};
+const pageNameMap = Object.fromEntries(navLinks.map(({ href, label }) => [href, label]));
 
 const pathname = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : Astro.url.pathname + '/';
-const pageName = pageNames[pathname];
+const pageName = pageNameMap[pathname];
 
 const breadcrumbSchema =
   !noindex && pageName && pathname !== '/'
@@ -78,8 +78,7 @@ const bgLarge = await getImage({ src: forestBgSrc, width: 1920, format: 'webp' }
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     {!noindex && <link rel="canonical" href={canonicalURL} />}
-    {/* Keep in sync with --color-bg in global.css */}
-    <meta name="theme-color" content="#0a0a08" />
+    <meta name="theme-color" content={colorBg} />
     <link rel="icon" href="/logo.svg" type="image/svg+xml" sizes="any" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
@@ -150,6 +149,8 @@ const bgLarge = await getImage({ src: forestBgSrc, width: 1920, format: 'webp' }
     />
 
     <link rel="preload" href="/logo.svg" as="image" type="image/svg+xml" fetchpriority="low" />
+
+    {preloadImages.map(({ src, type }) => <link rel="preload" href={src} as="image" type={type} />)}
 
     {
       /* set:html is needed because Astro <style> blocks don't support variable interpolation.

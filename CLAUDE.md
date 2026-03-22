@@ -48,8 +48,10 @@ npm run validate    # Lint + type check (lint && check)
 │   ├── content/
 │   │   └── artists/*.md          # Artist bios with frontmatter
 │   ├── content.config.ts         # Zod schema: name, role, order, image
+│   ├── data/nav-links.ts         # Navigation links (shared by Nav + Base breadcrumbs)
 │   ├── data/social-links.ts      # Social media links (shared by Footer + index)
 │   ├── data/contacts.ts          # Contact info (shared by Contact + index schema)
+│   ├── data/theme.ts             # Theme constants (shared by Base meta + CSS)
 │   ├── utils/date.ts             # Date helpers (shared by events build + client)
 │   ├── assets/images/            # Source images (processed by Astro)
 │   └── styles/global.css         # Single stylesheet

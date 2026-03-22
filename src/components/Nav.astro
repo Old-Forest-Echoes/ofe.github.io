@@ -1,12 +1,8 @@
 ---
+import { navLinks } from '../data/nav-links';
+
 const normalize = (p: string) => (p.endsWith('/') ? p : p + '/');
 const currentPath = Astro.url.pathname;
-
-const links = [
-  { href: '/', label: 'About' },
-  { href: '/artists/', label: 'Artists' },
-  { href: '/events/', label: 'Events' },
-];
 ---
 
 <nav class="nav" aria-label="Main">
@@ -18,7 +14,7 @@ const links = [
     <button class="nav-toggle" aria-controls="nav-menu" aria-expanded="false" type="button">Menu</button>
     <ul id="nav-menu" class="nav-links" role="list">
       {
-        links.map(({ href, label }) => (
+        navLinks.map(({ href, label }) => (
           <li>
             <a href={href} aria-current={normalize(currentPath) === normalize(href) ? 'page' : undefined}>
               {label}

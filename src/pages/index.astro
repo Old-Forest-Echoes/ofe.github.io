@@ -3,12 +3,15 @@ import Base from '../layouts/Base.astro';
 import YouTubeEmbed from '../components/YouTubeEmbed.astro';
 import Contact from '../components/Contact.astro';
 import JsonLd from '../components/JsonLd.astro';
+import { getImage } from 'astro:assets';
 import ytThumb from '../assets/images/youtube-thumbnail.jpg';
 import { socialLinks } from '../data/social-links';
 import { primaryEmail } from '../data/contacts';
 
 const siteUrl = Astro.site;
 if (!siteUrl) throw new Error('Astro.site must be configured in astro.config.mjs');
+
+const ytPreload = await getImage({ src: ytThumb, width: 768, format: 'webp' });
 
 const indexGraph = {
   '@context': 'https://schema.org',
@@ -46,7 +49,10 @@ const indexGraph = {
 };
 ---
 
-<Base title="Old Forest Echoes — Music for Protection of Old Growth Forests">
+<Base
+  title="Old Forest Echoes — Music for Protection of Old Growth Forests"
+  preloadImages={[{ src: ytPreload.src, type: `image/${ytPreload.options.format || 'webp'}` }]}
+>
   <JsonLd data={indexGraph} />
   <section class="section" aria-labelledby="about-heading">
     <h1 id="about-heading">Music for Protection of Old Growth Forests</h1>
