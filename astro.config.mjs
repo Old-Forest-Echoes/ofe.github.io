@@ -26,9 +26,8 @@ function getLatestCommitDate(filePaths) {
   return dates.reduce((a, b) => (a > b ? a : b), dates[0]);
 }
 
-// When adding a new page to src/pages/, add its route and source files here
-// so the sitemap gets a git-based lastmod for it.
 // Shared files that affect all pages (layout, nav, footer, contact, styles)
+
 const sharedFiles = [
   'src/layouts/Base.astro',
   'src/components/Nav.astro',
@@ -37,6 +36,8 @@ const sharedFiles = [
   'src/styles/global.css',
 ];
 
+// When adding a new page to src/pages/, add its route and source files here
+// so the sitemap gets a git-based lastmod for it.
 const pageInputs = {
   '/': ['src/pages/index.astro', 'src/data/social-links.ts', ...sharedFiles],
   '/artists/': ['src/pages/artists.astro', 'src/content/artists', ...sharedFiles],

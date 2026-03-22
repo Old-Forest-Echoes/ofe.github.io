@@ -406,6 +406,8 @@ body:has(.nav-open) {
   align-items: center;
   justify-content: center;
   height: 100%;
+  padding: 1rem;
+  text-align: center;
 }
 
 .video-embed iframe {
