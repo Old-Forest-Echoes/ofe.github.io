@@ -23,12 +23,16 @@ const indexGraph = {
       alternateName: 'Ikimetsän kaiku',
       url: siteUrl.href,
       foundingDate: '2025',
-      logo: new URL('/apple-touch-icon.png', siteUrl).href,
-      description: 'Music and art composed in Finnish old-growth forests, aiming to raise awareness and protect threatened forests.',
+      logo: {
+        '@type': 'ImageObject',
+        url: new URL('/apple-touch-icon.png', siteUrl).href,
+        width: 180,
+        height: 180,
+      },
+      description:
+        'Music and art composed in Finnish old-growth forests, aiming to raise awareness and protect threatened forests.',
       email: 'info@oldforestechoes.com',
-      sameAs: socialLinks
-        .filter(({ href }) => !href.includes('linktr.ee'))
-        .map(({ href }) => href),
+      sameAs: socialLinks.filter(({ href }) => !href.includes('linktr.ee')).map(({ href }) => href),
       funder: {
         '@type': 'Organization',
         name: 'KONE Foundation',
@@ -38,28 +42,66 @@ const indexGraph = {
 };
 ---
 
-<Base title="Old Forest Echoes — Music for Protection of Old Growth Forests" description="Old Forest Echoes — music and art composed in Finnish old-growth forests by Barbora Xu, raising awareness to protect threatened forests.">
+<Base
+  title="Old Forest Echoes — Music for Protection of Old Growth Forests"
+  description="Old Forest Echoes — music and art composed in Finnish old-growth forests by Barbora Xu, raising awareness to protect threatened forests."
+>
   <JsonLd data={indexGraph} />
   <section class="section" aria-labelledby="about-heading">
     <h1 id="about-heading">Music for Protection of Old Growth Forests</h1>
-    <YouTubeEmbed videoId="4q2-op45wkU" title="Old Forest Echoes: Music for Protection of Old Growth Forests" thumbnail={ytThumb} />
+    <YouTubeEmbed
+      videoId="4q2-op45wkU"
+      title="Old Forest Echoes: Music for Protection of Old Growth Forests"
+      thumbnail={ytThumb}
+    />
 
     <div class="prose">
-      <p>The Old Forest Echoes (<span lang="fi">Ikimetsän kaiku</span>) aims to make you fall in love with old-growth forests via music and art composed and performed there.</p>
+      <p>
+        The Old Forest Echoes (<span lang="fi">Ikimetsän kaiku</span>) aims to make you fall in love with old-growth
+        forests via music and art composed and performed there.
+      </p>
 
-      <p>In official collaboration with the Finnish Nature League (<span lang="fi">Luonto-Liitto</span>) and the support of the KONE Foundation, this project aspires to raise awareness and resources to protect the threatened old-growth forests in Finland. An internationally acclaimed multi-instrumentalist <span lang="cs">Barbora Šilhánová</span> (alias Barbora Xu) is recording an album rooted in a four-month-long stay in Finnish old-growth forests.</p>
+      <p>
+        In official collaboration with the Finnish Nature League (<span lang="fi">Luonto-Liitto</span>) and the support
+        of the KONE Foundation, this project aspires to raise awareness and resources to protect the threatened
+        old-growth forests in Finland. An internationally acclaimed multi-instrumentalist <span lang="cs"
+          >Barbora Šilhánová</span
+        > (alias Barbora Xu) is recording an album rooted in a four-month-long stay in Finnish old-growth forests.
+      </p>
 
-      <p>These old-growth, biodiversity-rich forest areas are spread across different parts of the country. They are unprotected and threatened to be cut down. The trips take place from spring to autumn, when Barbora travels from nearby to distant old-growth forest areas in a motorhome. The forests are also visited for a shorter period of time by the team, consisting of jewelry and land artist Wiebke Pandikow; sound engineer and soundscape artist Mikko H. Haapoja; and documentary director and videographer Ville Tanttu.</p>
+      <p>
+        These old-growth, biodiversity-rich forest areas are spread across different parts of the country. They are
+        unprotected and threatened to be cut down. The trips take place from spring to autumn, when Barbora travels from
+        nearby to distant old-growth forest areas in a motorhome. The forests are also visited for a shorter period of
+        time by the team, consisting of jewelry and land artist Wiebke Pandikow; sound engineer and soundscape artist
+        Mikko H. Haapoja; and documentary director and videographer Ville Tanttu.
+      </p>
 
-      <p>As a part of the project, we will take the audience to experience live concerts and workshops directly in the actual wild forests that inspired the music composition, organize music and land art workshops on location as well as release music videos and finally a documentary by Ville Tanttu, known for documentaries such as the award-winning <cite>Nightingales in Berlin</cite>.</p>
+      <p>
+        As a part of the project, we will take the audience to experience live concerts and workshops directly in the
+        actual wild forests that inspired the music composition, organize music and land art workshops on location as
+        well as release music videos and finally a documentary by Ville Tanttu, known for documentaries such as the
+        award-winning <cite>Nightingales in Berlin</cite>.
+      </p>
 
-      <p>The full amount of album sales will go towards buying an actual patch of an old-growth forest and donating it to the <span lang="fi">Luonnonperintösäätiö</span> (Finnish Natural Heritage Foundation) for further protection. The project itself is sponsored by the KONE Foundation (Finland).</p>
+      <p>
+        The full amount of album sales will go towards buying an actual patch of an old-growth forest and donating it to
+        the <span lang="fi">Luonnonperintösäätiö</span> (Finnish Natural Heritage Foundation) for further protection. The
+        project itself is sponsored by the KONE Foundation (Finland).
+      </p>
 
-      <p>In addition to <span lang="cs">Barbora Šilhánová</span> (artistic director, musician), the project working group includes artists such as Niklas Winter, <span lang="fi">Jenni Venäläinen</span>, Ilkka Heinonen, Joni Vierre, Minna Koskenlahti, Ville Tanttu, Mikko H. Haapoja, and Wiebke Pandikow.</p>
+      <p>
+        In addition to <span lang="cs">Barbora Šilhánová</span> (artistic director, musician), the project working group includes
+        artists such as Niklas Winter, <span lang="fi">Jenni Venäläinen</span>, Ilkka Heinonen, Joni Vierre, Minna
+        Koskenlahti, Ville Tanttu, Mikko H. Haapoja, and Wiebke Pandikow.
+      </p>
 
       <p>The general timeline of the project is Jan 2025 to Apr 2027.</p>
 
-      <p>After the tour, we will purchase a patch of old-growth forest from the donations and album sales. The Old Forest Echoes documentary will be shot during both years and is planned to come out in 2027.</p>
+      <p>
+        After the tour, we will purchase a patch of old-growth forest from the donations and album sales. The Old Forest
+        Echoes documentary will be shot during both years and is planned to come out in 2027.
+      </p>
     </div>
   </section>
 

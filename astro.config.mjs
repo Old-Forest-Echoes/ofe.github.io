@@ -14,6 +14,7 @@ function getLastCommitDate(filePath) {
     }).trim();
     return date || undefined;
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.warn(`[sitemap] Could not read git log for ${filePath}:`, e instanceof Error ? e.message : e);
     return undefined;
   }
@@ -45,7 +46,7 @@ const pageInputs = {
 };
 
 const lastmodMap = Object.fromEntries(
-  Object.entries(pageInputs).map(([route, files]) => [route, getLatestCommitDate(files)])
+  Object.entries(pageInputs).map(([route, files]) => [route, getLatestCommitDate(files)]),
 );
 
 export default defineConfig({

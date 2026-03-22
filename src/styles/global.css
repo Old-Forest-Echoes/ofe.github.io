@@ -44,6 +44,13 @@
   --color-yt-red: #ff0000;
   --color-yt-white: #ffffff;
 
+  --z-bg: -2;
+  --z-overlay: -1;
+  --z-nav: 100;
+  --z-menu: 200;
+  --z-menu-toggle: 201;
+  --z-skip: 300;
+
   --font-display: 'Leonetta Serif', 'Palatino Linotype', Palatino, serif;
   --font-body: 'Spectral', 'Georgia', serif;
 
@@ -72,6 +79,7 @@ body {
   line-height: 1.7;
   background-color: var(--color-bg);
   min-height: 100vh;
+  scrollbar-gutter: stable;
 }
 
 img {
@@ -129,7 +137,7 @@ a:focus-visible {
   position: fixed;
   top: -100%;
   left: 1rem;
-  z-index: 300;
+  z-index: var(--z-skip);
   padding: 0.5rem 1rem;
   background: var(--color-gold);
   color: var(--color-bg);
@@ -150,7 +158,7 @@ a:focus-visible {
 .page-background {
   position: fixed;
   inset: 0;
-  z-index: -2;
+  z-index: var(--z-bg);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -159,7 +167,7 @@ a:focus-visible {
 .page-overlay {
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: var(--z-overlay);
   background-color: var(--color-overlay);
   background-image: radial-gradient(circle at 50% 0, var(--color-overlay-inner), var(--color-overlay-gradient) 91%);
 }
@@ -172,7 +180,9 @@ a:focus-visible {
 }
 
 /* === Typography === */
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: var(--font-display);
   font-weight: normal;
   line-height: 1.2;
@@ -214,7 +224,7 @@ p {
 .nav {
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: var(--z-nav);
   padding-block: 1rem;
   font-family: var(--font-display);
   --color-nav-bg-fallback: rgba(0, 0, 0, 0.7);
@@ -273,7 +283,7 @@ body:has(.nav-open) {
 }
 
 .nav-links a:hover,
-.nav-links a[aria-current="page"] {
+.nav-links a[aria-current='page'] {
   color: var(--color-gold);
 }
 
@@ -330,8 +340,10 @@ body:has(.nav-open) {
     background-color: var(--color-bg);
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-    z-index: 200;
+    transition:
+      opacity 0.3s ease,
+      visibility 0.3s ease;
+    z-index: var(--z-menu);
   }
 
   .nav-links a {
@@ -344,7 +356,7 @@ body:has(.nav-open) {
   }
 
   .js-nav.nav-open .nav-toggle {
-    z-index: 201;
+    z-index: var(--z-menu-toggle);
   }
 
   /* noscript: wrap nav links and hide toggle */
@@ -408,6 +420,8 @@ body:has(.nav-open) {
   height: 100%;
   padding: 1rem;
   text-align: center;
+  font-size: 1.1rem;
+  background-color: var(--color-overlay);
 }
 
 .video-embed iframe {
@@ -519,7 +533,9 @@ body:has(.nav-open) {
   min-width: 44px;
   min-height: 44px;
   opacity: 0.82;
-  transition: opacity 0.2s, color 0.2s;
+  transition:
+    opacity 0.2s,
+    color 0.2s;
 }
 
 .footer-socials a:hover,
@@ -557,10 +573,10 @@ body:has(.nav-open) {
 @media print {
   :root {
     color-scheme: light;
-    --color-bg: white;
-    --color-gold: black;
-    --color-gold-muted: black;
-    --color-text: black;
+    --color-bg: #fff;
+    --color-gold: #000;
+    --color-gold-muted: #000;
+    --color-text: #000;
     --color-text-muted: #666;
     --color-past-text: var(--color-text-muted);
     --color-past-date: var(--color-text-muted);
@@ -596,7 +612,7 @@ body:has(.nav-open) {
   }
 
   .video-embed::after {
-    content: attr(data-video-title) " — https://www.youtube.com/watch?v=" attr(data-video-id);
+    content: attr(data-video-title) ' — https://www.youtube.com/watch?v=' attr(data-video-id);
     display: block;
     text-align: center;
     padding: 1rem;
@@ -614,8 +630,8 @@ body:has(.nav-open) {
     margin-block-start: 1rem;
   }
 
-  a[href^="http"]:not([aria-label])::after {
-    content: " (" attr(href) ")";
+  a[href^='http']:not([aria-label])::after {
+    content: ' (' attr(href) ')';
     font-size: 0.8em;
     word-break: break-all;
   }
@@ -647,7 +663,7 @@ body:has(.nav-open) {
     opacity: 1;
   }
 
-  .nav-links a[aria-current="page"] {
+  .nav-links a[aria-current='page'] {
     text-decoration: underline;
   }
 

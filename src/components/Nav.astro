@@ -17,13 +17,15 @@ const links = [
     </a>
     <button class="nav-toggle" aria-controls="nav-menu" aria-expanded="false" type="button">Menu</button>
     <ul id="nav-menu" class="nav-links" role="list">
-      {links.map(({ href, label }) => (
-        <li>
-          <a href={href} aria-current={normalize(currentPath) === normalize(href) ? 'page' : undefined}>
-            {label}
-          </a>
-        </li>
-      ))}
+      {
+        links.map(({ href, label }) => (
+          <li>
+            <a href={href} aria-current={normalize(currentPath) === normalize(href) ? 'page' : undefined}>
+              {label}
+            </a>
+          </li>
+        ))
+      }
     </ul>
   </div>
 </nav>
@@ -77,7 +79,11 @@ const links = [
     }
 
     toggle.addEventListener('click', () => {
-      isOpen ? closeMenu() : openMenu();
+      if (isOpen) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
     });
 
     document.addEventListener('keydown', (e) => {

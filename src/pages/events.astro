@@ -26,25 +26,102 @@ interface EventEntry {
 const isoDate = /^\d{4}-\d{2}-\d{2}$/;
 
 const events: EventEntry[] = [
-  { date: "2026-03-06", location: "Sipoo", locationLanguage: "fi", country: "Finland" },
-  { date: "2026-03-27", location: "Porvoo", locationLanguage: "fi", country: "Finland" },
-  { date: "2026-04-11", venue: "Circus Lounge", location: "Turku", locationLanguage: "fi", country: "Finland" },
-  { date: "2026-05-23", endDate: "2026-05-24", description: "Garden Festival", location: "Koroinen", locationLanguage: "fi", country: "Finland" },
-  { date: "2026-06-14", location: "Brno", locationLanguage: "cs", country: "Czechia" },
-  { date: "2026-06-18", location: "Praha", locationLanguage: "cs", country: "Czechia" },
-  { date: "2026-06-20", description: "Solstice Festival", location: "Napajedla", locationLanguage: "cs", country: "Czechia" },
-  { date: "2026-06-25", description: "Akcent & Barbora Xu", venue: "Lidové Sady", venueLanguage: "cs", location: "Liberec", locationLanguage: "cs", country: "Czechia" },
-  { date: "2026-07-01", endDate: "2026-07-12", description: "Forest Residency", venue: "Waldhof", venueLanguage: "de", location: "Freiburg", locationLanguage: "de", country: "Germany", schemaType: "Event" },
-  { date: "2026-07-27", endDate: "2026-07-31", description: "Festival Folk Holidays", location: "Náměšť nad Oslavou", locationLanguage: "cs", country: "Czechia" },
-  { date: "2026-08-08", endDate: "2026-08-09", description: "Norpas Festival", country: "Finland" },
-  { date: "2026-08-15", description: "Forest concert", location: "Aalistunturi", locationLanguage: "fi", country: "Finland" },
-  { date: "2026-08-20", venue: "Paaterin kirkko", venueLanguage: "fi", location: "Vuonisjärvi", locationLanguage: "fi", country: "Finland" },
-  { date: "2026-08-22", description: "Forest concert", location: "Haarikko", locationLanguage: "fi", country: "Finland" },
-  { date: "2026-08-30", description: "Forest concert", location: "Stansvik", locationLanguage: "fi", country: "Finland" },
-  { date: "2026-09-05", location: "Helsinki", locationLanguage: "fi", country: "Finland" },
-  { date: "2026-09-06", location: "Turku", locationLanguage: "fi", country: "Finland" },
-  { date: "2026-09-20", venue: "Waldhof", venueLanguage: "de", location: "Freiburg", locationLanguage: "de", country: "Germany" },
-  { date: "2026-09-23", venue: "Sibelius-museo", venueLanguage: "fi", location: "Turku", locationLanguage: "fi", country: "Finland" },
+  { date: '2026-03-06', location: 'Sipoo', locationLanguage: 'fi', country: 'Finland' },
+  { date: '2026-03-27', location: 'Porvoo', locationLanguage: 'fi', country: 'Finland' },
+  { date: '2026-04-11', venue: 'Circus Lounge', location: 'Turku', locationLanguage: 'fi', country: 'Finland' },
+  {
+    date: '2026-05-23',
+    endDate: '2026-05-24',
+    description: 'Garden Festival',
+    location: 'Koroinen',
+    locationLanguage: 'fi',
+    country: 'Finland',
+  },
+  { date: '2026-06-14', location: 'Brno', locationLanguage: 'cs', country: 'Czechia' },
+  { date: '2026-06-18', location: 'Praha', locationLanguage: 'cs', country: 'Czechia' },
+  {
+    date: '2026-06-20',
+    description: 'Solstice Festival',
+    location: 'Napajedla',
+    locationLanguage: 'cs',
+    country: 'Czechia',
+  },
+  {
+    date: '2026-06-25',
+    description: 'Akcent & Barbora Xu',
+    venue: 'Lidové Sady',
+    venueLanguage: 'cs',
+    location: 'Liberec',
+    locationLanguage: 'cs',
+    country: 'Czechia',
+  },
+  {
+    date: '2026-07-01',
+    endDate: '2026-07-12',
+    description: 'Forest Residency',
+    venue: 'Waldhof',
+    venueLanguage: 'de',
+    location: 'Freiburg',
+    locationLanguage: 'de',
+    country: 'Germany',
+    schemaType: 'Event',
+  },
+  {
+    date: '2026-07-27',
+    endDate: '2026-07-31',
+    description: 'Festival Folk Holidays',
+    location: 'Náměšť nad Oslavou',
+    locationLanguage: 'cs',
+    country: 'Czechia',
+  },
+  { date: '2026-08-08', endDate: '2026-08-09', description: 'Norpas Festival', country: 'Finland' },
+  {
+    date: '2026-08-15',
+    description: 'Forest concert',
+    location: 'Aalistunturi',
+    locationLanguage: 'fi',
+    country: 'Finland',
+  },
+  {
+    date: '2026-08-20',
+    venue: 'Paaterin kirkko',
+    venueLanguage: 'fi',
+    location: 'Vuonisjärvi',
+    locationLanguage: 'fi',
+    country: 'Finland',
+  },
+  {
+    date: '2026-08-22',
+    description: 'Forest concert',
+    location: 'Haarikko',
+    locationLanguage: 'fi',
+    country: 'Finland',
+  },
+  {
+    date: '2026-08-30',
+    description: 'Forest concert',
+    location: 'Stansvik',
+    locationLanguage: 'fi',
+    country: 'Finland',
+  },
+  { date: '2026-09-05', location: 'Helsinki', locationLanguage: 'fi', country: 'Finland' },
+  { date: '2026-09-06', location: 'Turku', locationLanguage: 'fi', country: 'Finland' },
+  {
+    date: '2026-09-20',
+    venue: 'Waldhof',
+    venueLanguage: 'de',
+    location: 'Freiburg',
+    locationLanguage: 'de',
+    country: 'Germany',
+  },
+  {
+    date: '2026-09-23',
+    venue: 'Sibelius-museo',
+    venueLanguage: 'fi',
+    location: 'Turku',
+    locationLanguage: 'fi',
+    country: 'Finland',
+  },
 ];
 
 function displayName(event: EventEntry): string {
@@ -57,15 +134,20 @@ function validateEvents(list: EventEntry[]): void {
   for (let i = 0; i < list.length; i++) {
     const e = list[i];
     if (!isoDate.test(e.date)) throw new Error(`Invalid date format: ${e.date}`);
-    if (new Date(e.date + 'T00:00:00Z').toISOString().slice(0, 10) !== e.date) throw new Error(`Invalid calendar date: ${e.date}`);
+    if (new Date(e.date + 'T00:00:00Z').toISOString().slice(0, 10) !== e.date)
+      throw new Error(`Invalid calendar date: ${e.date}`);
     if (e.endDate && !isoDate.test(e.endDate)) throw new Error(`Invalid endDate format: ${e.endDate}`);
-    if (e.endDate && new Date(e.endDate + 'T00:00:00Z').toISOString().slice(0, 10) !== e.endDate) throw new Error(`Invalid calendar date: ${e.endDate}`);
+    if (e.endDate && new Date(e.endDate + 'T00:00:00Z').toISOString().slice(0, 10) !== e.endDate)
+      throw new Error(`Invalid calendar date: ${e.endDate}`);
     if (e.endDate && e.endDate <= e.date) throw new Error(`endDate ${e.endDate} must be after date ${e.date}`);
-    if (e.endDate && e.date.slice(0, 4) !== e.endDate.slice(0, 4)) throw new Error(`Cross-year date range not supported (${e.date} to ${e.endDate}) — date format omits year`);
-    if (!e.description && !e.venue && !e.location) throw new Error(`Event on ${e.date} must have at least a description, venue, or location`);
+    if (e.endDate && e.date.slice(0, 4) !== e.endDate.slice(0, 4))
+      throw new Error(`Cross-year date range not supported (${e.date} to ${e.endDate}) — date format omits year`);
+    if (!e.description && !e.venue && !e.location)
+      throw new Error(`Event on ${e.date} must have at least a description, venue, or location`);
     if (e.venueLanguage && !e.venue) throw new Error(`Event on ${e.date} has venueLanguage without venue`);
     if (e.locationLanguage && !e.location) throw new Error(`Event on ${e.date} has locationLanguage without location`);
-    if (i > 0 && e.date < list[i - 1].date) throw new Error(`Events out of chronological order: ${list[i - 1].date} before ${e.date}`);
+    if (i > 0 && e.date < list[i - 1].date)
+      throw new Error(`Events out of chronological order: ${list[i - 1].date} before ${e.date}`);
   }
 }
 
@@ -103,13 +185,11 @@ const eventSchemas = upcomingEvents.map((event) => {
   const locationLabel = event.venue
     ? `at ${locationParts.join(', ')}, ${event.country}`
     : event.location
-        ? `in ${event.location}, ${event.country}`
-        : `in ${event.country}`;
+      ? `in ${event.location}, ${event.country}`
+      : `in ${event.country}`;
   return {
     '@type': event.schemaType || 'MusicEvent',
-    name: event.description
-      ? `Old Forest Echoes — ${display}`
-      : `Old Forest Echoes concert — ${display}`,
+    name: event.description ? `Old Forest Echoes — ${display}` : `Old Forest Echoes concert — ${display}`,
     description: event.description
       ? `${event.description} — Old Forest Echoes ${event.schemaType === 'Event' ? 'event' : 'live performance'} ${locationLabel}.`
       : `Old Forest Echoes ${event.schemaType === 'Event' ? 'event' : 'live performance'} ${locationLabel}.`,
@@ -128,13 +208,15 @@ const eventSchemas = upcomingEvents.map((event) => {
         addressCountry: countryCodes[event.country],
       },
     },
-    ...(event.schemaType !== 'Event' ? {
-      performer: {
-        '@type': 'PerformingGroup',
-        name: 'Old Forest Echoes',
-        url: siteUrl.href,
-      },
-    } : {}),
+    ...(event.schemaType !== 'Event'
+      ? {
+          performer: {
+            '@type': 'MusicGroup',
+            name: 'Old Forest Echoes',
+            url: siteUrl.href,
+          },
+        }
+      : {}),
     organizer: {
       '@type': 'Organization',
       name: 'Old Forest Echoes',
@@ -143,9 +225,7 @@ const eventSchemas = upcomingEvents.map((event) => {
   };
 });
 
-const eventGraph = eventSchemas.length > 0
-  ? { '@context': 'https://schema.org', '@graph': eventSchemas }
-  : null;
+const eventGraph = eventSchemas.length > 0 ? { '@context': 'https://schema.org', '@graph': eventSchemas } : null;
 
 // Finnish day.month. format (e.g. "6.3.") — intentional despite lang="en", matches the project's European audience
 const dateFormatShort = new Intl.DateTimeFormat('fi', { month: 'numeric', day: 'numeric', timeZone: 'UTC' });
@@ -168,7 +248,12 @@ function formatDate(dateStr: string, endDateStr?: string): string {
   return dateFormatShort.format(start);
 }
 
-const dateFormatLong = new Intl.DateTimeFormat('en', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+const dateFormatLong = new Intl.DateTimeFormat('en', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+  timeZone: 'UTC',
+});
 
 function formatDateAccessible(dateStr: string, endDateStr?: string): string {
   const start = new Date(dateStr + 'T00:00:00Z');
@@ -180,33 +265,54 @@ function formatDateAccessible(dateStr: string, endDateStr?: string): string {
 }
 ---
 
-<Base title="Events — Old Forest Echoes" description={`Old Forest Echoes ${calendarYear} event calendar: forest concerts, venue performances, and workshops across ${countryList}.`}>
+<Base
+  title="Events — Old Forest Echoes"
+  description={`Old Forest Echoes ${calendarYear} event calendar: forest concerts, venue performances, and workshops across ${countryList}.`}
+>
   {eventGraph && <JsonLd data={eventGraph} />}
   <section class="section" id="calendar" aria-labelledby="calendar-heading">
     <h1 id="calendar-heading">Events</h1>
     <p class="calendar-subtitle" id="calendar-subtitle">Event Calendar {calendarYear}</p>
     <ul class="event-list" role="list" aria-labelledby="calendar-heading" aria-describedby="calendar-subtitle">
-      {events.map((event) => (
-        <li class:list={[{ 'event-past': isPast(event) }]} data-end={event.endDate || event.date}>
-          {/* datetime uses start date only (HTML spec requires a single date, not an interval).
+      {
+        events.map((event) => (
+          <li class:list={[{ 'event-past': isPast(event) }]} data-end={event.endDate || event.date}>
+            {/* datetime uses start date only (HTML spec requires a single date, not an interval).
              The aria-label provides the full range in accessible text. End date is in data-end for client-side use
              and in JSON-LD structured data for search engines. */}
-          <time class="event-date" datetime={event.date} aria-label={formatDateAccessible(event.date, event.endDate)}>
-            {formatDate(event.date, event.endDate)}
-          </time>
-          <span>
-            {event.description && <Fragment>{event.description}{(event.venue || event.location) ? ', ' : ''}</Fragment>}{event.venue && (
-              event.venueLanguage
-                ? <Fragment><span lang={event.venueLanguage}>{event.venue}</span>{event.location ? ', ' : ''}</Fragment>
-                : <Fragment>{event.venue}{event.location ? ', ' : ''}</Fragment>
-            )}{event.location && (
-              event.locationLanguage
-                ? <span lang={event.locationLanguage}>{event.location}</span>
-                : <Fragment>{event.location}</Fragment>
-            )}, {event.country}
-          </span>
-        </li>
-      ))}
+            <time class="event-date" datetime={event.date} aria-label={formatDateAccessible(event.date, event.endDate)}>
+              {formatDate(event.date, event.endDate)}
+            </time>
+            <span>
+              {event.description && (
+                <Fragment>
+                  {event.description}
+                  {event.venue || event.location ? ', ' : ''}
+                </Fragment>
+              )}
+              {event.venue &&
+                (event.venueLanguage ? (
+                  <Fragment>
+                    <span lang={event.venueLanguage}>{event.venue}</span>
+                    {event.location ? ', ' : ''}
+                  </Fragment>
+                ) : (
+                  <Fragment>
+                    {event.venue}
+                    {event.location ? ', ' : ''}
+                  </Fragment>
+                ))}
+              {event.location &&
+                (event.locationLanguage ? (
+                  <span lang={event.locationLanguage}>{event.location}</span>
+                ) : (
+                  <Fragment>{event.location}</Fragment>
+                ))}
+              , {event.country}
+            </span>
+          </li>
+        ))
+      }
     </ul>
     {upcomingEvents.length === 0 && <p class="prose calendar-subtitle">New dates will be announced soon.</p>}
   </section>
@@ -214,10 +320,24 @@ function formatDateAccessible(dateStr: string, endDateStr?: string): string {
   <section class="section" id="forest" aria-labelledby="forest-heading">
     <h2 id="forest-heading">Forest Concerts</h2>
     <div class="prose">
-      <p>After composing music in the threatened old-growth forests, Barbora holds a limited number of concerts in those very places.</p>
-      <p>A forest concert consists of a nature walk and a concert. The forest path to the concert stage is marked with land art created by the renowned international artist Wiebke Pandikow, who creates visual art using local materials. The land art, as it is created using natural materials exclusively, will be left in the forest to degrade with the rhythm of the seasons and become a part of the local landscape.</p>
-      <p>During the forest walk, the audience meets a forest expert and learns about the story of the particular forest they came to visit. It is an interactive experience that allows visitors a peek into the forest music composition techniques and offers a personal experience in a forest we rarely get to visit.</p>
-      <p>Come to experience something special and make a bond with the kind of forest our ancestors knew and guarded.</p>
+      <p>
+        After composing music in the threatened old-growth forests, Barbora holds a limited number of concerts in those
+        very places.
+      </p>
+      <p>
+        A forest concert consists of a nature walk and a concert. The forest path to the concert stage is marked with
+        land art created by the renowned international artist Wiebke Pandikow, who creates visual art using local
+        materials. The land art, as it is created using natural materials exclusively, will be left in the forest to
+        degrade with the rhythm of the seasons and become a part of the local landscape.
+      </p>
+      <p>
+        During the forest walk, the audience meets a forest expert and learns about the story of the particular forest
+        they came to visit. It is an interactive experience that allows visitors a peek into the forest music
+        composition techniques and offers a personal experience in a forest we rarely get to visit.
+      </p>
+      <p>
+        Come to experience something special and make a bond with the kind of forest our ancestors knew and guarded.
+      </p>
       <p>Event length: 6 hrs</p>
     </div>
   </section>
@@ -225,18 +345,41 @@ function formatDateAccessible(dateStr: string, endDateStr?: string): string {
   <section class="section" id="venue" aria-labelledby="venue-heading">
     <h2 id="venue-heading">Venue Concerts</h2>
     <div class="prose">
-      <p>While forest concerts are unique and offer a direct connection for people in nature, our mission is to bring the essence of these stunning areas inspiring our work to audiences in urban settings as well. The venue concerts are our tool to do that and are tailored to fit the particular venues, festivals, and events.</p>
-      <p>A venue concert is a music performance on a stage, using soundscape recordings and projections to complement the music itself and to deepen the multisensory experience of the audience. The concert sound is set into a surround sound system, which is designed to provide an immersive experience for the audience. In this setup, the soundscapes come from all directions and the music comes from the direction of the performer.</p>
+      <p>
+        While forest concerts are unique and offer a direct connection for people in nature, our mission is to bring the
+        essence of these stunning areas inspiring our work to audiences in urban settings as well. The venue concerts
+        are our tool to do that and are tailored to fit the particular venues, festivals, and events.
+      </p>
+      <p>
+        A venue concert is a music performance on a stage, using soundscape recordings and projections to complement the
+        music itself and to deepen the multisensory experience of the audience. The concert sound is set into a surround
+        sound system, which is designed to provide an immersive experience for the audience. In this setup, the
+        soundscapes come from all directions and the music comes from the direction of the performer.
+      </p>
       <p>Performance length: 60 mins</p>
-      <p><strong>Soundscape installation</strong><br />Using the sounds captured in the old-growth forests, the project sound artist Mikko H. Haapoja prepares a surround system soundscape installation that stands separately from the concert performance. It is accompanied by visuals by award-winning documentary filmmaker Ville Tanttu.</p>
+      <p>
+        <strong>Soundscape installation</strong><br />Using the sounds captured in the old-growth forests, the project
+        sound artist Mikko H. Haapoja prepares a surround system soundscape installation that stands separately from the
+        concert performance. It is accompanied by visuals by award-winning documentary filmmaker Ville Tanttu.
+      </p>
     </div>
   </section>
 
   <section class="section" id="workshops" aria-labelledby="workshops-heading">
     <h2 id="workshops-heading">Workshops</h2>
     <div class="prose">
-      <p>As our forest concerts include an interactive walk through the old-growth forest to the forest venue, we also offer a direct forest music workshop experience for people who are interested in music making and the forest, and who want to learn more about the forest composition methods. We provide workshops for music school students and also for the wider public at festivals, venues, and events.</p>
-      <p>The workshops include a guided tour in the forest by a forest expert and a music composition workshop held by the main artist and composer, <span lang="cs">Barbora Šilhánová</span>. The work we do together focuses on offering new perspectives on nature as a place of inspiration, connection, musicality of common sounds, and recording of sound for music making. The event includes a short music performance by Barbora.</p>
+      <p>
+        As our forest concerts include an interactive walk through the old-growth forest to the forest venue, we also
+        offer a direct forest music workshop experience for people who are interested in music making and the forest,
+        and who want to learn more about the forest composition methods. We provide workshops for music school students
+        and also for the wider public at festivals, venues, and events.
+      </p>
+      <p>
+        The workshops include a guided tour in the forest by a forest expert and a music composition workshop held by
+        the main artist and composer, <span lang="cs">Barbora Šilhánová</span>. The work we do together focuses on
+        offering new perspectives on nature as a place of inspiration, connection, musicality of common sounds, and
+        recording of sound for music making. The event includes a short music performance by Barbora.
+      </p>
       <p>Event length: 2 hrs</p>
     </div>
   </section>

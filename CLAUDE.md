@@ -59,25 +59,31 @@ npm run preview     # Preview production build
 ## Content Editing
 
 ### Artists
+
 Edit `src/content/artists/<name>.md`. Frontmatter schema:
+
 ```yaml
 ---
 name: Artist Name
 role: music | featured | land-art | soundscapes
-order: 1          # Sort order within page
-image: filename.jpg  # Must exist in src/assets/images/
+order: 1 # Sort order within page
+image: filename.jpg # Must exist in src/assets/images/
 ---
 ```
+
 Body is Markdown prose. Images are auto-optimized to WebP with responsive srcsets.
 
 ### Events
+
 Edit the `events` array in `src/pages/events.astro`. Each entry is typed as `EventEntry`:
+
 ```ts
 { date: "2026-03-06", location: "Sipoo", locationLanguage: "fi", country: "Finland" }
 { date: "2026-05-23", endDate: "2026-05-24", description: "Garden Festival", location: "Koroinen", locationLanguage: "fi", country: "Finland" }
 { date: "2026-06-25", description: "Akcent & Barbora Xu", venue: "Lidové Sady", venueLanguage: "cs", location: "Liberec", locationLanguage: "cs", country: "Czechia" }
 { date: "2026-08-08", endDate: "2026-08-09", description: "Norpas Festival", country: "Finland" }
 ```
+
 - `description` (optional): English event/concert name — rendered without a `lang` attribute
 - `venue` (optional): Venue/building name — used as `Place.name` in JSON-LD structured data
 - `venueLanguage` (optional): BCP 47 language tag for the `venue` field (e.g. `"fi"`, `"cs"`, `"de"`)
@@ -90,6 +96,7 @@ Edit the `events` array in `src/pages/events.astro`. Each entry is typed as `Eve
 Dates must be ISO `YYYY-MM-DD` format (validated at build time). Past events are automatically dimmed (build-time + client-side check). Past events are excluded from JSON-LD structured data. A daily GitHub Actions cron rebuild keeps this current.
 
 ### Adding a new artist
+
 1. Add image to `src/assets/images/<name>.jpg`
 2. Create `src/content/artists/<name>.md` with frontmatter
 3. The artists page auto-renders based on role grouping
@@ -111,6 +118,7 @@ Dates must be ISO `YYYY-MM-DD` format (validated at build time). Past events are
 Each page gets via Base.astro: meta description, canonical URL, OG tags, Twitter cards, robots directive, theme-color, favicon, sitemap link. Pass `title` and `description` props to `<Base>`. Add `noindex` prop for pages that shouldn't be indexed.
 
 JSON-LD structured data is added per-page:
+
 - **index.astro**: Organization schema
 - **artists.astro**: Person schema per artist (jobTitle varies by role)
 - **events.astro**: MusicEvent schema per event

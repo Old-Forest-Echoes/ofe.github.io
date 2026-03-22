@@ -13,7 +13,9 @@ const orders = sorted.map((a) => a.data.order);
 const dupes = orders.filter((o, i) => orders.indexOf(o) !== i);
 if (dupes.length > 0) throw new Error(`Duplicate artist order values: ${[...new Set(dupes)].join(', ')}`);
 
-const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/*.{jpg,jpeg,png,webp}', { eager: true });
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/*.{jpg,jpeg,png,webp}', {
+  eager: true,
+});
 
 const roleLabels: Record<ArtistRole, string> = {
   music: 'Music',
@@ -29,7 +31,8 @@ if (!ensembleImg) throw new Error('Missing ensemble image: /src/assets/images/en
 
 // Values contain HTML for <span lang> attributes — rendered via set:html
 const roleIntros: Partial<Record<ArtistRole, string>> = {
-  featured: 'In addition to live improvisations recorded during Barbora\u2019s stay in the forests, a number of acclaimed artists come onto the project as guests. These include world-renowned jazz guitarist Niklas Winter, Czech folk violinist <span lang="cs">Petra Jelénková</span>, and <span lang="fi">kantele</span> player <span lang="fi">Jenni Venäläinen</span>.',
+  featured:
+    'In addition to live improvisations recorded during Barbora\u2019s stay in the forests, a number of acclaimed artists come onto the project as guests. These include world-renowned jazz guitarist Niklas Winter, Czech folk violinist <span lang="cs">Petra Jelénková</span>, and <span lang="fi">kantele</span> player <span lang="fi">Jenni Venäläinen</span>.',
 };
 
 const roleJobTitles: Record<ArtistRole, string> = {
@@ -46,29 +49,30 @@ const rendered = await Promise.all(
     const img = images[imgPath];
     if (!img) throw new Error(`Missing image for artist "${artist.data.name}": ${imgPath}`);
     return { artist, Content, img: img.default };
-  })
+  }),
 );
 
 const artistNames = sorted.map((a) => a.data.name);
 const formatter = new Intl.ListFormat('en', { style: 'long', type: 'conjunction' });
-const artistDescription = artistNames.length > 0
-  ? `Meet the artists of Old Forest Echoes: ${formatter.format(artistNames)}.`
-  : 'Meet the artists of Old Forest Echoes.';
+const artistDescription =
+  artistNames.length > 0
+    ? `Meet the artists of Old Forest Echoes: ${formatter.format(artistNames)}.`
+    : 'Meet the artists of Old Forest Echoes.';
 
 const siteUrl = Astro.site;
 if (!siteUrl) throw new Error('Astro.site must be configured in astro.config.mjs');
 
 function truncateDescription(body: string, maxLength = 160): string {
   const plain = body
-    .replace(/<[^>]+>/g, '')           // strip HTML tags
+    .replace(/<[^>]+>/g, '') // strip HTML tags
     .replace(/!\[([^\]]*)\]\([^)]+\)/g, '$1') // ![alt](url) → alt (before link regex)
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // [text](url) → text
-    .replace(/(\*{1,3})(.+?)\1/g, '$2')          // **bold**/*italic* → text
-    .replace(/(_{1,3})(.+?)\1/g, '$2')            // __bold__/_italic_ → text
-    .replace(/`([^`]+)`/g, '$1')       // `code` → code
-    .replace(/^#{1,6}\s+/gm, '')       // headings
-    .replace(/^[>-]\s+/gm, '')         // blockquotes, list items
-    .replace(/^\d+\.\s+/gm, '')        // ordered list items
+    .replace(/(\*{1,3})(.+?)\1/g, '$2') // **bold**/*italic* → text
+    .replace(/(_{1,3})(.+?)\1/g, '$2') // __bold__/_italic_ → text
+    .replace(/`([^`]+)`/g, '$1') // `code` → code
+    .replace(/^#{1,6}\s+/gm, '') // headings
+    .replace(/^[>-]\s+/gm, '') // blockquotes, list items
+    .replace(/^\d+\.\s+/gm, '') // ordered list items
     .replace(/\s+/g, ' ')
     .trim();
   if (plain.length <= maxLength) return plain;
@@ -81,7 +85,9 @@ const personSchemas = await Promise.all(
     return {
       '@type': 'Person',
       name: artist.data.name,
-      description: truncateDescription(artist.body ?? '') || `${artist.data.name} — ${roleJobTitles[artist.data.role]} with Old Forest Echoes`,
+      description:
+        truncateDescription(artist.body ?? '') ||
+        `${artist.data.name} — ${roleJobTitles[artist.data.role]} with Old Forest Echoes`,
       url: new URL(`/artists/#${artist.id}`, siteUrl).href,
       jobTitle: roleJobTitles[artist.data.role],
       image: new URL(resolved.src, siteUrl).href,
@@ -90,7 +96,7 @@ const personSchemas = await Promise.all(
         name: 'Old Forest Echoes',
       },
     };
-  })
+  }),
 );
 
 const personGraph = { '@context': 'https://schema.org', '@graph': personSchemas };
@@ -101,40 +107,67 @@ const personGraph = { '@context': 'https://schema.org', '@graph': personSchemas 
   <section class="section" aria-labelledby="artists-heading">
     <h1 id="artists-heading">Artists</h1>
     <div class="prose">
-      <p>Old Forest Echoes is the vision of internationally renowned singer, composer, and multi-instrumentalist Barbora Xu (CZ/FI), who spends prolonged periods in endangered old-growth forest areas of Finland. Conducting artistic research involving deep personal songwriting journeys, Barbora and her team also explore the forest to locate the best wilderness concert venues. The venues are transformed into a living piece of art by Wiebke Pandikow and become the Old Forest Echoes forest tour venues open to the public. To bring the music from the old-growth forests to festivals and venues, experienced sound artist Mikko H. Haapoja prepares surround system soundscape installations to stand alone or encapsulate a live concert. Barbora collaborates with numerous renowned artists such as Niklas Winter, Ilkka Heinonen, <span lang="fi">Jenni Venäläinen</span>, and <span lang="cs">Petra Jelénková</span> — making every single concert a unique event.</p>
+      <p>
+        Old Forest Echoes is the vision of internationally renowned singer, composer, and multi-instrumentalist Barbora
+        Xu (CZ/FI), who spends prolonged periods in endangered old-growth forest areas of Finland. Conducting artistic
+        research involving deep personal songwriting journeys, Barbora and her team also explore the forest to locate
+        the best wilderness concert venues. The venues are transformed into a living piece of art by Wiebke Pandikow and
+        become the Old Forest Echoes forest tour venues open to the public. To bring the music from the old-growth
+        forests to festivals and venues, experienced sound artist Mikko H. Haapoja prepares surround system soundscape
+        installations to stand alone or encapsulate a live concert. Barbora collaborates with numerous renowned artists
+        such as Niklas Winter, Ilkka Heinonen, <span lang="fi">Jenni Venäläinen</span>, and <span lang="cs"
+          >Petra Jelénková</span
+        > — making every single concert a unique event.
+      </p>
     </div>
   </section>
 
-  {roles.map((role) => {
-    const group = rendered.filter(({ artist }) => artist.data.role === role);
-    if (group.length === 0) return null;
-    return (
-      <section class="section" id={role} aria-labelledby={`${role}-heading`}>
-        <h2 id={`${role}-heading`}>{roleLabels[role]}</h2>
-        {role === 'featured' && (
-          <div class="artist-card">
-            <Image src={ensembleImg.default} alt="Old Forest Echoes ensemble performing in a forest setting" widths={[500, 800, 1080]} sizes="(max-width: 768px) 100vw, 660px" loading="lazy" />
-          </div>
-        )}
-        {roleIntros[role] && (
-          <div class="prose role-intro">
-            <p set:html={roleIntros[role]} />
-          </div>
-        )}
-        {group.map(({ artist, Content, img }) => {
-          return (
-            <article class="artist-card" id={artist.id} aria-labelledby={`artist-${artist.id}`}>
-              <Image src={img} alt={`Portrait of ${artist.data.name}`} widths={[500, 800, 1080]} sizes="(max-width: 768px) 100vw, 660px" loading="lazy" />
-              <h3 id={`artist-${artist.id}`}>{artist.data.name}</h3>
-              <div class="prose">
-                <Content />
-              </div>
-            </article>
-          );
-        })}
-      </section>
-    );
-  })}
+  {
+    roles.map((role) => {
+      const group = rendered.filter(({ artist }) => artist.data.role === role);
+      if (group.length === 0) return null;
+      return (
+        <section class="section" id={role} aria-labelledby={`${role}-heading`}>
+          <h2 id={`${role}-heading`}>{roleLabels[role]}</h2>
+          {role === 'featured' && (
+            <div class="artist-card">
+              <Image
+                src={ensembleImg.default}
+                alt="Old Forest Echoes ensemble performing in a forest setting"
+                widths={[500, 800, 1080]}
+                sizes="(max-width: 768px) 100vw, 660px"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          )}
+          {roleIntros[role] && (
+            <div class="prose role-intro">
+              <p set:html={roleIntros[role]} />
+            </div>
+          )}
+          {group.map(({ artist, Content, img }) => {
+            return (
+              <article class="artist-card" id={artist.id} aria-labelledby={`artist-${artist.id}`}>
+                <Image
+                  src={img}
+                  alt={`Portrait of ${artist.data.name}`}
+                  widths={[500, 800, 1080]}
+                  sizes="(max-width: 768px) 100vw, 660px"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <h3 id={`artist-${artist.id}`}>{artist.data.name}</h3>
+                <div class="prose">
+                  <Content />
+                </div>
+              </article>
+            );
+          })}
+        </section>
+      );
+    })
+  }
 
   <Contact />
 </Base>

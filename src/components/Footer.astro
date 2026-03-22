@@ -8,11 +8,13 @@ const copyright = year > 2025 ? `2025–${year}` : '2025';
 <footer class="footer">
   <div class="container">
     <div class="footer-socials">
-      {socialLinks.map(({ href, label, icon, width, height, className }) => (
-        <a href={href} aria-label={label} target="_blank" rel="noopener noreferrer">
-          <img src={icon} alt="" class:list={[className]} width={width} height={height} decoding="async" />
-        </a>
-      ))}
+      {
+        socialLinks.map(({ href, label, icon, width, height, className }) => (
+          <a href={href} aria-label={label} target="_blank" rel="noopener noreferrer">
+            <img src={icon} alt="" class:list={[className]} width={width} height={height} decoding="async" />
+          </a>
+        ))
+      }
     </div>
     <p class="footer-text">Old Forest Echoes &copy; {copyright}</p>
   </div>
