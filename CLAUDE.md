@@ -117,7 +117,7 @@ Dates must be ISO `YYYY-MM-DD` format (validated at build time). Past events are
 - **Images in `src/assets/`**: Processed by Astro (responsive WebP). Use for content images.
 - **Images in `public/`**: Served as-is. Use for icons, logos, OG images.
 - **External links**: Use `target="_blank" rel="noopener"`. The project's own social profiles (Facebook, Instagram, YouTube, Linktree) use `rel="noopener"` without `noreferrer` to allow referrer analytics on those accounts. Add `noreferrer` for unrelated third-party links where the referrer should be hidden.
-- **Non-English text**: Wrap in `<span lang="xx">` for screen reader pronunciation (e.g. `fi`, `cs`, `de`). Events use per-entry `locationLanguage`.
+- **Non-English text**: Wrap in `<span lang="xx">` for screen reader pronunciation (e.g. `fi`, `cs`, `de`, `sv`, `it`, `zh`). Events use per-entry `locationLanguage`/`venueLanguage`.
 - **No inline style attributes** (`style="..."`). Scoped `<style>` blocks in Astro components are acceptable.
 - **Semantic HTML**: `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>`, `<time>`.
 - **Accessibility**: Skip link, ARIA attributes on nav toggle, focus trapping in mobile menu.

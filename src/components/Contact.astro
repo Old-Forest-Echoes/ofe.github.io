@@ -19,10 +19,8 @@ function escapeAttr(str: string): string {
     {
       contacts.map(({ title, name, nameLanguage, email }) => (
         <p>
-          <>
-            <strong>{title}</strong>
-            <br />
-          </>
+          <strong>{title}</strong>
+          <br />
           {nameLanguage ? <span lang={nameLanguage}>{name}</span> : name}
           <br />
           <Fragment
