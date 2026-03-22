@@ -3,6 +3,14 @@ import Base from '../layouts/Base.astro';
 import Contact from '../components/Contact.astro';
 import JsonLd from '../components/JsonLd.astro';
 
+const countryCodes = {
+  Finland: 'FI',
+  Czechia: 'CZ',
+  Germany: 'DE',
+} as const satisfies Record<string, string>;
+
+type Country = keyof typeof countryCodes;
+
 interface EventEntry {
   date: string;
   endDate?: string;
@@ -11,7 +19,7 @@ interface EventEntry {
   venueLanguage?: string;
   location?: string;
   locationLanguage?: string;
-  country: string;
+  country: Country;
   schemaType?: 'MusicEvent' | 'Event';
 }
 
@@ -45,26 +53,23 @@ function displayName(event: EventEntry): string {
   return parts.join(', ');
 }
 
-const countryCodes: Record<string, string> = {
-  Finland: 'FI',
-  Czechia: 'CZ',
-  Germany: 'DE',
-};
-
-for (let i = 0; i < events.length; i++) {
-  const e = events[i];
-  if (!isoDate.test(e.date)) throw new Error(`Invalid date format: ${e.date}`);
-  if (new Date(e.date + 'T00:00:00Z').toISOString().slice(0, 10) !== e.date) throw new Error(`Invalid calendar date: ${e.date}`);
-  if (e.endDate && !isoDate.test(e.endDate)) throw new Error(`Invalid endDate format: ${e.endDate}`);
-  if (e.endDate && new Date(e.endDate + 'T00:00:00Z').toISOString().slice(0, 10) !== e.endDate) throw new Error(`Invalid calendar date: ${e.endDate}`);
-  if (e.endDate && e.endDate <= e.date) throw new Error(`endDate ${e.endDate} must be after date ${e.date}`);
-  if (e.endDate && e.date.slice(0, 4) !== e.endDate.slice(0, 4)) throw new Error(`Cross-year date range not supported (${e.date} to ${e.endDate}) — date format omits year`);
-  if (!e.description && !e.venue && !e.location) throw new Error(`Event on ${e.date} must have at least a description, venue, or location`);
-  if (e.venueLanguage && !e.venue) throw new Error(`Event on ${e.date} has venueLanguage without venue`);
-  if (e.locationLanguage && !e.location) throw new Error(`Event on ${e.date} has locationLanguage without location`);
-  if (!(e.country in countryCodes)) throw new Error(`Unknown country "${e.country}" on event ${e.date} — add it to countryCodes`);
-  if (i > 0 && e.date < events[i - 1].date) throw new Error(`Events out of chronological order: ${events[i - 1].date} before ${e.date}`);
+function validateEvents(list: EventEntry[]): void {
+  for (let i = 0; i < list.length; i++) {
+    const e = list[i];
+    if (!isoDate.test(e.date)) throw new Error(`Invalid date format: ${e.date}`);
+    if (new Date(e.date + 'T00:00:00Z').toISOString().slice(0, 10) !== e.date) throw new Error(`Invalid calendar date: ${e.date}`);
+    if (e.endDate && !isoDate.test(e.endDate)) throw new Error(`Invalid endDate format: ${e.endDate}`);
+    if (e.endDate && new Date(e.endDate + 'T00:00:00Z').toISOString().slice(0, 10) !== e.endDate) throw new Error(`Invalid calendar date: ${e.endDate}`);
+    if (e.endDate && e.endDate <= e.date) throw new Error(`endDate ${e.endDate} must be after date ${e.date}`);
+    if (e.endDate && e.date.slice(0, 4) !== e.endDate.slice(0, 4)) throw new Error(`Cross-year date range not supported (${e.date} to ${e.endDate}) — date format omits year`);
+    if (!e.description && !e.venue && !e.location) throw new Error(`Event on ${e.date} must have at least a description, venue, or location`);
+    if (e.venueLanguage && !e.venue) throw new Error(`Event on ${e.date} has venueLanguage without venue`);
+    if (e.locationLanguage && !e.location) throw new Error(`Event on ${e.date} has locationLanguage without location`);
+    if (i > 0 && e.date < list[i - 1].date) throw new Error(`Events out of chronological order: ${list[i - 1].date} before ${e.date}`);
+  }
 }
+
+validateEvents(events);
 
 // UTC date — matches the daily 04:00 UTC cron rebuild and ISO date string comparison
 const today = new Date().toISOString().slice(0, 10);
@@ -78,6 +83,10 @@ function formatYearRange(years: string[]): string {
 }
 
 const calendarYear = formatYearRange(eventYears);
+
+const eventCountries = [...new Set(events.map((e) => e.country))];
+const countryFormatter = new Intl.ListFormat('en', { style: 'long', type: 'conjunction' });
+const countryList = countryFormatter.format(eventCountries);
 
 function isPast(event: EventEntry): boolean {
   return (event.endDate || event.date) < today;
@@ -141,6 +150,10 @@ const eventGraph = eventSchemas.length > 0
 // Finnish day.month. format (e.g. "6.3.") — intentional despite lang="en", matches the project's European audience
 const dateFormatShort = new Intl.DateTimeFormat('fi', { month: 'numeric', day: 'numeric', timeZone: 'UTC' });
 
+// Formats date ranges in Finnish day.month. style:
+//   single day: "6.3."
+//   same month: "1–12.7." (July 1–12)
+//   cross month: "27.7.–31.8." (July 27 – August 31)
 function formatDate(dateStr: string, endDateStr?: string): string {
   const start = new Date(dateStr + 'T00:00:00Z');
   if (endDateStr) {
@@ -167,12 +180,12 @@ function formatDateAccessible(dateStr: string, endDateStr?: string): string {
 }
 ---
 
-<Base title="Events — Old Forest Echoes" description={`Old Forest Echoes ${calendarYear} event calendar: forest concerts, venue performances, and workshops across Finland, Czechia, and Germany.`}>
+<Base title="Events — Old Forest Echoes" description={`Old Forest Echoes ${calendarYear} event calendar: forest concerts, venue performances, and workshops across ${countryList}.`}>
   {eventGraph && <JsonLd data={eventGraph} />}
   <section class="section" id="calendar" aria-labelledby="calendar-heading">
     <h1 id="calendar-heading">Events</h1>
-    <p class="calendar-subtitle">Event Calendar {calendarYear}</p>
-    <ul class="event-list" role="list" aria-labelledby="calendar-heading">
+    <p class="calendar-subtitle" id="calendar-subtitle">Event Calendar {calendarYear}</p>
+    <ul class="event-list" role="list" aria-labelledby="calendar-heading" aria-describedby="calendar-subtitle">
       {events.map((event) => (
         <li class:list={[{ 'event-past': isPast(event) }]} data-end={event.endDate || event.date}>
           {/* datetime uses start date only (HTML spec requires a single date, not an interval).
@@ -232,9 +245,9 @@ function formatDateAccessible(dateStr: string, endDateStr?: string): string {
   <script>
     // UTC date intentionally matches build-time check and daily 04:00 UTC cron rebuild
     const today = new Date().toISOString().slice(0, 10);
-    document.querySelectorAll<HTMLElement>('.event-list li[data-end]').forEach((li) => {
+    for (const li of document.querySelectorAll<HTMLElement>('.event-list li[data-end]')) {
       const end = li.dataset.end ?? '';
       if (end < today) li.classList.add('event-past');
-    });
+    }
   </script>
 </Base>

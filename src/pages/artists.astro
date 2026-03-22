@@ -4,6 +4,7 @@ import Contact from '../components/Contact.astro';
 import JsonLd from '../components/JsonLd.astro';
 import { getCollection, render } from 'astro:content';
 import { Image, getImage } from 'astro:assets';
+import type { ArtistRole } from '../content.config';
 
 const allArtists = await getCollection('artists');
 const sorted = [...allArtists].sort((a, b) => a.data.order - b.data.order);
@@ -14,25 +15,24 @@ if (dupes.length > 0) throw new Error(`Duplicate artist order values: ${[...new 
 
 const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/*.{jpg,jpeg,png,webp}', { eager: true });
 
-const roleLabels = {
+const roleLabels: Record<ArtistRole, string> = {
   music: 'Music',
   featured: 'Featured Artists',
   'land-art': 'Land Art',
   soundscapes: 'Soundscapes',
-} as const;
+};
 
-type Role = keyof typeof roleLabels;
-const roles = Object.keys(roleLabels) as Role[];
+const roles = Object.keys(roleLabels) as ArtistRole[];
 
 const ensembleImg = images['/src/assets/images/ensemble.jpg'];
 if (!ensembleImg) throw new Error('Missing ensemble image: /src/assets/images/ensemble.jpg');
 
 // Values contain HTML for <span lang> attributes — rendered via set:html
-const roleIntros: Partial<Record<Role, string>> = {
-  featured: 'In addition to live improvisations recorded during Barbora\u2019s stay in the forests, a number of acclaimed artists come onto the project as guests. These include world-renowned jazz guitarist Niklas Winter, Czech folk violinist <span lang="cs">Petra Jelénková</span>, and kantele player <span lang="fi">Jenni Venäläinen</span>.',
+const roleIntros: Partial<Record<ArtistRole, string>> = {
+  featured: 'In addition to live improvisations recorded during Barbora\u2019s stay in the forests, a number of acclaimed artists come onto the project as guests. These include world-renowned jazz guitarist Niklas Winter, Czech folk violinist <span lang="cs">Petra Jelénková</span>, and <span lang="fi">kantele</span> player <span lang="fi">Jenni Venäläinen</span>.',
 };
 
-const roleJobTitles: Record<Role, string> = {
+const roleJobTitles: Record<ArtistRole, string> = {
   music: 'Musician',
   featured: 'Musician',
   'land-art': 'Visual Artist',
@@ -42,7 +42,10 @@ const roleJobTitles: Record<Role, string> = {
 const rendered = await Promise.all(
   sorted.map(async (artist) => {
     const { Content } = await render(artist);
-    return { artist, Content };
+    const imgPath = `/src/assets/images/${artist.data.image}`;
+    const img = images[imgPath];
+    if (!img) throw new Error(`Missing image for artist "${artist.data.name}": ${imgPath}`);
+    return { artist, Content, img: img.default };
   })
 );
 
@@ -61,6 +64,10 @@ function truncateDescription(body: string, maxLength = 160): string {
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // [text](url) → text
     .replace(/[*_]{1,3}(.+?)[*_]{1,3}/g, '$1') // **bold**/*italic* → text
     .replace(/`([^`]+)`/g, '$1')       // `code` → code
+    .replace(/^#{1,6}\s+/gm, '')       // headings
+    .replace(/^[>-]\s+/gm, '')         // blockquotes, list items
+    .replace(/^\d+\.\s+/gm, '')        // ordered list items
+    .replace(/!\[([^\]]*)\]\([^)]+\)/g, '$1') // ![alt](url) → alt
     .replace(/\s+/g, ' ')
     .trim();
   if (plain.length <= maxLength) return plain;
@@ -68,17 +75,15 @@ function truncateDescription(body: string, maxLength = 160): string {
 }
 
 const personSchemas = await Promise.all(
-  sorted.map(async (artist) => {
-    const imgPath = `/src/assets/images/${artist.data.image}`;
-    const img = images[imgPath];
-    const resolved = img ? await getImage({ src: img.default, width: 800, format: 'webp' }) : null;
+  rendered.map(async ({ artist, img }) => {
+    const resolved = await getImage({ src: img, width: 800, format: 'webp' });
     return {
       '@type': 'Person',
       name: artist.data.name,
       description: truncateDescription(artist.body ?? ''),
       url: new URL(`/artists/#${artist.id}`, siteUrl).href,
       jobTitle: roleJobTitles[artist.data.role],
-      ...(resolved ? { image: new URL(resolved.src, siteUrl).href } : {}),
+      image: new URL(resolved.src, siteUrl).href,
       memberOf: {
         '@type': 'Organization',
         name: 'Old Forest Echoes',
@@ -105,7 +110,7 @@ const personGraph = { '@context': 'https://schema.org', '@graph': personSchemas 
     return (
       <section class="section" id={role} aria-labelledby={`${role}-heading`}>
         <h2 id={`${role}-heading`}>{roleLabels[role]}</h2>
-        {role === 'featured' && ensembleImg && (
+        {role === 'featured' && (
           <div class="artist-card">
             <Image src={ensembleImg.default} alt="Old Forest Echoes ensemble performing in a forest setting" widths={[500, 800, 1080]} sizes="(max-width: 768px) 100vw, 660px" loading="lazy" />
           </div>
@@ -115,13 +120,10 @@ const personGraph = { '@context': 'https://schema.org', '@graph': personSchemas 
             <p set:html={roleIntros[role]} />
           </div>
         )}
-        {group.map(({ artist, Content }) => {
-          const imgPath = `/src/assets/images/${artist.data.image}`;
-          const img = images[imgPath];
-          if (!img) throw new Error(`Missing image for artist "${artist.data.name}": ${imgPath}`);
+        {group.map(({ artist, Content, img }) => {
           return (
             <article class="artist-card" id={artist.id} aria-labelledby={`artist-${artist.id}`}>
-              <Image src={img.default} alt={`Portrait of ${artist.data.name}`} widths={[500, 800, 1080]} sizes="(max-width: 768px) 100vw, 660px" loading="lazy" />
+              <Image src={img} alt={`Portrait of ${artist.data.name}`} widths={[500, 800, 1080]} sizes="(max-width: 768px) 100vw, 660px" loading="lazy" />
               <h3 id={`artist-${artist.id}`}>{artist.data.name}</h3>
               <div class="prose">
                 <Content />

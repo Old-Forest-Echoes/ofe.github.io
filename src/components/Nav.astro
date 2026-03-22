@@ -34,9 +34,11 @@ const links = [
   const menuEl = document.getElementById('nav-menu');
 
   if (navEl && toggleEl && menuEl) {
+    // Aliases narrow nullable types for use in closures (openMenu, event handlers)
     const nav = navEl;
     const toggle = toggleEl;
     const menu = menuEl;
+    const focusableSelector = 'a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
     nav.classList.add('js-nav');
     let isOpen = false;
@@ -88,7 +90,7 @@ const links = [
     // Focus trapping within open menu
     menu.addEventListener('keydown', (e) => {
       if (!isOpen || e.key !== 'Tab') return;
-      const focusable = menu.querySelectorAll('a');
+      const focusable = menu.querySelectorAll<HTMLElement>(focusableSelector);
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
       if (e.shiftKey && document.activeElement === first) {

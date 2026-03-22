@@ -1,5 +1,8 @@
 ---
 import { socialLinks } from '../data/social-links';
+
+const year = new Date().getFullYear();
+const copyright = year > 2025 ? `2025–${year}` : '2025';
 ---
 
 <footer class="footer">
@@ -11,6 +14,6 @@ import { socialLinks } from '../data/social-links';
         </a>
       ))}
     </div>
-    <p class="footer-text">Old Forest Echoes &copy; {new Date().getFullYear()}</p>
+    <p class="footer-text">Old Forest Echoes &copy; {copyright}</p>
   </div>
 </footer>

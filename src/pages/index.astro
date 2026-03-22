@@ -22,16 +22,13 @@ const indexGraph = {
       name: 'Old Forest Echoes',
       alternateName: 'Ikimetsän kaiku',
       url: siteUrl.href,
-      foundingDate: '2025-01-01',
-      logo: {
-        '@type': 'ImageObject',
-        url: new URL('/apple-touch-icon.png', siteUrl).href,
-        width: 180,
-        height: 180,
-      },
+      foundingDate: '2025',
+      logo: new URL('/apple-touch-icon.png', siteUrl).href,
       description: 'Music and art composed in Finnish old-growth forests, aiming to raise awareness and protect threatened forests.',
       email: 'info@oldforestechoes.com',
-      sameAs: socialLinks.map(({ href }) => href),
+      sameAs: socialLinks
+        .filter(({ href }) => !href.includes('linktr.ee'))
+        .map(({ href }) => href),
       funder: {
         '@type': 'Organization',
         name: 'KONE Foundation',

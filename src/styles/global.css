@@ -41,6 +41,8 @@
   --color-shadow-text: #000;
   --color-past-text: rgba(255, 255, 255, 0.5);
   --color-past-date: rgba(255, 230, 148, 0.55);
+  --color-yt-red: red;
+  --color-yt-white: white;
 
   --font-display: 'Leonetta Serif', 'Palatino Linotype', Palatino, serif;
   --font-body: 'Spectral', 'Georgia', serif;
@@ -60,6 +62,7 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -77,10 +80,7 @@ img {
   display: block;
 }
 
-address {
-  font-style: normal;
-}
-
+address,
 cite {
   font-style: normal;
 }
@@ -176,19 +176,18 @@ h1, h2, h3 {
   font-family: var(--font-display);
   font-weight: normal;
   line-height: 1.2;
+  color: var(--color-gold);
   text-wrap: balance;
 }
 
 h1 {
   font-size: clamp(2rem, 5vw, 3.5rem);
-  color: var(--color-gold);
   text-align: center;
   margin-block-end: 1.5rem;
 }
 
 h2 {
   font-size: clamp(1.5rem, 3vw, 2.5rem);
-  color: var(--color-gold);
   text-align: center;
   margin-block: 2rem 1.5rem;
 }
@@ -203,7 +202,6 @@ h1:has(+ .calendar-subtitle) {
 
 h3 {
   font-size: clamp(1.2rem, 2vw, 1.5rem);
-  color: var(--color-gold);
   text-align: center;
   margin-block-end: 1rem;
 }
@@ -219,9 +217,13 @@ p {
   z-index: 100;
   padding-block: 1rem;
   font-family: var(--font-display);
-  background-color: var(--color-nav-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background-color: rgba(0, 0, 0, 0.7);
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    background-color: var(--color-nav-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
 }
 
 body:has(.nav-open) {
@@ -379,7 +381,7 @@ body:has(.nav-open) {
 }
 
 /* Ensemble image card has no heading/prose after it — remove bottom margin */
-.artist-card img:last-child {
+.artist-card > img:only-child {
   margin-block-end: 0;
 }
 
@@ -482,12 +484,6 @@ body:has(.nav-open) {
 }
 
 /* === Contact === */
-.contact-grid a {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
-}
-
 .contact-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -543,7 +539,8 @@ body:has(.nav-open) {
   font-size: 0.85rem;
 }
 
-.prose a {
+.prose a,
+.contact-grid a {
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
@@ -562,8 +559,8 @@ body:has(.nav-open) {
     --color-gold-muted: black;
     --color-text: black;
     --color-text-muted: #666;
-    --color-past-text: #666;
-    --color-past-date: #666;
+    --color-past-text: var(--color-text-muted);
+    --color-past-date: var(--color-text-muted);
   }
 
   .page-background,

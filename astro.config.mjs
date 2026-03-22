@@ -23,7 +23,7 @@ function getLastCommitDate(filePath) {
 function getLatestCommitDate(filePaths) {
   const dates = filePaths.map(getLastCommitDate).filter(Boolean);
   if (dates.length === 0) return undefined;
-  return dates.reduce((a, b) => (a > b ? a : b));
+  return dates.reduce((a, b) => (a > b ? a : b), dates[0]);
 }
 
 // When adding a new page to src/pages/, add its route and source files here

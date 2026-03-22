@@ -30,8 +30,9 @@ export const socialLinks: SocialLink[] = [
     height: 23,
   },
   {
+    // TODO: personal profile — consider creating a project-specific Linktree (used in Organization sameAs)
     href: "https://linktr.ee/Barboraxu",
-    label: "Old Forest Echoes on Linktree",
+    label: "Barbora Xu on Linktree",
     icon: "/icons/linktree.svg",
     width: 100,
     height: 20,

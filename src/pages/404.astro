@@ -3,9 +3,21 @@ import Base from '../layouts/Base.astro';
 ---
 
 <Base title="Page Not Found — Old Forest Echoes" description="The page you're looking for doesn't exist." noindex>
-  <section class="section" style="text-align: center; min-height: 50vh; display: flex; flex-direction: column; justify-content: center;">
+  <section class="section not-found">
     <h1>Page Not Found</h1>
-    <p style="margin-block-start: 1rem;">The path you followed leads deeper into the forest than we've explored.</p>
+    <p>The path you followed leads deeper into the forest than we've explored.</p>
     <p><a href="/">Return home</a></p>
   </section>
+  <style>
+    .not-found {
+      text-align: center;
+      min-height: 50vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .not-found p:first-of-type {
+      margin-block-start: 1rem;
+    }
+  </style>
 </Base>
