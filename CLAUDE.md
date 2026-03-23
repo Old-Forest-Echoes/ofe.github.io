@@ -9,7 +9,7 @@ nvm use             # Required — reads .nvmrc to select Node version
 npm run dev         # Dev server at localhost:4321
 npm run build       # Production build to dist/
 npm run preview     # Preview production build
-npm run lint        # ESLint + Prettier check
+npm run lint        # ESLint + Stylelint + Prettier check
 npm run format      # Auto-format with Prettier
 npm run check       # Astro type checking
 npm run validate    # Lint + type check (lint && check)
@@ -30,6 +30,7 @@ npm run validate    # Lint + type check (lint && check)
 ```
 ├── astro.config.mjs              # Site config, sitemap with git-based lastmod
 ├── eslint.config.mjs             # ESLint flat config (TS + Astro + Prettier)
+├── .stylelintrc.json             # Stylelint config (standard + HTML/Astro)
 ├── .prettierrc                   # Prettier config with Astro plugin
 ├── tsconfig.json                 # Extends astro/tsconfigs/strict
 ├── src/

@@ -10,7 +10,11 @@ import { organizationSchema } from '../data/organization';
 const siteUrl = Astro.site;
 if (!siteUrl) throw new Error('Astro.site must be configured in astro.config.mjs');
 
-const ytPreload = await getImage({ src: ytThumb, width: 768, format: 'webp' });
+// Must match YouTubeEmbed.astro widths and sizes — preload the same srcset so the browser picks the right variant
+const ytWidths = [480, 768, 1280];
+const ytImages = await Promise.all(ytWidths.map((w) => getImage({ src: ytThumb, width: w, format: 'webp' })));
+const ytSrcset = ytImages.map((img, i) => `${img.src} ${ytWidths[i]}w`).join(', ');
+const ytSizes = '(max-width: 940px) calc(100vw - 2rem), 940px';
 
 const indexGraph = {
   '@context': 'https://schema.org',
@@ -29,7 +33,7 @@ const indexGraph = {
 
 <Base
   title="Old Forest Echoes — Music for Protection of Old Growth Forests"
-  preloadImages={[{ src: ytPreload.src, type: `image/${ytPreload.options.format || 'webp'}` }]}
+  preloadImages={[{ srcset: ytSrcset, sizes: ytSizes, type: 'image/webp' }]}
 >
   <JsonLd data={indexGraph} />
   <section class="section" aria-labelledby="about-heading">

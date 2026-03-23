@@ -20,8 +20,9 @@ if (!YOUTUBE_ID_RE.test(videoId)) throw new Error(`Invalid YouTube video ID: ${v
       src={thumbnail}
       alt=""
       widths={[480, 768, 1280]}
-      sizes="(max-width: 940px) 100vw, 940px"
+      sizes="(max-width: 940px) calc(100vw - 2rem), 940px"
       loading="eager"
+      decoding="auto"
       fetchpriority="high"
     />
     <svg class="video-play" viewBox="0 0 68 48" width="68" height="48" aria-hidden="true">

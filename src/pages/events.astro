@@ -153,7 +153,9 @@ function validateEvents(list: EventEntry[]): void {
     if (e.venueLanguage && !e.venue) throw new Error(`Event on ${e.date} has venueLanguage without venue`);
     if (e.locationLanguage && !e.location) throw new Error(`Event on ${e.date} has locationLanguage without location`);
     if (i > 0 && e.date < list[i - 1].date)
-      throw new Error(`Events out of chronological order: ${list[i - 1].date} before ${e.date}`);
+      throw new Error(
+        `Events out of order at index ${i}: ${e.date} follows ${list[i - 1].date} but is chronologically earlier`,
+      );
   }
 }
 
@@ -200,7 +202,7 @@ const eventSchemas = upcomingEvents.map((event) => {
       ? `${event.description} — Old Forest Echoes ${event.schemaType === 'Event' ? 'event' : 'live performance'} ${locationLabel}.`
       : `Old Forest Echoes ${event.schemaType === 'Event' ? 'event' : 'live performance'} ${locationLabel}.`,
     image: new URL('/images/og-image-landscape.webp', siteUrl).href,
-    url: new URL('/events/#calendar', siteUrl).href,
+    url: new URL('/events/', siteUrl).href,
     startDate: event.date,
     ...(event.endDate ? { endDate: event.endDate } : {}),
     eventStatus: 'https://schema.org/EventScheduled',
@@ -211,7 +213,7 @@ const eventSchemas = upcomingEvents.map((event) => {
       price: 0,
       priceCurrency: countryMeta[event.country].currency,
       availability: 'https://schema.org/InStock',
-      url: new URL('/events/#calendar', siteUrl).href,
+      url: new URL('/events/', siteUrl).href,
     },
     location: {
       '@type': 'Place',
