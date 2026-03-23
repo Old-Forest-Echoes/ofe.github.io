@@ -29,19 +29,19 @@
   font-family: 'Leonetta Serif Fallback';
   src: local('Georgia');
   font-weight: 400;
-  size-adjust: 136.77%;
-  ascent-override: 58.49%;
-  descent-override: 14.62%;
-  line-gap-override: 14.62%;
+  size-adjust: 134.08%;
+  ascent-override: 74.58%;
+  descent-override: 14.92%;
+  line-gap-override: 0%;
 }
 
 @font-face {
   font-family: 'Spectral Fallback';
   src: local('Georgia');
   font-weight: 300;
-  size-adjust: 98.03%;
-  ascent-override: 108.03%;
-  descent-override: 47.23%;
+  size-adjust: 97.94%;
+  ascent-override: 108.13%;
+  descent-override: 47.27%;
   line-gap-override: 0%;
 }
 
@@ -49,9 +49,9 @@
   font-family: 'Spectral Fallback';
   src: local('Georgia');
   font-weight: 400;
-  size-adjust: 99.79%;
-  ascent-override: 106.12%;
-  descent-override: 46.4%;
+  size-adjust: 99.64%;
+  ascent-override: 106.29%;
+  descent-override: 46.47%;
   line-gap-override: 0%;
 }
 

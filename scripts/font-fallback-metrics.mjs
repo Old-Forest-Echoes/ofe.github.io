@@ -7,16 +7,15 @@
  *   node scripts/font-fallback-metrics.mjs
  *
  * Requires (installed temporarily):
- *   npm install --no-save opentype.js wawoff2
+ *   npm install --no-save fontkit
  *
  * How it works:
- *   1. Decompresses each WOFF2 web font to read its OpenType tables
- *   2. Loads each system fallback font from well-known OS paths
- *   3. Measures actual glyph advance widths on representative text to
- *      compute an accurate size-adjust (better than xAvgCharWidth)
- *   4. Derives ascent-override, descent-override, and line-gap-override
- *      from the web font's OS/2 metrics, scaled by size-adjust
- *   5. Outputs ready-to-paste CSS @font-face blocks
+ *   1. Loads each web font (WOFF2) and system font (TTF/OTF/TTC) via fontkit
+ *   2. Measures actual glyph advance widths on representative text using
+ *      fontkit's layout engine to compute an accurate size-adjust
+ *   3. Derives ascent-override, descent-override, and line-gap-override
+ *      from the web font's vertical metrics, scaled by size-adjust
+ *   4. Outputs ready-to-paste CSS @font-face blocks
  */
 
 import { readFileSync } from 'node:fs';
@@ -86,87 +85,39 @@ const TEST_TEXT =
   'The quick brown fox jumps over the lazy dog. 0123456789';
 
 // ---------------------------------------------------------------------------
-// Font loading helpers
+// Font loading
 // ---------------------------------------------------------------------------
 
-/** @type {typeof import('opentype.js')} */
-let opentype;
-/** @type {typeof import('wawoff2')} */
-let wawoff2;
+let fontkit;
 
 async function loadDeps() {
   try {
-    opentype = await import('opentype.js');
-    wawoff2 = await import('wawoff2');
+    fontkit = await import('fontkit');
   } catch {
-    console.error(
-      'Missing dependencies. Install them temporarily with:\n\n' + '  npm install --no-save opentype.js wawoff2\n',
-    );
+    console.error('Missing dependency. Install it temporarily with:\n\n' + '  npm install --no-save fontkit\n');
     process.exit(1);
   }
 }
 
-/** Load a WOFF2 web font, decompress, and parse. */
-async function loadWoff2(filePath) {
-  const woff2Buf = readFileSync(resolve(filePath));
-  const sfnt = await wawoff2.decompress(woff2Buf);
-  const buf = Buffer.from(sfnt);
-  return opentype.parse(buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength));
-}
-
 /**
- * Extract a standalone SFNT buffer from a TTC (TrueType Collection).
- * TTC sub-fonts share table data at arbitrary offsets within the file,
- * so we must rebuild a self-contained SFNT by copying each table and
- * rewriting the offset table directory to point to the new positions.
+ * Load a font file via fontkit. Handles WOFF2, TTF, OTF, and TTC natively.
+ * For TTC files, returns the first face.
  */
-function extractFromTtc(buf, faceIndex = 0) {
-  const numFonts = buf.readUInt32BE(8);
-  if (faceIndex >= numFonts) throw new Error(`TTC has ${numFonts} faces, requested index ${faceIndex}`);
-  const fontOffset = buf.readUInt32BE(12 + faceIndex * 4);
-  const numTables = buf.readUInt16BE(fontOffset + 4);
-  const dirSize = 12 + numTables * 16;
-
-  // Collect table locations from the original file
-  const tables = [];
-  let totalSize = dirSize;
-  for (let i = 0; i < numTables; i++) {
-    const rec = fontOffset + 12 + i * 16;
-    const offset = buf.readUInt32BE(rec + 8);
-    const length = buf.readUInt32BE(rec + 12);
-    tables.push({ dirPos: 12 + i * 16, offset, length });
-    totalSize += Math.ceil(length / 4) * 4; // 4-byte aligned
-  }
-
-  // Build a new self-contained SFNT buffer
-  const sfnt = Buffer.alloc(totalSize);
-  buf.copy(sfnt, 0, fontOffset, fontOffset + dirSize); // header + directory
-
-  let writePos = dirSize;
-  for (const t of tables) {
-    sfnt.writeUInt32BE(writePos, t.dirPos + 8); // patch offset
-    buf.copy(sfnt, writePos, t.offset, t.offset + t.length);
-    writePos += Math.ceil(t.length / 4) * 4;
-  }
-
-  return sfnt;
+function loadFont(filePath) {
+  const buf = readFileSync(resolve(filePath));
+  const font = fontkit.create(buf);
+  // TTC collections have a .fonts array — use the first face
+  return font.fonts ? font.fonts[0] : font;
 }
 
 /**
- * Load a local system font (TTF/OTF/TTC). Returns null if not found.
- * For TTC files, extracts the first face into a standalone SFNT.
+ * Load a system fallback font from well-known paths.
+ * Returns null if not found on this machine.
  */
 function loadSystemFont(paths) {
   for (const p of paths) {
     try {
-      const buf = readFileSync(p);
-      const sig = buf.toString('ascii', 0, 4);
-      if (sig === 'ttcf') {
-        const sfnt = extractFromTtc(buf);
-        const ab = sfnt.buffer.slice(sfnt.byteOffset, sfnt.byteOffset + sfnt.byteLength);
-        return opentype.parse(ab);
-      }
-      return opentype.loadSync(p);
+      return loadFont(p);
     } catch {
       continue;
     }
@@ -180,12 +131,7 @@ function loadSystemFont(paths) {
 
 /** Measure total advance width of a string, normalized to em units. */
 function measureText(font, text) {
-  let totalWidth = 0;
-  for (const ch of text) {
-    const glyph = font.charToGlyph(ch);
-    totalWidth += glyph.advanceWidth || 0;
-  }
-  return totalWidth / font.tables.head.unitsPerEm;
+  return font.layout(text).advanceWidth / font.unitsPerEm;
 }
 
 /**
@@ -197,15 +143,12 @@ function measureText(font, text) {
  *   (divided by size-adjust so the effective values are correct after scaling)
  */
 function calcOverrides(webFont, fallbackFont) {
-  const webWidth = measureText(webFont, TEST_TEXT);
-  const fallbackWidth = measureText(fallbackFont, TEST_TEXT);
+  const sizeAdjust = measureText(webFont, TEST_TEXT) / measureText(fallbackFont, TEST_TEXT);
 
-  const sizeAdjust = webWidth / fallbackWidth;
-
-  const upm = webFont.tables.head.unitsPerEm;
-  const ascent = webFont.tables.os2.sTypoAscender;
-  const descent = Math.abs(webFont.tables.os2.sTypoDescender);
-  const lineGap = webFont.tables.os2.sTypoLineGap;
+  const upm = webFont.unitsPerEm;
+  const ascent = webFont.ascent;
+  const descent = Math.abs(webFont.descent);
+  const lineGap = webFont.lineGap;
 
   return {
     sizeAdjust: round(sizeAdjust * 100),
@@ -267,7 +210,7 @@ async function main() {
   const blocks = [];
 
   for (const wf of webFonts) {
-    const webFont = await loadWoff2(wf.file);
+    const webFont = loadFont(wf.file);
     console.error(`${wf.name} (weight ${wf.weight}) — ${wf.file}`);
 
     for (const fb of loadedFallbacks) {
