@@ -345,8 +345,12 @@ p {
   }
 }
 
-body:has(.nav-open) {
+/* Scroll lock when mobile menu is open. The .nav-scroll-lock class is toggled
+   via JS in Nav.astro for broad browser support (body:has(.nav-open) requires
+   Safari 15.4+ / Firefox 121+, which would fail silently on older browsers). */
+body.nav-scroll-lock {
   overflow: hidden;
+  scrollbar-gutter: auto;
 }
 
 .nav .container {

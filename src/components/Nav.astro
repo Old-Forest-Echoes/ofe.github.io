@@ -49,6 +49,7 @@ const currentPath = Astro.url.pathname;
     function openMenu() {
       isOpen = true;
       nav.classList.add('nav-open');
+      document.body.classList.add('nav-scroll-lock');
       toggle.setAttribute('aria-expanded', 'true');
       toggle.textContent = 'Close';
       menu.setAttribute('role', 'dialog');
@@ -64,6 +65,7 @@ const currentPath = Astro.url.pathname;
     function closeMenu() {
       isOpen = false;
       nav.classList.remove('nav-open');
+      document.body.classList.remove('nav-scroll-lock');
       toggle.setAttribute('aria-expanded', 'false');
       toggle.textContent = 'Menu';
       menu.setAttribute('role', 'list');
@@ -124,9 +126,10 @@ const currentPath = Astro.url.pathname;
     // 769px = 768px + 1 — complementary to global.css @media (max-width: 768px) nav rules.
     window.matchMedia('(min-width: 769px)').addEventListener('change', (e) => {
       if (e.matches && isOpen) {
+        // Capture before closeMenu() modifies DOM attributes
+        const hadFocusInMenu = menu.contains(document.activeElement);
         closeMenu();
-        // If focus was inside the now-hidden menu, move it to the toggle
-        if (menu.contains(document.activeElement)) toggle.focus();
+        if (hadFocusInMenu) toggle.focus();
       }
     });
   }
