@@ -38,13 +38,20 @@ const sharedFiles = [
 const pageInputs = {
   '/': [
     'src/pages/index.astro',
+    'src/components/YouTubeEmbed.astro',
     'src/data/social-links.ts',
     'src/data/theme.ts',
     'src/data/organization.ts',
     ...sharedFiles,
   ],
   '/artists/': ['src/pages/artists.astro', 'src/content.config.ts', 'src/content/artists', ...sharedFiles],
-  '/events/': ['src/pages/events.astro', 'src/utils/date.ts', 'src/data/organization.ts', ...sharedFiles],
+  '/events/': [
+    'src/pages/events.astro',
+    'src/utils/date.ts',
+    'src/data/organization.ts',
+    'src/data/countries.ts',
+    ...sharedFiles,
+  ],
 };
 
 const lastmodMap = Object.fromEntries(

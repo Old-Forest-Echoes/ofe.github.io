@@ -123,9 +123,23 @@ const bgLarge = await getImage({ src: forestBgSrc, width: 1920, format: 'webp', 
     }
 
     {/* Fonts (self-hosted, no third-party requests) */}
+    <link
+      rel="preload"
+      href="/fonts/Spectral-Light.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      href="/fonts/Spectral-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      fetchpriority="high"
+    />
     <link rel="preload" href="/fonts/Leonetta-Serif.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/Spectral-Light.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/Spectral-Regular.woff2" as="font" type="font/woff2" crossorigin />
 
     {
       /* Background image preloads and logo preload removed — the decorative background
