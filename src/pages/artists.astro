@@ -5,6 +5,7 @@ import JsonLd from '../components/JsonLd.astro';
 import { getCollection, render } from 'astro:content';
 import { Image, getImage } from 'astro:assets';
 import type { ArtistRole } from '../content.config';
+import { ORGANIZATION_ID_FRAGMENT } from '../data/organization';
 import ensembleJpg from '../assets/images/ensemble.jpg';
 
 const allArtists = await getCollection('artists');
@@ -84,7 +85,7 @@ const personSchemas = await Promise.all(
       jobTitle: roleJobTitles[artist.data.role],
       image: new URL(resolved.src, siteUrl).href,
       memberOf: {
-        '@id': new URL('#organization', siteUrl).href,
+        '@id': new URL(ORGANIZATION_ID_FRAGMENT, siteUrl).href,
       },
     };
   }),

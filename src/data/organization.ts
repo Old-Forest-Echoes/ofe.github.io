@@ -1,6 +1,9 @@
 import { primaryEmail } from './contacts';
 import { socialLinks } from './social-links';
 
+/** Fragment identifier for the Organization node in JSON-LD @graph structures. */
+export const ORGANIZATION_ID_FRAGMENT = '#organization';
+
 /**
  * Full Organization schema for JSON-LD structured data.
  * Used on index (as part of the @graph) and events (for performer/organizer references).
@@ -9,7 +12,7 @@ import { socialLinks } from './social-links';
 export function organizationSchema(siteUrl: URL) {
   return {
     '@type': 'Organization' as const,
-    '@id': new URL('#organization', siteUrl).href,
+    '@id': new URL(ORGANIZATION_ID_FRAGMENT, siteUrl).href,
     name: 'Old Forest Echoes',
     alternateName: 'Ikimetsän kaiku',
     url: siteUrl.href,
@@ -27,6 +30,7 @@ export function organizationSchema(siteUrl: URL) {
     funder: {
       '@type': 'Organization' as const,
       name: 'KONE Foundation',
+      url: 'https://koneensaatio.fi/en/',
     },
   };
 }

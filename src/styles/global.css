@@ -267,9 +267,22 @@ a:focus-visible {
   position: fixed;
   inset: 0;
   z-index: var(--z-bg);
+  background-image: var(--bg-small);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+@media (min-width: 641px) {
+  .page-background {
+    background-image: var(--bg-medium);
+  }
+}
+
+@media (min-width: 1025px) {
+  .page-background {
+    background-image: var(--bg-large);
+  }
 }
 
 .page-overlay {
@@ -427,7 +440,7 @@ body.nav-scroll-lock {
 }
 
 /* Keep in sync with Nav.astro matchMedia('(min-width: 769px)') listener */
-@media (width <= 768px) {
+@media (max-width: 768px) {
   .js-nav .nav-toggle {
     display: block;
   }
@@ -506,7 +519,7 @@ body.nav-scroll-lock {
   box-shadow: 1px 1px 3px 1px var(--color-shadow-card);
 }
 
-@media (width <= 768px) {
+@media (max-width: 768px) {
   .artist-card img {
     max-width: 100%;
   }

@@ -3,15 +3,8 @@ import Base from '../layouts/Base.astro';
 import Contact from '../components/Contact.astro';
 import JsonLd from '../components/JsonLd.astro';
 import { utcToday, isBeforeDate } from '../utils/date';
-import { organizationSchema } from '../data/organization';
-
-const countryMeta = {
-  Finland: { code: 'FI', currency: 'EUR' },
-  Czechia: { code: 'CZ', currency: 'CZK' },
-  Germany: { code: 'DE', currency: 'EUR' },
-} as const satisfies Record<string, { code: string; currency: string }>;
-
-type Country = keyof typeof countryMeta;
+import { organizationSchema, ORGANIZATION_ID_FRAGMENT } from '../data/organization';
+import { countryMeta, type Country } from '../data/countries';
 
 interface EventBase {
   date: string;
@@ -196,7 +189,7 @@ const eventSchemas = upcomingEvents.map((event) => {
       ? `in ${event.location}, ${event.country}`
       : `in ${event.country}`;
   return {
-    '@type': event.schemaType || 'MusicEvent',
+    '@type': event.schemaType ?? 'MusicEvent',
     name: event.description ? `Old Forest Echoes — ${display}` : `Old Forest Echoes concert — ${display}`,
     description: event.description
       ? `${event.description} — Old Forest Echoes ${event.schemaType === 'Event' ? 'event' : 'live performance'} ${locationLabel}.`
@@ -226,10 +219,10 @@ const eventSchemas = upcomingEvents.map((event) => {
     },
     ...(event.schemaType !== 'Event'
       ? {
-          performer: { '@id': new URL('#organization', siteUrl).href },
+          performer: { '@id': new URL(ORGANIZATION_ID_FRAGMENT, siteUrl).href },
         }
       : {}),
-    organizer: { '@id': new URL('#organization', siteUrl).href },
+    organizer: { '@id': new URL(ORGANIZATION_ID_FRAGMENT, siteUrl).href },
   };
 });
 

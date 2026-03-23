@@ -12,6 +12,7 @@
         "ignoreFontFamilies": ["/Fallback$/"]
       }
     ],
+    "media-feature-range-notation": "prefix",
     "property-no-vendor-prefix": [
       true,
       {
