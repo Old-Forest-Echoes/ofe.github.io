@@ -20,7 +20,7 @@ function obfuscate(email: string): string {
           {nameLanguage ? <span lang={nameLanguage}>{name}</span> : name}
           <br />
           <Fragment
-            set:html={`<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;${obfuscate(email)}" aria-label="Send email to ${obfuscate(name)}">${obfuscate(email)}</a>`}
+            set:html={`<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;${obfuscate(email)}" aria-label="Send email to ${name}">${obfuscate(email)}</a>`}
           />
         </p>
       ))

@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import Contact from '../components/Contact.astro';
 import JsonLd from '../components/JsonLd.astro';
 import { utcToday, isBeforeDate } from '../utils/date';
+import { organizationSchema } from '../data/organization';
 
 const countryCodes = {
   Finland: 'FI',
@@ -12,17 +13,19 @@ const countryCodes = {
 
 type Country = keyof typeof countryCodes;
 
-interface EventEntry {
+interface EventBase {
   date: string;
   endDate?: string;
   description?: string;
-  venue?: string;
-  venueLanguage?: string;
-  location?: string;
-  locationLanguage?: string;
   country: Country;
   schemaType?: 'MusicEvent' | 'Event';
 }
+
+// Venue/location language tags require their corresponding name fields
+type VenueFields = { venue: string; venueLanguage?: string } | { venue?: never; venueLanguage?: never };
+type LocationFields = { location: string; locationLanguage?: string } | { location?: never; locationLanguage?: never };
+
+type EventEntry = EventBase & VenueFields & LocationFields;
 
 const isoDate = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -125,7 +128,7 @@ const events: EventEntry[] = [
   },
 ];
 
-function displayName(event: EventEntry): string {
+function schemaEventName(event: EventEntry): string {
   return [event.description, event.venue, event.location].filter(Boolean).join(', ');
 }
 
@@ -181,7 +184,7 @@ const siteUrl = Astro.site;
 if (!siteUrl) throw new Error('Astro.site must be configured in astro.config.mjs');
 
 const eventSchemas = upcomingEvents.map((event) => {
-  const display = displayName(event);
+  const display = schemaEventName(event);
   const locationParts = [event.venue, event.location].filter(Boolean);
   const locationLabel = event.venue
     ? `at ${locationParts.join(', ')}, ${event.country}`
@@ -218,15 +221,10 @@ const eventSchemas = upcomingEvents.map((event) => {
   };
 });
 
-const organizationRef = {
-  '@type': 'Organization',
-  '@id': new URL('#organization', siteUrl).href,
-  name: 'Old Forest Echoes',
-  url: siteUrl.href,
-};
-
 const eventGraph =
-  eventSchemas.length > 0 ? { '@context': 'https://schema.org', '@graph': [organizationRef, ...eventSchemas] } : null;
+  eventSchemas.length > 0
+    ? { '@context': 'https://schema.org', '@graph': [organizationSchema(siteUrl), ...eventSchemas] }
+    : null;
 
 // Finnish day.month. format (e.g. "6.3.") — intentional despite lang="en", matches the project's European audience
 const dateFormatShort = new Intl.DateTimeFormat('fi', { month: 'numeric', day: 'numeric', timeZone: 'UTC' });

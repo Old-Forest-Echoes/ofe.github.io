@@ -13,7 +13,10 @@ const artists = defineCollection({
     order: z.number().int().positive(),
     image: z
       .string()
-      .regex(/^[a-zA-Z0-9._-]+\.(jpg|jpeg|png|webp)$/, 'Must be a safe filename ending in .jpg, .jpeg, .png, or .webp'),
+      .regex(
+        /^[a-z0-9._-]+\.(jpg|jpeg|png|webp)$/,
+        'Must be a lowercase safe filename ending in .jpg, .jpeg, .png, or .webp',
+      ),
   }),
 });
 

@@ -5,8 +5,7 @@ import Contact from '../components/Contact.astro';
 import JsonLd from '../components/JsonLd.astro';
 import { getImage } from 'astro:assets';
 import ytThumb from '../assets/images/youtube-thumbnail.jpg';
-import { socialLinks } from '../data/social-links';
-import { primaryEmail } from '../data/contacts';
+import { organizationSchema } from '../data/organization';
 
 const siteUrl = Astro.site;
 if (!siteUrl) throw new Error('Astro.site must be configured in astro.config.mjs');
@@ -23,28 +22,7 @@ const indexGraph = {
       url: siteUrl.href,
       publisher: { '@id': new URL('#organization', siteUrl).href },
     },
-    {
-      '@type': 'Organization',
-      '@id': new URL('#organization', siteUrl).href,
-      name: 'Old Forest Echoes',
-      alternateName: 'Ikimetsän kaiku',
-      url: siteUrl.href,
-      foundingDate: '2025',
-      logo: {
-        '@type': 'ImageObject',
-        url: new URL('/apple-touch-icon.png', siteUrl).href,
-        width: 180,
-        height: 180,
-      },
-      description:
-        'Music and art composed in Finnish old-growth forests, aiming to raise awareness and protect threatened forests.',
-      email: primaryEmail,
-      sameAs: socialLinks.filter(({ href }) => !href.includes('linktr.ee')).map(({ href }) => href),
-      funder: {
-        '@type': 'Organization',
-        name: 'KONE Foundation',
-      },
-    },
+    organizationSchema(siteUrl),
   ],
 };
 ---

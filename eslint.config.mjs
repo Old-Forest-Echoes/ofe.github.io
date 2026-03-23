@@ -33,6 +33,12 @@ export default [
   },
   {
     // scripts/ contains one-off utilities run with temporary deps (e.g. fontkit)
-    ignores: ['dist/', '.astro/', 'scripts/'],
+    files: ['scripts/**/*.mjs'],
+    rules: {
+      'no-console': 'off',
+    },
+  },
+  {
+    ignores: ['dist/', '.astro/'],
   },
 ];

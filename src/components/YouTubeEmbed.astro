@@ -51,7 +51,11 @@ if (!YOUTUBE_ID_RE.test(videoId)) throw new Error(`Invalid YouTube video ID: ${v
       iframe.title = container.dataset.videoTitle || '';
       iframe.setAttribute('allowfullscreen', '');
       iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
-      iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-presentation allow-popups');
+      // No referrerPolicy set — intentional: allows tracking project-related traffic to the project's own YouTube videos
+      iframe.setAttribute(
+        'sandbox',
+        'allow-scripts allow-same-origin allow-presentation allow-popups allow-popups-to-escape-sandbox',
+      );
       container.replaceChild(iframe, button);
     });
   }

@@ -94,7 +94,8 @@ let fontkit;
 
 async function loadDeps() {
   try {
-    fontkit = await import('fontkit');
+    const mod = await import('fontkit');
+    fontkit = mod.default ?? mod;
   } catch {
     console.error('Missing dependency. Install it temporarily with:\n\n' + '  npm install --no-save fontkit\n');
     process.exit(1);
@@ -104,6 +105,8 @@ async function loadDeps() {
 /**
  * Load a font file via fontkit. Handles WOFF2, TTF, OTF, and TTC natively.
  * For TTC files, returns the first face.
+ * @param {string} filePath - Path to the font file
+ * @returns {import('fontkit').Font} The loaded font (or first face for TTC)
  */
 function loadFont(filePath) {
   const buf = readFileSync(resolve(filePath));
@@ -115,13 +118,15 @@ function loadFont(filePath) {
 /**
  * Load a system fallback font from well-known paths.
  * Returns null if not found on this machine.
+ * @param {string[]} paths - Candidate file paths to try in order
+ * @returns {import('fontkit').Font | null}
  */
 function loadSystemFont(paths) {
   for (const p of paths) {
     try {
       return loadFont(p);
     } catch (e) {
-      console.error(`    Could not load ${p}: ${e.message}`);
+      console.error(`    Could not load ${p}: ${e instanceof Error ? e.message : e}`);
       continue;
     }
   }
@@ -132,7 +137,12 @@ function loadSystemFont(paths) {
 // Metric calculation
 // ---------------------------------------------------------------------------
 
-/** Measure total advance width of a string, normalized to em units. */
+/**
+ * Measure total advance width of a string, normalized to em units.
+ * @param {import('fontkit').Font} font
+ * @param {string} text
+ * @returns {number}
+ */
 function measureText(font, text) {
   return font.layout(text).advanceWidth / font.unitsPerEm;
 }
@@ -144,6 +154,11 @@ function measureText(font, text) {
  * - size-adjust: scales the fallback so its character widths match the web font
  * - ascent/descent/line-gap-override: match the web font's vertical metrics
  *   (divided by size-adjust so the effective values are correct after scaling)
+ */
+/**
+ * @param {import('fontkit').Font} webFont
+ * @param {import('fontkit').Font} fallbackFont
+ * @returns {{ sizeAdjust: number, ascentOverride: number, descentOverride: number, lineGapOverride: number }}
  */
 function calcOverrides(webFont, fallbackFont) {
   const sizeAdjust = measureText(webFont, TEST_TEXT) / measureText(fallbackFont, TEST_TEXT);
