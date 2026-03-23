@@ -29,6 +29,7 @@
   font-family: 'Leonetta Serif Georgia Fallback';
   src: local('Georgia');
   font-weight: 400;
+  font-style: normal;
   size-adjust: 134.08%;
   ascent-override: 74.58%;
   descent-override: 14.92%;
@@ -36,19 +37,10 @@
 }
 
 @font-face {
-  font-family: 'Leonetta Serif Palatino Linotype Fallback';
-  src: local('Palatino Linotype');
-  font-weight: 400;
-  size-adjust: 134.39%;
-  ascent-override: 74.41%;
-  descent-override: 14.88%;
-  line-gap-override: 0%;
-}
-
-@font-face {
   font-family: 'Leonetta Serif Palatino Fallback';
-  src: local('Palatino');
+  src: local('Palatino Linotype'), local('Palatino');
   font-weight: 400;
+  font-style: normal;
   size-adjust: 134.39%;
   ascent-override: 74.41%;
   descent-override: 14.88%;
@@ -59,6 +51,7 @@
   font-family: 'Leonetta Serif Times New Roman Fallback';
   src: local('Times New Roman');
   font-weight: 400;
+  font-style: normal;
   size-adjust: 146.93%;
   ascent-override: 68.06%;
   descent-override: 13.61%;
@@ -69,6 +62,7 @@
   font-family: 'Spectral Georgia Fallback';
   src: local('Georgia');
   font-weight: 300;
+  font-style: normal;
   size-adjust: 97.94%;
   ascent-override: 108.13%;
   descent-override: 47.27%;
@@ -76,19 +70,10 @@
 }
 
 @font-face {
-  font-family: 'Spectral Palatino Linotype Fallback';
-  src: local('Palatino Linotype');
-  font-weight: 300;
-  size-adjust: 98.17%;
-  ascent-override: 107.88%;
-  descent-override: 47.16%;
-  line-gap-override: 0%;
-}
-
-@font-face {
   font-family: 'Spectral Palatino Fallback';
-  src: local('Palatino');
+  src: local('Palatino Linotype'), local('Palatino');
   font-weight: 300;
+  font-style: normal;
   size-adjust: 98.17%;
   ascent-override: 107.88%;
   descent-override: 47.16%;
@@ -99,6 +84,7 @@
   font-family: 'Spectral Times New Roman Fallback';
   src: local('Times New Roman');
   font-weight: 300;
+  font-style: normal;
   size-adjust: 107.33%;
   ascent-override: 98.67%;
   descent-override: 43.14%;
@@ -109,6 +95,7 @@
   font-family: 'Spectral Georgia Fallback';
   src: local('Georgia');
   font-weight: 400;
+  font-style: normal;
   size-adjust: 99.64%;
   ascent-override: 106.29%;
   descent-override: 46.47%;
@@ -116,19 +103,10 @@
 }
 
 @font-face {
-  font-family: 'Spectral Palatino Linotype Fallback';
-  src: local('Palatino Linotype');
-  font-weight: 400;
-  size-adjust: 99.86%;
-  ascent-override: 106.04%;
-  descent-override: 46.36%;
-  line-gap-override: 0%;
-}
-
-@font-face {
   font-family: 'Spectral Palatino Fallback';
-  src: local('Palatino');
+  src: local('Palatino Linotype'), local('Palatino');
   font-weight: 400;
+  font-style: normal;
   size-adjust: 99.86%;
   ascent-override: 106.04%;
   descent-override: 46.36%;
@@ -139,6 +117,7 @@
   font-family: 'Spectral Times New Roman Fallback';
   src: local('Times New Roman');
   font-weight: 400;
+  font-style: normal;
   size-adjust: 109.18%;
   ascent-override: 96.99%;
   descent-override: 42.41%;
@@ -175,11 +154,10 @@
   --z-skip: 300;
 
   --font-display:
-    'Leonetta Serif', 'Leonetta Serif Georgia Fallback', 'Leonetta Serif Palatino Linotype Fallback',
-    'Leonetta Serif Palatino Fallback', 'Leonetta Serif Times New Roman Fallback', serif;
+    'Leonetta Serif', 'Leonetta Serif Georgia Fallback', 'Leonetta Serif Palatino Fallback',
+    'Leonetta Serif Times New Roman Fallback', serif;
   --font-body:
-    'Spectral', 'Spectral Georgia Fallback', 'Spectral Palatino Linotype Fallback', 'Spectral Palatino Fallback',
-    'Spectral Times New Roman Fallback', serif;
+    'Spectral', 'Spectral Georgia Fallback', 'Spectral Palatino Fallback', 'Spectral Times New Roman Fallback', serif;
 
   --max-width: 940px;
   --content-padding: 1rem;

@@ -34,12 +34,20 @@ const webFonts = [
 
 /**
  * System fallback fonts to measure against.
- * Paths are tried in order — the first that exists on this machine is used.
- * Add paths for Linux / Windows as needed.
+ *
+ * Each entry has a CSS name (used in the fallback font-family), one or more
+ * local() names (for the src descriptor — allows a single @font-face to
+ * target the same typeface under different OS names), and candidate file
+ * paths tried in order until one loads.
+ *
+ * Example: Palatino is called "Palatino" on macOS and "Palatino Linotype"
+ * on Windows. They are the same typeface, so a single @font-face with
+ * src: local('Palatino Linotype'), local('Palatino') covers both platforms.
  */
 const fallbackFonts = [
   {
-    name: 'Georgia',
+    cssName: 'Georgia',
+    localNames: ['Georgia'],
     paths: [
       // macOS
       '/System/Library/Fonts/Supplemental/Georgia.ttf',
@@ -51,25 +59,19 @@ const fallbackFonts = [
     ],
   },
   {
-    name: 'Palatino Linotype',
+    cssName: 'Palatino',
+    // Palatino (macOS) and Palatino Linotype (Windows) are the same typeface
+    localNames: ['Palatino Linotype', 'Palatino'],
     paths: [
-      // macOS — Palatino is bundled as a TTC; Palatino Linotype is the Windows name
       '/System/Library/Fonts/Palatino.ttc',
       '/System/Library/Fonts/Supplemental/Palatino.ttc',
-      // Windows
       'C:\\Windows\\Fonts\\pala.ttf',
-    ],
-  },
-  {
-    name: 'Palatino',
-    paths: [
-      '/System/Library/Fonts/Palatino.ttc',
-      '/System/Library/Fonts/Supplemental/Palatino.ttc',
       '/usr/share/fonts/truetype/Palatino.ttf',
     ],
   },
   {
-    name: 'Times New Roman',
+    cssName: 'Times New Roman',
+    localNames: ['Times New Roman'],
     paths: [
       '/System/Library/Fonts/Supplemental/Times New Roman.ttf',
       'C:\\Windows\\Fonts\\times.ttf',
@@ -118,7 +120,8 @@ function loadSystemFont(paths) {
   for (const p of paths) {
     try {
       return loadFont(p);
-    } catch {
+    } catch (e) {
+      console.error(`    Could not load ${p}: ${e.message}`);
       continue;
     }
   }
@@ -166,16 +169,18 @@ function round(n) {
 // CSS output
 // ---------------------------------------------------------------------------
 
-function fallbackFamilyName(webFontName, fallbackName) {
-  return `${webFontName} ${fallbackName} Fallback`;
+function fallbackFamilyName(webFontName, fallbackCssName) {
+  return `${webFontName} ${fallbackCssName} Fallback`;
 }
 
-function toCss(webFontName, weight, fallbackName, overrides) {
+function toCss(webFontName, weight, fb, overrides) {
+  const srcParts = fb.localNames.map((n) => `local('${n}')`).join(', ');
   return [
     `@font-face {`,
-    `  font-family: '${fallbackFamilyName(webFontName, fallbackName)}';`,
-    `  src: local('${fallbackName}');`,
+    `  font-family: '${fallbackFamilyName(webFontName, fb.cssName)}';`,
+    `  src: ${srcParts};`,
     `  font-weight: ${weight};`,
+    `  font-style: normal;`,
     `  size-adjust: ${overrides.sizeAdjust}%;`,
     `  ascent-override: ${overrides.ascentOverride}%;`,
     `  descent-override: ${overrides.descentOverride}%;`,
@@ -196,10 +201,10 @@ async function main() {
   for (const fb of fallbackFonts) {
     const font = loadSystemFont(fb.paths);
     if (font) {
-      loadedFallbacks.push({ name: fb.name, font });
-      console.error(`  Found ${fb.name}`);
+      loadedFallbacks.push({ ...fb, font });
+      console.error(`  Found ${fb.cssName} (${fb.localNames.join(', ')})`);
     } else {
-      console.error(`  Skipped ${fb.name} (not found on this system)`);
+      console.error(`  Skipped ${fb.cssName} (not found on this system)`);
     }
   }
 
@@ -220,11 +225,11 @@ async function main() {
     for (const fb of loadedFallbacks) {
       const overrides = calcOverrides(webFont, fb.font);
       console.error(
-        `  → ${fb.name}: size-adjust ${overrides.sizeAdjust}%, ` +
+        `  → ${fb.cssName}: size-adjust ${overrides.sizeAdjust}%, ` +
           `ascent ${overrides.ascentOverride}%, descent ${overrides.descentOverride}%, ` +
           `line-gap ${overrides.lineGapOverride}%`,
       );
-      blocks.push(toCss(wf.name, wf.weight, fb.name, overrides));
+      blocks.push(toCss(wf.name, wf.weight, fb, overrides));
     }
 
     console.error('');
@@ -234,7 +239,7 @@ async function main() {
   const stackMap = new Map();
   for (const wf of webFonts) {
     if (!stackMap.has(wf.name)) {
-      const fallbackNames = loadedFallbacks.map((fb) => `'${fallbackFamilyName(wf.name, fb.name)}'`);
+      const fallbackNames = loadedFallbacks.map((fb) => `'${fallbackFamilyName(wf.name, fb.cssName)}'`);
       stackMap.set(wf.name, `'${wf.name}', ${fallbackNames.join(', ')}, serif`);
     }
   }

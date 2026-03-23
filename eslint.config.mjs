@@ -32,6 +32,7 @@ export default [
     },
   },
   {
+    // scripts/ contains one-off utilities run with temporary deps (e.g. fontkit)
     ignores: ['dist/', '.astro/', 'scripts/'],
   },
 ];

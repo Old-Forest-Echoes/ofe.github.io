@@ -140,7 +140,9 @@ function validateEvents(list: EventEntry[]): void {
       throw new Error(`Invalid calendar date: ${e.endDate}`);
     if (e.endDate && e.endDate <= e.date) throw new Error(`endDate ${e.endDate} must be after date ${e.date}`);
     if (e.endDate && e.date.slice(0, 4) !== e.endDate.slice(0, 4))
-      throw new Error(`Cross-year date range not supported (${e.date} to ${e.endDate}) — date format omits year`);
+      throw new Error(
+        `Cross-year date range not supported (${e.date} to ${e.endDate}) — the display format (day.month.) omits the year`,
+      );
     if (!e.description && !e.venue && !e.location)
       throw new Error(`Event on ${e.date} must have at least a description, venue, or location`);
     if (e.venueLanguage && !e.venue) throw new Error(`Event on ${e.date} has venueLanguage without venue`);

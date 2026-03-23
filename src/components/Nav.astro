@@ -123,7 +123,11 @@ const currentPath = Astro.url.pathname;
     // to prevent inert attributes from persisting on main content.
     // 769px = 768px + 1 — complementary to global.css @media (max-width: 768px) nav rules.
     window.matchMedia('(min-width: 769px)').addEventListener('change', (e) => {
-      if (e.matches && isOpen) closeMenu();
+      if (e.matches && isOpen) {
+        closeMenu();
+        // If focus was inside the now-hidden menu, move it to the toggle
+        if (menu.contains(document.activeElement)) toggle.focus();
+      }
     });
   }
 </script>
