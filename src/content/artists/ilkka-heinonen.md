@@ -2,7 +2,7 @@
 name: Ilkka Heinonen
 role: featured
 order: 2
-image: ilkka-heinonen.jpg
+image: ../../assets/images/ilkka-heinonen.jpg
 ---
 
 Ilkka Heinonen is a Helsinki-based musician and composer specialising in folk and world music, playing the <span lang="fi">jouhikko</span>, double bass, <span lang="it">violone</span>, and <span lang="it">viola da gamba</span> — with a passion for early music. As one of the pioneers of <span lang="fi">jouhikko</span> playing, Heinonen has sought to expand the possibilities of the instrument. In his solo programmes, Heinonen explores the boundaries between the sacred and the secular through the performance practices of Karelian <span lang="fi">jouhikko</span> music and early music, as on his solo instrumental album <cite><span lang="fi">Käki</span></cite> (2023), which explores the sound of the instrument in depth. The Ilkka Heinonen Trio, which has released two critically acclaimed albums (<cite><span lang="fi">Savu</span></cite> 2015 and <cite><span lang="fi">Lohtu</span></cite> 2021), draws its experimental sound from European jazz and Renaissance music alike.

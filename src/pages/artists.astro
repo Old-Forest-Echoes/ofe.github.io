@@ -5,6 +5,7 @@ import JsonLd from '../components/JsonLd.astro';
 import { getCollection, render } from 'astro:content';
 import { Image, getImage } from 'astro:assets';
 import type { ArtistRole } from '../content.config';
+import ensembleJpg from '../assets/images/ensemble.jpg';
 
 const allArtists = await getCollection('artists');
 const sorted = [...allArtists].sort((a, b) => a.data.order - b.data.order);
@@ -12,10 +13,6 @@ const sorted = [...allArtists].sort((a, b) => a.data.order - b.data.order);
 const orders = sorted.map((a) => a.data.order);
 const dupes = orders.filter((o, i) => orders.indexOf(o) !== i);
 if (dupes.length > 0) throw new Error(`Duplicate artist order values: ${[...new Set(dupes)].join(', ')}`);
-
-const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/*.{jpg,jpeg,png,webp}', {
-  eager: true,
-});
 
 const roleLabels: Record<ArtistRole, string> = {
   music: 'Music',
@@ -25,9 +22,6 @@ const roleLabels: Record<ArtistRole, string> = {
 };
 
 const roles = Object.keys(roleLabels) as ArtistRole[];
-
-const ensembleImg = images['/src/assets/images/ensemble.jpg'];
-if (!ensembleImg) throw new Error('Missing ensemble image: /src/assets/images/ensemble.jpg');
 
 // Values contain HTML for <span lang> attributes — rendered via set:html
 const roleIntros: Partial<Record<ArtistRole, string>> = {
@@ -45,10 +39,7 @@ const roleJobTitles: Record<ArtistRole, string> = {
 const rendered = await Promise.all(
   sorted.map(async (artist) => {
     const { Content } = await render(artist);
-    const imgPath = `/src/assets/images/${artist.data.image}`;
-    const img = images[imgPath];
-    if (!img) throw new Error(`Missing image for artist "${artist.data.name}": ${imgPath}`);
-    return { artist, Content, img: img.default };
+    return { artist, Content, img: artist.data.image };
   }),
 );
 
@@ -132,7 +123,7 @@ const personGraph = { '@context': 'https://schema.org', '@graph': personSchemas 
           {role === 'featured' && (
             <div class="artist-card">
               <Image
-                src={ensembleImg.default}
+                src={ensembleJpg}
                 alt="Old Forest Echoes ensemble performing in a forest setting"
                 widths={[500, 800, 1080]}
                 sizes="(max-width: 768px) 100vw, 660px"

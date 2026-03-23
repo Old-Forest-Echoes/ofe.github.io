@@ -203,6 +203,14 @@ const eventSchemas = upcomingEvents.map((event) => {
     ...(event.endDate ? { endDate: event.endDate } : {}),
     eventStatus: 'https://schema.org/EventScheduled',
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    isAccessibleForFree: true,
+    offers: {
+      '@type': 'Offer',
+      price: 0,
+      priceCurrency: 'EUR',
+      availability: 'https://schema.org/InStock',
+      url: new URL('/events/#calendar', siteUrl).href,
+    },
     location: {
       '@type': 'Place',
       ...(event.venue ? { name: event.venue } : event.location ? { name: event.location } : { name: event.country }),

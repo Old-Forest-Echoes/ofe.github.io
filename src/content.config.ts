@@ -7,17 +7,13 @@ export type ArtistRole = (typeof artistRoles)[number];
 
 const artists = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/artists' }),
-  schema: z.object({
-    name: z.string(),
-    role: z.enum(artistRoles),
-    order: z.number().int().positive(),
-    image: z
-      .string()
-      .regex(
-        /^[a-z0-9._-]+\.(jpg|jpeg|png|webp)$/,
-        'Must be a lowercase safe filename ending in .jpg, .jpeg, .png, or .webp',
-      ),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      name: z.string(),
+      role: z.enum(artistRoles),
+      order: z.number().int().positive(),
+      image: image(),
+    }),
 });
 
 export const collections = { artists };
