@@ -19,6 +19,5 @@
         "ignoreProperties": ["-webkit-text-size-adjust", "-webkit-backdrop-filter"]
       }
     ]
-  },
-  "ignoreFiles": ["src/layouts/Base.astro"]
+  }
 }

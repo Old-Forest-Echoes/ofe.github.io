@@ -159,18 +159,15 @@ const bgLarge = await getImage({ src: forestBgSrc, width: 1920, format: 'webp' }
       ))
     }
 
-    {
-      /* Only the custom-property values need set:html (Astro <style> blocks cannot interpolate variables).
-     The rules that consume these properties live in global.css where Stylelint can lint them.
-     Values are build-time image paths from Astro's asset pipeline — not user input, so no XSS risk. */
-    }
-    <style
-      set:html={`:root{--bg-small:url(${bgSmall.src});--bg-medium:url(${bgMedium.src});--bg-large:url(${bgLarge.src})}`}
-    ></style>
     {breadcrumbSchema && <JsonLd data={breadcrumbSchema} />}
   </head>
   <body>
-    <div class="page-background" aria-hidden="true"></div>
+    <div
+      class="page-background"
+      aria-hidden="true"
+      style={`--bg-small:url(${bgSmall.src});--bg-medium:url(${bgMedium.src});--bg-large:url(${bgLarge.src})`}
+    >
+    </div>
     <div class="page-overlay" aria-hidden="true"></div>
     <a href="#main-content" class="skip-link">Skip to content</a>
     <Nav />
