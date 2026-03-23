@@ -19,8 +19,9 @@ if (!YOUTUBE_ID_RE.test(videoId)) throw new Error(`Invalid YouTube video ID: ${v
     <Image
       src={thumbnail}
       alt=""
-      widths={[480, 768, 1280]}
+      widths={[480, 768, 1024, 1280]}
       sizes="(max-width: 940px) calc(100vw - 2rem), 940px"
+      quality={50}
       loading="eager"
       decoding="auto"
       fetchpriority="high"

@@ -3,18 +3,15 @@ import Base from '../layouts/Base.astro';
 import YouTubeEmbed from '../components/YouTubeEmbed.astro';
 import Contact from '../components/Contact.astro';
 import JsonLd from '../components/JsonLd.astro';
-import { getImage } from 'astro:assets';
-import ytThumb from '../assets/images/youtube-thumbnail.jpg';
+import ytThumb from '../assets/images/youtube-thumbnail.webp';
 import { organizationSchema } from '../data/organization';
 
 const siteUrl = Astro.site;
 if (!siteUrl) throw new Error('Astro.site must be configured in astro.config.mjs');
 
-// Must match YouTubeEmbed.astro widths and sizes — preload the same srcset so the browser picks the right variant
-const ytWidths = [480, 768, 1280];
-const ytImages = await Promise.all(ytWidths.map((w) => getImage({ src: ytThumb, width: w, format: 'webp' })));
-const ytSrcset = ytImages.map((img, i) => `${img.src} ${ytWidths[i]}w`).join(', ');
-const ytSizes = '(max-width: 940px) calc(100vw - 2rem), 940px';
+// YouTube thumbnail is not preloaded — on mobile the LCP element is text (larger viewport area
+// than the 16:9 image), so preloading the image would only add bandwidth contention without
+// improving LCP. The img tag's fetchpriority="high" still ensures early loading.
 
 const indexGraph = {
   '@context': 'https://schema.org',
@@ -31,10 +28,7 @@ const indexGraph = {
 };
 ---
 
-<Base
-  title="Old Forest Echoes — Music for Protection of Old Growth Forests"
-  preloadImages={[{ srcset: ytSrcset, sizes: ytSizes, type: 'image/webp' }]}
->
+<Base title="Old Forest Echoes — Music for Protection of Old Growth Forests">
   <JsonLd data={indexGraph} />
   <section class="section" aria-labelledby="about-heading">
     <h1 id="about-heading">Music for Protection of Old Growth Forests</h1>
