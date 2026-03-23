@@ -42,6 +42,8 @@ const currentPath = Astro.url.pathname;
     let isOpen = false;
 
     const brand = nav.querySelector<HTMLAnchorElement>('.nav-brand');
+    // Depends on .skip-link from Base.astro layout
+    const skipLink = document.querySelector<HTMLAnchorElement>('.skip-link');
     // Depends on #main-content from Base.astro layout
     const mainContent = document.getElementById('main-content');
     const footer = document.querySelector('.footer');
@@ -56,6 +58,7 @@ const currentPath = Astro.url.pathname;
       menu.setAttribute('aria-modal', 'true');
       menu.setAttribute('aria-label', 'Navigation');
       brand?.setAttribute('inert', '');
+      skipLink?.setAttribute('inert', '');
       mainContent?.setAttribute('inert', '');
       footer?.setAttribute('inert', '');
       const firstLink = menu.querySelector('a');
@@ -72,6 +75,7 @@ const currentPath = Astro.url.pathname;
       menu.removeAttribute('aria-modal');
       menu.removeAttribute('aria-label');
       brand?.removeAttribute('inert');
+      skipLink?.removeAttribute('inert');
       mainContent?.removeAttribute('inert');
       footer?.removeAttribute('inert');
     }

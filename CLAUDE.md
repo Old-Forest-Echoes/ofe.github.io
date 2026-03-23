@@ -51,6 +51,7 @@ npm run validate    # Lint + type check (lint && check)
 │   ├── data/nav-links.ts         # Navigation links (shared by Nav + Base breadcrumbs)
 │   ├── data/social-links.ts      # Social media links (shared by Footer + index)
 │   ├── data/contacts.ts          # Contact info (shared by Contact + index schema)
+│   ├── data/organization.ts      # Organization schema data (shared by index + events)
 │   ├── data/theme.ts             # Theme constants (shared by Base meta + CSS)
 │   ├── utils/date.ts             # Date helpers (shared by events build + client)
 │   ├── assets/images/            # Source images (processed by Astro)
@@ -78,7 +79,7 @@ Edit `src/content/artists/<name>.md`. Frontmatter schema:
 name: Artist Name
 role: music | featured | land-art | soundscapes
 order: 1 # Sort order within page
-image: filename.jpg # Must exist in src/assets/images/
+image: ../../assets/images/filename.jpg # Relative path to image in src/assets/images/
 ---
 ```
 

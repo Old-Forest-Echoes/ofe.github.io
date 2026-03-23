@@ -297,24 +297,14 @@ function formatDateAccessible(dateStr: string, endDateStr?: string): string {
                   {event.venue || event.location ? ', ' : ''}
                 </Fragment>
               )}
-              {event.venue &&
-                (event.venueLanguage ? (
-                  <Fragment>
-                    <span lang={event.venueLanguage}>{event.venue}</span>
-                    {event.location ? ', ' : ''}
-                  </Fragment>
-                ) : (
-                  <Fragment>
-                    {event.venue}
-                    {event.location ? ', ' : ''}
-                  </Fragment>
-                ))}
+              {event.venue && (
+                <Fragment>
+                  {event.venueLanguage ? <span lang={event.venueLanguage}>{event.venue}</span> : event.venue}
+                  {event.location ? ', ' : ''}
+                </Fragment>
+              )}
               {event.location &&
-                (event.locationLanguage ? (
-                  <span lang={event.locationLanguage}>{event.location}</span>
-                ) : (
-                  <Fragment>{event.location}</Fragment>
-                ))}
+                (event.locationLanguage ? <span lang={event.locationLanguage}>{event.location}</span> : event.location)}
               , {event.country}
             </span>
           </li>

@@ -30,8 +30,9 @@ export const socialLinks: SocialLink[] = [
     height: 23,
   },
   {
+    // Barbora Xu is the organizer of Old Forest Echoes — treated as own profile in Footer.astro (rel="noopener" without noreferrer)
     href: 'https://linktr.ee/Barboraxu',
-    label: 'Barbora Xu on Linktree (project artist)',
+    label: 'Barbora Xu on Linktree (project organizer)',
     icon: '/icons/linktree.svg',
     width: 100,
     height: 20,
