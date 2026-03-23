@@ -126,9 +126,7 @@ const events: EventEntry[] = [
 ];
 
 function displayName(event: EventEntry): string {
-  const parts = [event.description, event.venue, event.location].filter(Boolean);
-  if (parts.length === 0) throw new Error(`Event on ${event.date} has no description, venue, or location`);
-  return parts.join(', ');
+  return [event.description, event.venue, event.location].filter(Boolean).join(', ');
 }
 
 function validateEvents(list: EventEntry[]): void {

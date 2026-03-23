@@ -37,8 +37,8 @@ const sharedFiles = [
 // so the sitemap gets a git-based lastmod for it.
 const pageInputs = {
   '/': ['src/pages/index.astro', 'src/data/social-links.ts', 'src/data/theme.ts', ...sharedFiles],
-  '/artists/': ['src/pages/artists.astro', 'src/content/artists', ...sharedFiles],
-  '/events/': ['src/pages/events.astro', ...sharedFiles],
+  '/artists/': ['src/pages/artists.astro', 'src/content.config.ts', 'src/content/artists', ...sharedFiles],
+  '/events/': ['src/pages/events.astro', 'src/utils/date.ts', ...sharedFiles],
 };
 
 const lastmodMap = Object.fromEntries(

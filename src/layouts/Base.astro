@@ -45,11 +45,10 @@ function ogImageMimeType(path: string): string {
   return mime;
 }
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const pathname = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : Astro.url.pathname + '/';
+const canonicalURL = new URL(pathname, Astro.site);
 
 const pageNameMap = Object.fromEntries(navLinks.map(({ href, label }) => [href, label]));
-
-const pathname = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : Astro.url.pathname + '/';
 const pageName = pageNameMap[pathname];
 
 const breadcrumbSchema =
@@ -148,7 +147,7 @@ const bgLarge = await getImage({ src: forestBgSrc, width: 1920, format: 'webp' }
       fetchpriority="high"
     />
 
-    <link rel="preload" href="/logo.svg" as="image" type="image/svg+xml" fetchpriority="low" />
+    <link rel="preload" href="/logo.svg" as="image" type="image/svg+xml" />
 
     {preloadImages.map(({ src, type }) => <link rel="preload" href={src} as="image" type={type} />)}
 

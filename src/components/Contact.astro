@@ -7,10 +7,6 @@ function obfuscate(email: string): string {
     .map((c) => `&#${c.charCodeAt(0)};`)
     .join('');
 }
-
-function escapeAttr(str: string): string {
-  return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-}
 ---
 
 <section class="section" aria-labelledby="contact-heading">
@@ -24,7 +20,7 @@ function escapeAttr(str: string): string {
           {nameLanguage ? <span lang={nameLanguage}>{name}</span> : name}
           <br />
           <Fragment
-            set:html={`<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;${obfuscate(email)}" aria-label="${escapeAttr(email)}">${obfuscate(email)}</a>`}
+            set:html={`<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;${obfuscate(email)}" aria-label="Send email">${obfuscate(email)}</a>`}
           />
         </p>
       ))

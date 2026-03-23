@@ -93,6 +93,7 @@ const currentPath = Astro.url.pathname;
     menu.addEventListener('keydown', (e) => {
       if (!isOpen || e.key !== 'Tab') return;
       const focusable = menu.querySelectorAll<HTMLElement>(focusableSelector);
+      if (focusable.length === 0) return;
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
       if (e.shiftKey && document.activeElement === first) {
