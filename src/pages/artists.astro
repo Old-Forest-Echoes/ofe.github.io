@@ -15,6 +15,7 @@ const orders = sorted.map((a) => a.data.order);
 const dupes = orders.filter((o, i) => orders.indexOf(o) !== i);
 if (dupes.length > 0) throw new Error(`Duplicate artist order values: ${[...new Set(dupes)].join(', ')}`);
 
+// Key order determines page section rendering order
 const roleLabels: Record<ArtistRole, string> = {
   music: 'Music',
   featured: 'Featured Artists',
@@ -91,7 +92,7 @@ const personSchemas = await Promise.all(
   }),
 );
 
-const personGraph = { '@context': 'https://schema.org', '@graph': personSchemas };
+const personGraph = { '@context': 'https://schema.org' as const, '@graph': personSchemas };
 ---
 
 <Base title="Artists — Old Forest Echoes" description={artistDescription}>
