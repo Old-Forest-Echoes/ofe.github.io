@@ -28,6 +28,8 @@ const sharedFiles = [
   'src/components/Nav.astro',
   'src/components/Footer.astro',
   'src/components/Contact.astro',
+  'src/components/Support.astro',
+  'src/data/support.ts',
   'src/data/nav-links.ts',
   'src/data/contacts.ts',
   'src/styles/global.css',

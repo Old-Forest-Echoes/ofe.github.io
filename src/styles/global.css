@@ -145,6 +145,7 @@
   --color-past-date: rgb(255 230 148 / 55%);
   --color-yt-red: #f00;
   --color-yt-white: #fff;
+  --color-input-bg: rgb(0 0 0 / 30%);
 
   --z-bg: -2;
   --z-overlay: -1;
@@ -656,6 +657,89 @@ body.nav-scroll-lock {
   line-height: 1.8;
 }
 
+/* === Support === */
+.support-grid {
+  display: grid;
+  /* 260px minimum accommodates the email input + subscribe button side by side */
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+  margin-block: 1rem;
+}
+
+.support-donate,
+.support-newsletter {
+  text-align: center;
+}
+
+.support-btn {
+  display: inline-block;
+  padding: 0.6rem 1.6rem;
+  min-height: 44px;
+  border: 1px solid var(--color-gold);
+  color: var(--color-gold);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+
+.support-btn:hover,
+.support-btn:focus-visible {
+  background-color: var(--color-gold);
+  color: var(--color-bg);
+}
+
+.support-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+  pointer-events: none;
+}
+
+.newsletter-fields {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.newsletter-form input[type='email'] {
+  padding: 0.6rem 0.8rem;
+  min-height: 44px;
+  border: 1px solid var(--color-gold-muted);
+  background: var(--color-input-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  min-width: 0;
+  width: 14rem;
+}
+
+.newsletter-form input[type='email']::placeholder {
+  color: var(--color-text-muted);
+}
+
+.newsletter-form input[type='email']:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+.newsletter-status:empty {
+  display: none;
+}
+
+.newsletter-status {
+  margin-block-start: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--color-gold);
+  text-align: center;
+}
+
+.newsletter-error {
+  color: var(--color-text);
+}
+
 /* === Footer === */
 .footer {
   text-align: center;
@@ -734,8 +818,13 @@ body.nav-scroll-lock {
   .page-overlay,
   .nav,
   .skip-link,
-  .footer-socials {
+  .footer-socials,
+  .newsletter-form {
     display: none;
+  }
+
+  .support-donate .support-btn::after {
+    content: none;
   }
 
   body {
@@ -838,6 +927,14 @@ body.nav-scroll-lock {
 
   .contact-grid a {
     color: LinkText;
+  }
+
+  .support-btn {
+    border: 1px solid ButtonText;
+  }
+
+  .newsletter-form input[type='email'] {
+    border: 1px solid ButtonText;
   }
 }
 

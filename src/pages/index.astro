@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import YouTubeEmbed from '../components/YouTubeEmbed.astro';
 import Contact from '../components/Contact.astro';
+import Support from '../components/Support.astro';
 import JsonLd from '../components/JsonLd.astro';
 import ytThumb from '../assets/images/youtube-thumbnail.webp';
 import { organizationSchema } from '../data/organization';
@@ -88,5 +89,6 @@ const indexGraph = {
     </div>
   </section>
 
+  <Support />
   <Contact />
 </Base>

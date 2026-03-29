@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Contact from '../components/Contact.astro';
+import Support from '../components/Support.astro';
 import JsonLd from '../components/JsonLd.astro';
 import { utcToday, isBeforeDate } from '../utils/date';
 import { organizationSchema, ORGANIZATION_ID_FRAGMENT } from '../data/organization';
@@ -378,6 +379,7 @@ function formatDateAccessible(dateStr: string, endDateStr?: string): string {
     </div>
   </section>
 
+  <Support />
   <Contact />
 
   <script>
