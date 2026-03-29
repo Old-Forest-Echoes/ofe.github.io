@@ -78,7 +78,7 @@ Edit `src/content/artists/<name>.md`. Frontmatter schema:
 ```yaml
 ---
 name: Artist Name
-role: music | featured | land-art | soundscapes
+role: music | land-art | soundscapes
 order: 1 # Sort order within page
 image: ../../assets/images/filename.jpg # Relative path to image in src/assets/images/
 ---

@@ -1,7 +1,7 @@
 ---
 name: Mikko H. Haapoja
 role: soundscapes
-order: 6
+order: 3
 image: ../../assets/images/mikko-haapoja.jpg
 ---
 

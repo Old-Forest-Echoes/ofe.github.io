@@ -1,7 +1,7 @@
 ---
 name: Wiebke Pandikow
 role: land-art
-order: 5
+order: 2
 image: ../../assets/images/wiebke-pandikow.jpg
 ---
 

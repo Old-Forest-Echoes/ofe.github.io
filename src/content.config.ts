@@ -2,7 +2,7 @@ import { defineCollection } from 'astro:content';
 import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 
-export const artistRoles = ['music', 'featured', 'land-art', 'soundscapes'] as const;
+export const artistRoles = ['music', 'land-art', 'soundscapes'] as const;
 export type ArtistRole = (typeof artistRoles)[number];
 
 const artists = defineCollection({

@@ -7,7 +7,6 @@ import { getCollection, render } from 'astro:content';
 import { Image, getImage } from 'astro:assets';
 import type { ArtistRole } from '../content.config';
 import { ORGANIZATION_ID_FRAGMENT } from '../data/organization';
-import ensembleJpg from '../assets/images/ensemble.jpg';
 
 const allArtists = await getCollection('artists');
 const sorted = [...allArtists].sort((a, b) => a.data.order - b.data.order);
@@ -19,22 +18,14 @@ if (dupes.length > 0) throw new Error(`Duplicate artist order values: ${[...new 
 // Key order determines page section rendering order
 const roleLabels: Record<ArtistRole, string> = {
   music: 'Music',
-  featured: 'Featured Artists',
   'land-art': 'Land Art',
   soundscapes: 'Soundscapes',
 };
 
 const roles = Object.keys(roleLabels) as ArtistRole[];
 
-// Values contain HTML for <span lang> attributes — rendered via set:html
-const roleIntros: Partial<Record<ArtistRole, string>> = {
-  featured:
-    'In addition to live improvisations recorded during Barbora\u2019s stay in the forests, a number of acclaimed artists come onto the project as guests. These include world-renowned jazz guitarist Niklas Winter, Czech folk violinist <span lang="cs">Petra Jelénková</span>, and <span lang="fi">kantele</span> player <span lang="fi">Jenni Venäläinen</span>.',
-};
-
 const roleJobTitles: Record<ArtistRole, string> = {
   music: 'Musician',
-  featured: 'Musician',
   'land-art': 'Visual Artist',
   soundscapes: 'Sound Artist',
 };
@@ -109,9 +100,8 @@ const personGraph = { '@context': 'https://schema.org' as const, '@graph': perso
         become the Old Forest Echoes forest tour venues open to the public. To bring the music from the old-growth
         forests to festivals and venues, experienced sound artist Mikko H. Haapoja prepares surround system soundscape
         installations to stand alone or encapsulate a live concert. Barbora collaborates with numerous renowned artists
-        such as Niklas Winter, Ilkka Heinonen, <span lang="fi">Jenni Venäläinen</span>, and <span lang="cs"
-          >Petra Jelénková</span
-        > — making every single concert a unique event.
+        such as Niklas Winter, <span lang="fi">Jenni Venäläinen</span>, and <span lang="cs">Petra Jelénková</span>
+        — making every single concert a unique event.
       </p>
     </div>
   </section>
@@ -123,23 +113,6 @@ const personGraph = { '@context': 'https://schema.org' as const, '@graph': perso
       return (
         <section class="section" id={role} aria-labelledby={`${role}-heading`}>
           <h2 id={`${role}-heading`}>{roleLabels[role]}</h2>
-          {role === 'featured' && (
-            <div class="artist-card">
-              <Image
-                src={ensembleJpg}
-                alt="Old Forest Echoes ensemble performing in a forest setting"
-                widths={[500, 800, 1080]}
-                sizes="(max-width: 768px) 100vw, 660px"
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-          )}
-          {roleIntros[role] && (
-            <div class="prose role-intro">
-              <p set:html={roleIntros[role]} />
-            </div>
-          )}
           {group.map(({ artist, Content, img }) => {
             return (
               <article class="artist-card" id={artist.id} aria-labelledby={`artist-${artist.id}`}>
