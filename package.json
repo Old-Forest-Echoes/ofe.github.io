@@ -10,7 +10,8 @@
     "check": "astro check",
     "lint": "eslint --cache . && stylelint --cache 'src/styles/**/*.css' 'src/**/*.astro' && prettier --cache --check .",
     "format": "prettier --write .",
-    "validate": "npm run lint && npm run check"
+    "validate": "npm run lint && npm run check",
+    "favicons": "node scripts/generate-favicons.mjs"
   },
   "engines": {
     "node": ">=22"
