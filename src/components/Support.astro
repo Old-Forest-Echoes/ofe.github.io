@@ -44,7 +44,7 @@ import { newsletter } from '../data/support';
           body: new FormData(form),
         });
         if (res.ok) {
-          status.textContent = 'Thank you! Please check your email to confirm your subscription.';
+          status.textContent = 'Welcome to the community! Please check your email to confirm your subscription.';
           form.reset();
         } else {
           status.classList.add('newsletter-error');
