@@ -655,6 +655,7 @@ body.nav-scroll-lock {
 
 .contact-grid p {
   line-height: 1.8;
+  text-align: center;
 }
 
 /* === Newsletter === */
