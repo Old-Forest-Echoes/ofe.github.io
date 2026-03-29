@@ -57,7 +57,7 @@ import { newsletter, mobilepayUrl } from '../data/support';
           body: new FormData(form),
         });
         if (res.ok) {
-          status.textContent = 'Thank you for subscribing!';
+          status.textContent = 'Thank you! Please check your email to confirm your subscription.';
           form.reset();
         } else {
           status.classList.add('newsletter-error');
