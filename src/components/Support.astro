@@ -1,41 +1,28 @@
 ---
-import { newsletter, mobilepayUrl } from '../data/support';
+import { newsletter } from '../data/support';
 ---
 
-<section class="section" aria-labelledby="support-heading">
-  <h2 id="support-heading">Support</h2>
-
-  <div class="support-grid">
-    <div class="support-donate">
-      <h3>Donate</h3>
-      <p>Help protect Finnish old-growth forests. All donations go towards purchasing and preserving forest land.</p>
-      {/* noopener without noreferrer: allow MobilePay to see referrer for donation tracking */}
-      <a href={mobilepayUrl} class="support-btn" target="_blank" rel="noopener">Donate via MobilePay</a>
+<section class="section" aria-labelledby="newsletter-heading">
+  <h2 id="newsletter-heading">Newsletter</h2>
+  <p class="newsletter-intro">Be the first one to hear about upcoming concerts and releases.</p>
+  <form action={newsletter.formAction} method="post" class="newsletter-form" aria-labelledby="newsletter-heading">
+    <div class="sr-only" aria-hidden="true">
+      <input type="text" name={newsletter.honeypotName} tabindex="-1" autocomplete="off" />
     </div>
-
-    <div class="support-newsletter">
-      <h3 id="newsletter-heading">Newsletter</h3>
-      <p>Be the first one to hear about upcoming concerts and releases.</p>
-      <form action={newsletter.formAction} method="post" class="newsletter-form" aria-labelledby="newsletter-heading">
-        <div class="sr-only" aria-hidden="true">
-          <input type="text" name={newsletter.honeypotName} tabindex="-1" autocomplete="off" />
-        </div>
-        <div class="newsletter-fields">
-          <label for="newsletter-email" class="sr-only">Email address</label>
-          <input
-            id="newsletter-email"
-            type="email"
-            name={newsletter.emailFieldName}
-            placeholder="Email address"
-            required
-            autocomplete="email"
-          />
-          <button type="submit" class="support-btn">Subscribe</button>
-        </div>
-        <p class="newsletter-status" aria-live="polite"></p>
-      </form>
+    <div class="newsletter-fields">
+      <label for="newsletter-email" class="sr-only">Email address</label>
+      <input
+        id="newsletter-email"
+        type="email"
+        name={newsletter.emailFieldName}
+        placeholder="Email address"
+        required
+        autocomplete="email"
+      />
+      <button type="submit" class="support-btn">Subscribe</button>
     </div>
-  </div>
+    <p class="newsletter-status" aria-live="polite"></p>
+  </form>
 </section>
 
 <script>

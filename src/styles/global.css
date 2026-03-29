@@ -657,17 +657,8 @@ body.nav-scroll-lock {
   line-height: 1.8;
 }
 
-/* === Support === */
-.support-grid {
-  display: grid;
-  /* 260px minimum accommodates the email input + subscribe button side by side */
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 2rem;
-  margin-block: 1rem;
-}
-
-.support-donate,
-.support-newsletter {
+/* === Newsletter === */
+.newsletter-intro {
   text-align: center;
 }
 
@@ -823,9 +814,6 @@ body.nav-scroll-lock {
     display: none;
   }
 
-  .support-donate .support-btn::after {
-    content: none;
-  }
 
   body {
     background: var(--color-bg);
