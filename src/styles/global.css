@@ -268,6 +268,7 @@ a:focus-visible {
   position: fixed;
   inset: 0;
   z-index: var(--z-bg);
+  min-height: 100lvh;
   background-image: var(--bg-small);
   background-size: cover;
   background-position: center;
@@ -289,6 +290,7 @@ a:focus-visible {
 .page-overlay {
   position: fixed;
   inset: 0;
+  min-height: 100lvh;
   z-index: var(--z-overlay);
   background-color: var(--color-overlay);
   background-image: radial-gradient(circle at 50% 0, var(--color-overlay-inner), var(--color-overlay-gradient) 91%);
