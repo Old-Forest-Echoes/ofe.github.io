@@ -65,6 +65,9 @@ export default defineConfig({
   output: 'static',
   compressHTML: true,
   trailingSlash: 'always',
+  redirects: {
+    '/qr-code': '/',
+  },
   integrations: [
     sitemap({
       filter: (page) => !page.includes('/404'),
