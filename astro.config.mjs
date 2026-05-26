@@ -67,6 +67,7 @@ export default defineConfig({
   trailingSlash: 'always',
   redirects: {
     '/qr-code': '/',
+    '/qr-code2': '/events',
   },
   integrations: [
     sitemap({
