@@ -35,6 +35,7 @@ const events: EventEntry[] = [
     locationLanguage: 'fi',
     country: 'Finland',
   },
+  { date: '2026-06-02', location: 'Halosenniemi, Tuusula', locationLanguage: 'fi', country: 'Finland' },
   { date: '2026-06-14', location: 'Brno', locationLanguage: 'cs', country: 'Czechia' },
   { date: '2026-06-18', location: 'Praha', locationLanguage: 'cs', country: 'Czechia' },
   {
@@ -52,17 +53,6 @@ const events: EventEntry[] = [
     location: 'Liberec',
     locationLanguage: 'cs',
     country: 'Czechia',
-  },
-  {
-    date: '2026-07-01',
-    endDate: '2026-07-12',
-    description: 'Forest Residency',
-    venue: 'Waldhof',
-    venueLanguage: 'de',
-    location: 'Freiburg',
-    locationLanguage: 'de',
-    country: 'Germany',
-    schemaType: 'Event',
   },
   {
     date: '2026-07-27',
@@ -85,13 +75,6 @@ const events: EventEntry[] = [
     venue: 'Paaterin kirkko',
     venueLanguage: 'fi',
     location: 'Vuonisjärvi',
-    locationLanguage: 'fi',
-    country: 'Finland',
-  },
-  {
-    date: '2026-08-22',
-    description: 'Forest concert',
-    location: 'Haarikko',
     locationLanguage: 'fi',
     country: 'Finland',
   },
@@ -294,16 +277,13 @@ function formatDateAccessible(dateStr: string, endDateStr?: string): string {
                   {event.description}
                   {event.venue || event.location ? ', ' : ''}
                 </Fragment>
-              )}
-              {event.venue && (
+              )}{event.venue && (
                 <Fragment>
                   {event.venueLanguage ? <span lang={event.venueLanguage}>{event.venue}</span> : event.venue}
                   {event.location ? ', ' : ''}
                 </Fragment>
-              )}
-              {event.location &&
-                (event.locationLanguage ? <span lang={event.locationLanguage}>{event.location}</span> : event.location)}
-              , {event.country}
+              )}{event.location &&
+                (event.locationLanguage ? <span lang={event.locationLanguage}>{event.location}</span> : event.location)}, {event.country}
             </span>
           </li>
         ))

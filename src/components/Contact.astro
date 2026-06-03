@@ -17,10 +17,14 @@ function obfuscate(email: string): string {
         <p>
           <strong>{title}</strong>
           <br />
-          {nameLanguage ? <span lang={nameLanguage}>{name}</span> : name}
-          <br />
+          {name && (
+            <Fragment>
+              {nameLanguage ? <span lang={nameLanguage}>{name}</span> : name}
+              <br />
+            </Fragment>
+          )}
           <Fragment
-            set:html={`<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;${obfuscate(email)}" aria-label="Send email to ${name.replace(/"/g, '&quot;')}">${obfuscate(email)}</a>`}
+            set:html={`<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;${obfuscate(email)}" aria-label="Send email to ${(name ?? title).replace(/"/g, '&quot;')}">${obfuscate(email)}</a>`}
           />
         </p>
       ))
