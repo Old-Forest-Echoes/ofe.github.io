@@ -109,6 +109,18 @@ function schemaEventName(event: EventEntry): string {
   return [event.description, event.venue, event.location].filter(Boolean).join(', ');
 }
 
+// Display segments joined by ", " in the template. Returned as data (not inline JSX) so that
+// Prettier can reformat freely without introducing rendered whitespace: Astro preserves template
+// whitespace like HTML, so a source newline between a value and its comma would render as a space.
+function displaySegments(event: EventEntry): { text: string; lang?: string }[] {
+  const segments: { text: string; lang?: string }[] = [];
+  if (event.description) segments.push({ text: event.description });
+  if (event.venue) segments.push({ text: event.venue, lang: event.venueLanguage });
+  if (event.location) segments.push({ text: event.location, lang: event.locationLanguage });
+  segments.push({ text: event.country });
+  return segments;
+}
+
 function validateEvents(list: EventEntry[]): void {
   for (let i = 0; i < list.length; i++) {
     const e = list[i];
@@ -272,18 +284,12 @@ function formatDateAccessible(dateStr: string, endDateStr?: string): string {
               {formatDate(event.date, event.endDate)}
             </time>
             <span>
-              {event.description && (
-                <Fragment>
-                  {event.description}
-                  {event.venue || event.location ? ', ' : ''}
-                </Fragment>
-              )}{event.venue && (
-                <Fragment>
-                  {event.venueLanguage ? <span lang={event.venueLanguage}>{event.venue}</span> : event.venue}
-                  {event.location ? ', ' : ''}
-                </Fragment>
-              )}{event.location &&
-                (event.locationLanguage ? <span lang={event.locationLanguage}>{event.location}</span> : event.location)}, {event.country}
+              {/* Separators are bound to the start of each segment as array elements so there is no
+               source whitespace between a value and its following comma — see displaySegments(). */}
+              {displaySegments(event).map((seg, i) => [
+                i > 0 ? ', ' : '',
+                seg.lang ? <span lang={seg.lang}>{seg.text}</span> : seg.text,
+              ])}
             </span>
           </li>
         ))
