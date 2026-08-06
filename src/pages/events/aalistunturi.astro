@@ -1,0 +1,314 @@
+---
+import Base from '../../layouts/Base.astro';
+import Contact from '../../components/Contact.astro';
+import Support from '../../components/Support.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import ScheduleList, { type ScheduleEntry } from '../../components/ScheduleList.astro';
+import { organizationSchema, ORGANIZATION_ID_FRAGMENT } from '../../data/organization';
+import { countryMeta } from '../../data/countries';
+
+const siteUrl = Astro.site;
+if (!siteUrl) throw new Error('Astro.site must be configured in astro.config.mjs');
+
+const PAGE_PATH = '/events/aalistunturi/';
+const pageUrl = new URL(PAGE_PATH, siteUrl).href;
+
+// Finland observes EEST (UTC+3) in August
+const TZ_OFFSET = '+03:00';
+const EVENT_DATE = '2026-08-15';
+
+/** Coordinates are stored as strings so the displayed text matches the source exactly. */
+const PATH_START = { lat: '67.03163197', lng: '24.45053793' };
+const PATH_END = { lat: '67.01884863', lng: '24.46809254' };
+const PARKING_FAR_END = { lat: '67.0242067', lng: '24.4729036' };
+
+const MAP_URL = 'https://maps.app.goo.gl/tTSueRG2SqDTR9cH8';
+const BUS_BOOKING_URL =
+  'https://docs.google.com/forms/d/e/1FAIpQLSel1oyQUTJ13dcWU3kIGudpZxWQgF31WCDaylgJISGpO7Fxqw/viewform';
+
+function coords(point: { lat: string; lng: string }): string {
+  return `${point.lat}, ${point.lng}`;
+}
+
+function datetime(time: string): string {
+  return `${EVENT_DATE}T${time}:00${TZ_OFFSET}`;
+}
+
+/** Finnish writes clock times with a dot (13.00), English with a colon (13:00). */
+function fiTime(time: string): string {
+  return time.replace(':', '.');
+}
+
+const forestPath = [
+  { time: '13:00', fi: 'Metsäreitin lähtöpiste', en: 'Start of the forest path', point: PATH_START },
+  { time: '15:00', fi: 'Metsäkonsertti', en: 'Forest concert' },
+  { time: '17:00', fi: 'Metsäreitin päättymispiste', en: 'End of the forest path', point: PATH_END },
+];
+
+const forestPathFi: ScheduleEntry[] = forestPath.map(({ time, fi, point }) => ({
+  time: fiTime(time),
+  datetime: datetime(time),
+  what: [{ text: fi }],
+  ...(point ? { coords: coords(point) } : {}),
+}));
+
+const forestPathEn: ScheduleEntry[] = forestPath.map(({ time, en, point }) => ({
+  time,
+  datetime: datetime(time),
+  what: [{ text: en }],
+  ...(point ? { coords: coords(point) } : {}),
+}));
+
+// `en` splits the Finnish proper noun from the English words so the English list can tag
+// only the Finnish runs with lang="fi"; the Finnish list sits inside a lang="fi" section.
+const bus = [
+  {
+    time: '11:15',
+    fi: 'Rovaniemen bussiasema',
+    en: [{ text: 'Rovaniemi', lang: 'fi' }, { text: ' bus station' }],
+    address: 'Lapinkävijäntie 2',
+  },
+  {
+    time: '11:45',
+    fi: 'Sinettä K-Market',
+    en: [{ text: 'Sinettä', lang: 'fi' }, { text: ' K-Market' }],
+    address: 'Sinetänsalmentie 8',
+  },
+  {
+    time: '13:00',
+    fi: 'Aalistunturi, metsäreitin lähtöpiste',
+    en: [{ text: 'Aalistunturi', lang: 'fi' }, { text: ', start of the forest path' }],
+    point: PATH_START,
+  },
+  {
+    time: '17:00',
+    fi: 'Aalistunturi, metsäreitin päättymispiste',
+    en: [{ text: 'Aalistunturi', lang: 'fi' }, { text: ', end of the forest path' }],
+    point: PATH_END,
+  },
+  {
+    time: '18:15',
+    fi: 'Sinettä K-Market',
+    en: [{ text: 'Sinettä', lang: 'fi' }, { text: ' K-Market' }],
+    address: 'Sinetänsalmentie 8',
+  },
+  {
+    time: '18:45',
+    fi: 'Rovaniemen bussiasema',
+    en: [{ text: 'Rovaniemi', lang: 'fi' }, { text: ' bus station' }],
+    address: 'Lapinkävijäntie 2',
+  },
+];
+
+const busFi: ScheduleEntry[] = bus.map(({ time, fi, address, point }) => ({
+  time: fiTime(time),
+  datetime: datetime(time),
+  what: [{ text: fi }],
+  ...(address ? { detail: [{ text: address }] } : {}),
+  ...(point ? { coords: coords(point) } : {}),
+}));
+
+const busEn: ScheduleEntry[] = bus.map(({ time, en, address, point }) => ({
+  time,
+  datetime: datetime(time),
+  what: en,
+  ...(address ? { detail: [{ text: address, lang: 'fi' }] } : {}),
+  ...(point ? { coords: coords(point) } : {}),
+}));
+
+const description =
+  'Metsäkonsertti Aalistunturilla la 15.8.2026 klo 13–17: aikataulu, bussikuljetus ja pysäköinti. Old Forest Echoes forest concert in Aalistunturi, Finnish Lapland, 15 August 2026.';
+
+const eventGraph = {
+  '@context': 'https://schema.org' as const,
+  '@graph': [
+    organizationSchema(siteUrl),
+    {
+      '@type': 'MusicEvent',
+      '@id': `${pageUrl}#event`,
+      name: 'Old Forest Echoes — Forest concert, Aalistunturi',
+      alternateName: 'Metsäkonsertti Aalistunturilla',
+      description:
+        'Old Forest Echoes forest concert in Aalistunturi, Finnish Lapland — a walk up the fell along forest paths and duckboards, past land art and forest instrument installations, followed by a live performance in the forest.',
+      image: new URL('/images/og-image-landscape.webp', siteUrl).href,
+      url: pageUrl,
+      startDate: datetime('13:00'),
+      endDate: datetime('17:00'),
+      eventStatus: 'https://schema.org/EventScheduled',
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      isAccessibleForFree: true,
+      offers: {
+        '@type': 'Offer',
+        price: 0,
+        priceCurrency: countryMeta.Finland.currency,
+        availability: 'https://schema.org/InStock',
+        url: pageUrl,
+      },
+      location: {
+        '@type': 'Place',
+        name: 'Aalistunturi',
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Aalistunturi',
+          addressCountry: countryMeta.Finland.code,
+        },
+        geo: {
+          '@type': 'GeoCoordinates',
+          latitude: Number(PATH_START.lat),
+          longitude: Number(PATH_START.lng),
+        },
+      },
+      performer: { '@id': new URL(ORGANIZATION_ID_FRAGMENT, siteUrl).href },
+      organizer: { '@id': new URL(ORGANIZATION_ID_FRAGMENT, siteUrl).href },
+    },
+  ],
+};
+---
+
+<Base
+  title="Metsäkonsertti Aalistunturilla / Forest Concert 15.8.2026 — Old Forest Echoes"
+  description={description}
+  breadcrumbs={[
+    { name: 'Events', href: '/events/' },
+    { name: 'Aalistunturi Forest Concert', href: PAGE_PATH },
+  ]}
+>
+  <JsonLd data={eventGraph} />
+
+  <section class="section" aria-labelledby="event-heading">
+    <h1 id="event-heading">
+      <span class="heading-line heading-accented" lang="fi">Metsäkonsertti Aalistunturilla</span>
+      <span class="heading-line">Forest Concert in <span lang="fi">Aalistunturi</span></span>
+    </h1>
+    <p class="calendar-subtitle">
+      <time datetime={EVENT_DATE}><span lang="fi">Lauantai 15.8.2026</span> — Saturday 15 August 2026</time>
+    </p>
+  </section>
+
+  <section class="section" id="suomeksi" lang="fi" aria-labelledby="fi-heading">
+    <h2 id="fi-heading">Suomeksi</h2>
+    <div class="prose">
+      <p>
+        Metsäreitin pituus on noin 4 km. Tapahtuman kesto on noin 4 tuntia, jonka vietämme metsässä. Kuljemme
+        metsäreitin lähtöpisteeltä Aalistunturin laelle ja sieltä alas konserttialueelle, ja konsertin jälkeen
+        metsäreitin päätepisteeseen.
+      </p>
+      <p>
+        Metsäreitin kuljemme tutustuen maataiteeseen ja metsäinstrumentti-installaatioihin. Pidämme evästauon
+        tunturilla.
+      </p>
+      <p>Reitti kulkee tunturille metsäreittejä ja osin pitkospuita pitkin. Maasto on hieman/kohtalaisen vaativaa.</p>
+    </div>
+    <dl class="event-facts">
+      <dt>Matka</dt>
+      <dd>Noin 4 km metsäreittiä. Omalla autolla saapuville paluumatka autolle on noin 1–2 km.</dd>
+      <dt>Kesto</dt>
+      <dd>Noin 4 tuntia, klo 13.00–17.00</dd>
+      <dt>Maasto</dt>
+      <dd>Hieman/kohtalaisen vaativaa — metsäreittejä ja osin pitkospuita</dd>
+      <dt>Kartta</dt>
+      <dd><a href={MAP_URL} target="_blank" rel="noopener noreferrer">Katso sijainti kartalla</a></dd>
+    </dl>
+
+    <h3 id="fi-aikataulu">Aikataulu</h3>
+    <ScheduleList items={forestPathFi} labelledby="fi-aikataulu" />
+
+    <h3 id="fi-bussi">Saapuminen bussilla</h3>
+    <div class="prose">
+      <p>Bussikuljetus vaatii ennakkoilmoittautumisen.</p>
+    </div>
+    <p class="booking-cta">
+      <a class="support-btn" href={BUS_BOOKING_URL} target="_blank" rel="noopener noreferrer"> Varaa paikka bussiin </a>
+    </p>
+    <ScheduleList items={busFi} labelledby="fi-bussi" />
+    <div class="prose">
+      <p>Viimeinen juna Helsinkiin lähtee Rovaniemeltä 15.8. klo 21.00.</p>
+    </div>
+
+    <h3 id="fi-auto">Saapuminen omalla autolla</h3>
+    <div class="prose">
+      <p>
+        Pysäköintimahdollisuus on koordinaattien <span class="coords">{coords(PARKING_FAR_END)}</span> ja
+        <span class="coords">{coords(PATH_START)}</span> välisellä tieosuudella.
+        <a href={MAP_URL} target="_blank" rel="noopener noreferrer">Katso sijainti kartalla.</a>
+      </p>
+      <p>
+        Pysäköi auto kulkusuuntaan oikealle puolelle tietä. Kulkusuunta on Pasmajärveltä Hietalan suuntaan. Näin
+        bussille on riittävästi tilaa saapua ja poistua.
+      </p>
+      <p>
+        Huomioithan, että kulkureittien alun ja lopun välille jää noin 1,5–2 km tieosuus, jota pitkin kuljetaan kävellen
+        autolle.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="in-english" aria-labelledby="en-heading">
+    <h2 id="en-heading">In English</h2>
+    <div class="prose">
+      <p>
+        The forest route is about 4 km long, and the event lasts about 4 hours, all of it spent in the forest. We walk
+        from the start of the forest path up to the top of <span lang="fi">Aalistunturi</span>, down from there to the
+        concert area, and after the concert on to the end point of the path.
+      </p>
+      <p>
+        Along the way we stop at the land art and the forest instrument installations, and take a snack break on the
+        fell.
+      </p>
+      <p>
+        The route follows forest paths and, in places, duckboards. The terrain is slightly to moderately demanding. Read
+        more about <a href="/events/#forest">how a forest concert works</a>.
+      </p>
+    </div>
+    <dl class="event-facts">
+      <dt>Distance</dt>
+      <dd>About 4 km on the forest path. If you come by car, the walk back to it is a further 1–2 km.</dd>
+      <dt>Duration</dt>
+      <dd>About 4 hours, 13:00–17:00</dd>
+      <dt>Terrain</dt>
+      <dd>Slightly to moderately demanding — forest paths and some duckboards</dd>
+      <dt>Map</dt>
+      <dd><a href={MAP_URL} target="_blank" rel="noopener noreferrer">See the locations on Google Maps</a></dd>
+    </dl>
+
+    <h3 id="en-schedule">Schedule</h3>
+    <ScheduleList items={forestPathEn} labelledby="en-schedule" />
+
+    <h3 id="en-bus">Coming by Bus</h3>
+    <div class="prose">
+      <p>A seat on the bus has to be booked in advance.</p>
+    </div>
+    <p class="booking-cta">
+      <a class="support-btn" href={BUS_BOOKING_URL} target="_blank" rel="noopener noreferrer">
+        Book a seat on the bus
+      </a>
+    </p>
+    <ScheduleList items={busEn} labelledby="en-bus" />
+    <div class="prose">
+      <p>
+        The last train to Helsinki on 15 August leaves <span lang="fi">Rovaniemi</span> at 21:00.
+      </p>
+    </div>
+
+    <h3 id="en-car">Coming by Car</h3>
+    <div class="prose">
+      <p>
+        You can park along the stretch of road between <span class="coords">{coords(PARKING_FAR_END)}</span> and
+        <span class="coords">{coords(PATH_START)}</span>.
+        <a href={MAP_URL} target="_blank" rel="noopener noreferrer">See the locations on Google Maps.</a>
+      </p>
+      <p>
+        Park on the right-hand side of the road in the direction of travel, which runs from
+        <span lang="fi">Pasmajärvi</span> towards <span lang="fi">Hietala</span>. This leaves the bus enough room to
+        arrive and leave.
+      </p>
+      <p>
+        Note that there is about 1.5–2 km of road between the start and the end of the forest path, and you walk that
+        stretch back to your car.
+      </p>
+    </div>
+  </section>
+
+  <Support />
+  <Contact />
+</Base>

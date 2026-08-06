@@ -326,6 +326,20 @@ h2 {
   margin-block: 2rem 1.5rem;
 }
 
+/* Leonetta Serif is a caps-only display face that ships no accented glyphs (ä, ö, é, š …),
+   so a heading containing one falls back to Georgia mid-word at a mismatched size.
+   Set headings that contain diacritics in the body face instead. */
+.heading-accented {
+  font-family: var(--font-body);
+  font-weight: 300;
+}
+
+/* One line of a multi-line heading. Block display rather than <br> so the accessible
+   name keeps a word boundary between the lines. */
+.heading-line {
+  display: block;
+}
+
 h1:has(+ .calendar-subtitle) {
   margin-block-end: 0.5rem;
 }
@@ -627,7 +641,8 @@ body.nav-scroll-lock {
   margin-block-end: 2rem;
 }
 
-.event-list li {
+.event-list li,
+.schedule-list li {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 0.75rem;
@@ -639,12 +654,82 @@ body.nav-scroll-lock {
   color: var(--color-gold-muted);
 }
 
+/* Links to event detail pages keep the row's text colour so linked and unlinked
+   rows read as one list; the underline carries the affordance. */
+.event-list a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--color-gold-muted);
+  text-underline-offset: 2px;
+}
+
+.event-list a:hover,
+.event-list a:focus-visible {
+  color: var(--color-gold);
+}
+
 .event-past {
   color: var(--color-past-text);
 }
 
 .event-past .event-date {
   color: var(--color-past-date);
+}
+
+/* === Event detail === */
+.schedule-list {
+  list-style: none;
+  margin-block-end: 2rem;
+}
+
+.schedule-time {
+  min-width: 4em;
+  color: var(--color-gold-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Inline inside prose, but its own line inside a schedule row */
+.coords {
+  font-size: 0.9em;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.schedule-list .coords {
+  display: block;
+}
+
+.booking-cta {
+  margin-block: 1.5rem;
+  text-align: center;
+}
+
+.event-facts {
+  margin-block: 1.5rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.35rem 0.75rem;
+}
+
+.event-facts dt {
+  color: var(--color-gold-muted);
+}
+
+.event-facts dd {
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .event-facts {
+    grid-template-columns: 1fr;
+    gap: 0 0.75rem;
+  }
+
+  .event-facts dd {
+    margin-block-end: 0.75rem;
+  }
 }
 
 /* === Contact === */
@@ -781,6 +866,7 @@ body.nav-scroll-lock {
 }
 
 .prose a,
+.event-facts a,
 .contact-grid a {
   text-decoration: underline;
   text-decoration-thickness: 1px;
@@ -915,7 +1001,8 @@ body.nav-scroll-lock {
     color: GrayText;
   }
 
-  .contact-grid a {
+  .contact-grid a,
+  .event-list a {
     color: LinkText;
   }
 

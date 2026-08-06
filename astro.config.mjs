@@ -54,6 +54,13 @@ const pageInputs = {
     'src/data/countries.ts',
     ...sharedFiles,
   ],
+  '/events/aalistunturi/': [
+    'src/pages/events/aalistunturi.astro',
+    'src/components/ScheduleList.astro',
+    'src/data/organization.ts',
+    'src/data/countries.ts',
+    ...sharedFiles,
+  ],
 };
 
 const lastmodMap = Object.fromEntries(

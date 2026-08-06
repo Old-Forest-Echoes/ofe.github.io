@@ -1,0 +1,51 @@
+---
+/**
+ * Time-and-place list used by event detail pages.
+ *
+ * Text is passed as arrays of runs rather than inline JSX so that Prettier can reformat
+ * freely without introducing rendered whitespace — Astro preserves template whitespace
+ * like HTML, so a source newline between two runs would render as a space.
+ */
+export interface TextRun {
+  text: string;
+  lang?: string;
+}
+
+export interface ScheduleEntry {
+  /** Localised display time, e.g. "13.00" (fi) or "13:00" (en) */
+  time: string;
+  /** Machine-readable timestamp for the <time> element */
+  datetime: string;
+  what: TextRun[];
+  /** Secondary line, e.g. a street address */
+  detail?: TextRun[];
+  /** Secondary line, e.g. "67.03163197, 24.45053793" */
+  coords?: string;
+}
+
+interface Props {
+  items: ScheduleEntry[];
+  labelledby: string;
+}
+
+const { items, labelledby } = Astro.props;
+---
+
+<ul class="schedule-list" role="list" aria-labelledby={labelledby}>
+  {
+    items.map(({ time, datetime, what, detail, coords }) => (
+      <li>
+        <time class="schedule-time" datetime={datetime}>
+          {time}
+        </time>
+        <span>
+          {what.map((p) => (p.lang ? <span lang={p.lang}>{p.text}</span> : p.text))}
+          {detail && (
+            <span class="coords">{detail.map((p) => (p.lang ? <span lang={p.lang}>{p.text}</span> : p.text))}</span>
+          )}
+          {coords && <span class="coords">{coords}</span>}
+        </span>
+      </li>
+    ))
+  }
+</ul>

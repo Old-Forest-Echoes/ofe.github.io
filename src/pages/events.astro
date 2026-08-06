@@ -13,6 +13,8 @@ interface EventBase {
   description?: string;
   country: Country;
   schemaType?: 'MusicEvent' | 'Event';
+  /** Site-relative path to a dedicated page for this event (leading and trailing slash). */
+  url?: string;
 }
 
 // Venue/location language tags require their corresponding name fields
@@ -69,6 +71,7 @@ const events: EventEntry[] = [
     location: 'Aalistunturi',
     locationLanguage: 'fi',
     country: 'Finland',
+    url: '/events/aalistunturi/',
   },
   {
     date: '2026-08-20',
@@ -141,6 +144,11 @@ function validateEvents(list: EventEntry[]): void {
       throw new Error(`Event on ${e.date} must have at least a description, venue, or location`);
     if (e.venueLanguage && !e.venue) throw new Error(`Event on ${e.date} has venueLanguage without venue`);
     if (e.locationLanguage && !e.location) throw new Error(`Event on ${e.date} has locationLanguage without location`);
+    // trailingSlash: 'always' in astro.config.mjs — a missing trailing slash would 301 on every click
+    if (e.url && !(e.url.startsWith('/') && e.url.endsWith('/')))
+      throw new Error(
+        `Event url "${e.url}" on ${e.date} must be a site-relative path with a leading and trailing slash`,
+      );
     if (i > 0 && e.date < list[i - 1].date)
       throw new Error(
         `Events out of order at index ${i}: ${e.date} follows ${list[i - 1].date} but is chronologically earlier`,
@@ -184,6 +192,7 @@ const eventSchemas = upcomingEvents.map((event) => {
     : event.location
       ? `in ${event.location}, ${event.country}`
       : `in ${event.country}`;
+  const eventUrl = new URL(event.url ?? '/events/', siteUrl).href;
   return {
     '@type': event.schemaType ?? 'MusicEvent',
     name: event.description ? `Old Forest Echoes — ${display}` : `Old Forest Echoes concert — ${display}`,
@@ -191,7 +200,7 @@ const eventSchemas = upcomingEvents.map((event) => {
       ? `${event.description} — Old Forest Echoes ${event.schemaType === 'Event' ? 'event' : 'live performance'} ${locationLabel}.`
       : `Old Forest Echoes ${event.schemaType === 'Event' ? 'event' : 'live performance'} ${locationLabel}.`,
     image: new URL('/images/og-image-landscape.webp', siteUrl).href,
-    url: new URL('/events/', siteUrl).href,
+    url: eventUrl,
     startDate: event.date,
     ...(event.endDate ? { endDate: event.endDate } : {}),
     eventStatus: 'https://schema.org/EventScheduled',
@@ -202,7 +211,7 @@ const eventSchemas = upcomingEvents.map((event) => {
       price: 0,
       priceCurrency: countryMeta[event.country].currency,
       availability: 'https://schema.org/InStock',
-      url: new URL('/events/', siteUrl).href,
+      url: eventUrl,
     },
     location: {
       '@type': 'Place',
@@ -275,24 +284,29 @@ function formatDateAccessible(dateStr: string, endDateStr?: string): string {
     <p class="calendar-subtitle" id="calendar-subtitle">Event Calendar {calendarYear}</p>
     <ul class="event-list" role="list" aria-labelledby="calendar-heading" aria-describedby="calendar-subtitle">
       {
-        events.map((event) => (
-          <li class:list={[{ 'event-past': isPast(event) }]} data-end={event.endDate || event.date}>
-            {/* datetime uses start date only (HTML spec requires a single date, not an interval).
-             The aria-label provides the full range in accessible text. End date is in data-end for client-side use
-             and in JSON-LD structured data for search engines. */}
-            <time class="event-date" datetime={event.date} aria-label={formatDateAccessible(event.date, event.endDate)}>
-              {formatDate(event.date, event.endDate)}
-            </time>
-            <span>
-              {/* Separators are bound to the start of each segment as array elements so there is no
-               source whitespace between a value and its following comma — see displaySegments(). */}
-              {displaySegments(event).map((seg, i) => [
-                i > 0 ? ', ' : '',
-                seg.lang ? <span lang={seg.lang}>{seg.text}</span> : seg.text,
-              ])}
-            </span>
-          </li>
-        ))
+        events.map((event) => {
+          // Separators are bound to the start of each segment as array elements so there is no
+          // source whitespace between a value and its following comma — see displaySegments().
+          const label = displaySegments(event).map((seg, i) => [
+            i > 0 ? ', ' : '',
+            seg.lang ? <span lang={seg.lang}>{seg.text}</span> : seg.text,
+          ]);
+          return (
+            <li class:list={[{ 'event-past': isPast(event) }]} data-end={event.endDate || event.date}>
+              {/* datetime uses start date only (HTML spec requires a single date, not an interval).
+               The aria-label provides the full range in accessible text. End date is in data-end for client-side use
+               and in JSON-LD structured data for search engines. */}
+              <time
+                class="event-date"
+                datetime={event.date}
+                aria-label={formatDateAccessible(event.date, event.endDate)}
+              >
+                {formatDate(event.date, event.endDate)}
+              </time>
+              <span>{event.url ? <a href={event.url}>{label}</a> : label}</span>
+            </li>
+          );
+        })
       }
     </ul>
     {upcomingEvents.length === 0 && <p class="prose calendar-subtitle">New dates will be announced soon.</p>}
