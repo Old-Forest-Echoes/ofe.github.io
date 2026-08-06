@@ -1,6 +1,6 @@
 # Old Forest Echoes — Astro Site
 
-Website for Old Forest Echoes (Ikimetsän kaiku), a music and nature conservation project. Astro 6 static site deployed on GitHub Pages at oldforestechoes.com.
+Website for Old Forest Echoes (Ikimetsän kaiku), a music and nature conservation project. Astro 7 static site deployed on GitHub Pages at oldforestechoes.com.
 
 ## Commands
 
@@ -17,7 +17,7 @@ npm run validate    # Lint + type check (lint && check)
 
 ## Architecture
 
-- **Astro 6** static site, zero JS framework runtime
+- **Astro 7** static site, zero JS framework runtime
 - **Single CSS file** (`src/styles/global.css`) — all styling, CSS custom properties
 - **Self-hosted fonts** — Leonetta Serif (WOFF2) + Spectral (WOFF2, 2 weights), no Google Fonts
 - **Content Collections** for artists (Markdown with Zod schema)
