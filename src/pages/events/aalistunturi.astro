@@ -23,6 +23,7 @@ const PATH_END = { lat: '67.01884863', lng: '24.46809254' };
 const PARKING_FAR_END = { lat: '67.0242067', lng: '24.4729036' };
 
 const MAP_URL = 'https://maps.app.goo.gl/tTSueRG2SqDTR9cH8';
+const FACEBOOK_EVENT_URL = 'https://fb.me/e/6ZnffQ3Hm';
 const BUS_BOOKING_URL =
   'https://docs.google.com/forms/d/e/1FAIpQLSel1oyQUTJ13dcWU3kIGudpZxWQgF31WCDaylgJISGpO7Fxqw/viewform';
 
@@ -197,7 +198,10 @@ const eventGraph = {
         Metsäreitin kuljemme tutustuen maataiteeseen ja metsäinstrumentti-installaatioihin. Pidämme evästauon
         tunturilla.
       </p>
-      <p>Reitti kulkee tunturille metsäreittejä ja osin pitkospuita pitkin. Maasto on hieman/kohtalaisen vaativaa.</p>
+      <p>
+        Reitti kulkee tunturille metsäreittejä ja osin pitkospuita pitkin. Maasto on melko vaativaa. Säästä riippuen
+        reitti voi olla liukas.
+      </p>
     </div>
     <dl class="event-facts">
       <dt>Matka</dt>
@@ -205,7 +209,7 @@ const eventGraph = {
       <dt>Kesto</dt>
       <dd>Noin 4 tuntia, klo 13.00–17.00</dd>
       <dt>Maasto</dt>
-      <dd>Hieman/kohtalaisen vaativaa — metsäreittejä ja osin pitkospuita</dd>
+      <dd>Melko vaativaa — metsäreittejä ja osin pitkospuita</dd>
       <dt>Bussi</dt>
       <dd>
         Vaatii ennakkoilmoittautumisen —
@@ -213,6 +217,8 @@ const eventGraph = {
       </dd>
       <dt>Kartta</dt>
       <dd><a href={MAP_URL} target="_blank" rel="noopener noreferrer">Katso sijainti kartalla</a></dd>
+      <dt>Facebook</dt>
+      <dd><a href={FACEBOOK_EVENT_URL} target="_blank" rel="noopener noreferrer">Facebook-tapahtuma</a></dd>
     </dl>
 
     <h3 id="fi-aikataulu">Aikataulu</h3>
@@ -261,8 +267,8 @@ const eventGraph = {
         fell.
       </p>
       <p>
-        The route follows forest paths and, in places, duckboards. The terrain is slightly to moderately demanding. Read
-        more about <a href="/events/#forest">how a forest concert works</a>.
+        The route follows forest paths and, in places, duckboards. The terrain is quite demanding. Depending on the
+        weather, the path can be slippery. Read more about <a href="/events/#forest">how a forest concert works</a>.
       </p>
     </div>
     <dl class="event-facts">
@@ -271,7 +277,7 @@ const eventGraph = {
       <dt>Duration</dt>
       <dd>About 4 hours, 13:00–17:00</dd>
       <dt>Terrain</dt>
-      <dd>Slightly to moderately demanding — forest paths and some duckboards</dd>
+      <dd>Quite demanding — forest paths and some duckboards</dd>
       <dt>Bus</dt>
       <dd>
         Booking required —
@@ -279,6 +285,8 @@ const eventGraph = {
       </dd>
       <dt>Map</dt>
       <dd><a href={MAP_URL} target="_blank" rel="noopener noreferrer">See the locations on Google Maps</a></dd>
+      <dt>Facebook</dt>
+      <dd><a href={FACEBOOK_EVENT_URL} target="_blank" rel="noopener noreferrer">Facebook event</a></dd>
     </dl>
 
     <h3 id="en-schedule">Schedule</h3>
