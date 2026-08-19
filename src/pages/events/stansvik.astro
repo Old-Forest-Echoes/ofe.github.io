@@ -15,6 +15,7 @@ const pageUrl = new URL(PAGE_PATH, siteUrl).href;
 const EVENT_DATE = '2026-08-30';
 const TZ_OFFSET = '+03:00'; // Finland observes EEST in August
 const FACEBOOK_EVENT_URL = 'https://fb.me/e/8YXtboCnh';
+const REGISTRATION_URL = 'https://forms.gle/TF4e82E3p4GYRaD2A';
 
 const scheduleFi: ScheduleEntry[] = [
   { time: '13.00', datetime: `${EVENT_DATE}T13:00:00${TZ_OFFSET}`, what: [{ text: 'Pidempi opastettu kävely' }] },
@@ -117,6 +118,9 @@ const eventGraph = {
 
     <h3 id="fi-schedule-heading">Opastetut kävelyt ja konsertti</h3>
     <ScheduleList items={scheduleFi} labelledby="fi-schedule-heading" />
+    <p class="booking-cta">
+      <a class="support-btn" href={REGISTRATION_URL} target="_blank" rel="noopener noreferrer"> Ilmoittaudu </a>
+    </p>
 
     <h3 id="fi-getting-there-heading">Saapuminen</h3>
     <div class="prose">
@@ -151,6 +155,9 @@ const eventGraph = {
 
     <h3 id="en-schedule-heading">Guided Walks &amp; Concert</h3>
     <ScheduleList items={scheduleEn} labelledby="en-schedule-heading" />
+    <p class="booking-cta">
+      <a class="support-btn" href={REGISTRATION_URL} target="_blank" rel="noopener noreferrer"> Register </a>
+    </p>
 
     <h3 id="en-getting-there-heading">Getting There</h3>
     <div class="prose">
