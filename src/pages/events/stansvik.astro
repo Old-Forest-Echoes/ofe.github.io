@@ -1,0 +1,172 @@
+---
+import Base from '../../layouts/Base.astro';
+import Contact from '../../components/Contact.astro';
+import Support from '../../components/Support.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import ScheduleList, { type ScheduleEntry } from '../../components/ScheduleList.astro';
+import { organizationSchema, ORGANIZATION_ID_FRAGMENT } from '../../data/organization';
+import { countryMeta } from '../../data/countries';
+
+const siteUrl = Astro.site;
+if (!siteUrl) throw new Error('Astro.site must be configured in astro.config.mjs');
+
+const PAGE_PATH = '/events/stansvik/';
+const pageUrl = new URL(PAGE_PATH, siteUrl).href;
+const EVENT_DATE = '2026-08-30';
+const TZ_OFFSET = '+03:00'; // Finland observes EEST in August
+const FACEBOOK_EVENT_URL = 'https://fb.me/e/8YXtboCnh';
+
+const scheduleFi: ScheduleEntry[] = [
+  { time: '13.00', datetime: `${EVENT_DATE}T13:00:00${TZ_OFFSET}`, what: [{ text: 'Pidempi opastettu kävely' }] },
+  { time: '13.30', datetime: `${EVENT_DATE}T13:30:00${TZ_OFFSET}`, what: [{ text: 'Lyhyempi opastettu kävely' }] },
+  { time: '15.00', datetime: `${EVENT_DATE}T15:00:00${TZ_OFFSET}`, what: [{ text: 'Metsäkonsertti' }] },
+];
+
+const scheduleEn: ScheduleEntry[] = [
+  { time: '13:00', datetime: `${EVENT_DATE}T13:00:00${TZ_OFFSET}`, what: [{ text: 'Longer guided walk' }] },
+  { time: '13:30', datetime: `${EVENT_DATE}T13:30:00${TZ_OFFSET}`, what: [{ text: 'Shorter guided walk' }] },
+  { time: '15:00', datetime: `${EVENT_DATE}T15:00:00${TZ_OFFSET}`, what: [{ text: 'Forest concert' }] },
+];
+
+const description =
+  'Old Forest Echoes forest concert with Barbora Xu in Stansvik Forest, Laajasalo, Helsinki, on Sunday 30 August 2026. Guided forest walks begin at 13:00 and 13:30; the concert begins at 15:00.';
+
+const eventGraph = {
+  '@context': 'https://schema.org' as const,
+  '@graph': [
+    organizationSchema(siteUrl),
+    {
+      '@type': 'MusicEvent',
+      '@id': `${pageUrl}#event`,
+      name: 'Old Forest Echoes — Forest Concert with Barbora Xu',
+      description,
+      image: new URL('/images/og-image-landscape.webp', siteUrl).href,
+      url: pageUrl,
+      startDate: `${EVENT_DATE}T15:00:00${TZ_OFFSET}`,
+      eventStatus: 'https://schema.org/EventScheduled',
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      isAccessibleForFree: true,
+      offers: {
+        '@type': 'Offer',
+        price: 0,
+        priceCurrency: countryMeta.Finland.currency,
+        availability: 'https://schema.org/InStock',
+        url: pageUrl,
+      },
+      location: {
+        '@type': 'Place',
+        name: 'Stansvik Forest',
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Laajasalo, Helsinki',
+          addressCountry: countryMeta.Finland.code,
+        },
+      },
+      performer: [
+        { '@id': new URL(ORGANIZATION_ID_FRAGMENT, siteUrl).href },
+        { '@type': 'Person', name: 'Barbora Xu' },
+        { '@type': 'Person', name: 'Tapani Rinne' },
+        { '@type': 'Person', name: 'Niklas Winter' },
+      ],
+      organizer: { '@id': new URL(ORGANIZATION_ID_FRAGMENT, siteUrl).href },
+    },
+  ],
+};
+---
+
+<Base
+  title="Metsäkonsertti Stansvikissa / Forest Concert in Stansvik 30.8.2026 — Old Forest Echoes"
+  description={description}
+  breadcrumbs={[
+    { name: 'Events', href: '/events/' },
+    { name: 'Stansvik Forest Concert', href: PAGE_PATH },
+  ]}
+>
+  <JsonLd data={eventGraph} />
+
+  <section class="section" aria-labelledby="event-heading">
+    <h1 id="event-heading">
+      <span class="heading-line heading-accented heading-cursive" lang="fi">Metsäkonsertti Stansvikissa</span>
+      <span class="heading-line">Forest Concert in <span lang="sv">Stansvik</span></span>
+    </h1>
+    <p class="calendar-subtitle">
+      <span lang="fi">Stansvikin metsä</span>, <span lang="fi">Laajasalo</span>, Helsinki<br />
+      <time datetime={EVENT_DATE}
+        ><span lang="fi">Sunnuntai 30.8.2026 · Konsertti klo 15.00</span> — Sunday 30 August 2026 · Concert at 15:00</time
+      >
+    </p>
+  </section>
+
+  <section class="section" id="suomeksi" lang="fi" aria-labelledby="fi-heading">
+    <h2 id="fi-heading">Suomeksi</h2>
+    <div class="prose">
+      <p>
+        Tule mukaan Old Forest Echoes -kauden viimeiseen metsäkonserttiin, jossa esiintyvät Tapani Rinne ja Niklas
+        Winter.
+      </p>
+      <p>
+        Ennen konserttia voit osallistua <span lang="fi">Metsäryhmä Luonto-Liiton</span> metsän asiantuntijan opastamalle
+        kävelylle <span lang="fi">Stansvikin metsään</span> ja oppia lisää alueen ainutlaatuisesta luonnosta ja historiasta.
+      </p>
+      <p>
+        Molemmat kävelyt päättyvät suoraan konserttipaikalle. Huomioithan, että kävelyt kulkevat metsäpoluilla, joten
+        suosittelemme mukavia metsään sopivia jalkineita.
+      </p>
+      <p>Olet myös lämpimästi tervetullut suoraan konserttiin osallistumatta kävelyyn.</p>
+    </div>
+
+    <h3 id="fi-schedule-heading">Opastetut kävelyt ja konsertti</h3>
+    <ScheduleList items={scheduleFi} labelledby="fi-schedule-heading" />
+
+    <h3 id="fi-getting-there-heading">Saapuminen</h3>
+    <div class="prose">
+      <p>
+        <span lang="fi">Herttoniemen</span> metroasemalta voit jatkaa julkisilla kulkuvälineillä ja kävellä sen jälkeen noin
+        10 minuuttia metsään. Autolla saapuessasi seuraa opasteita <span lang="fi">Stansvikin kartanon</span>
+        pysäköintialueelta kohti konserttipaikkaa.
+      </p>
+    </div>
+
+    <p class="booking-cta">
+      <a class="support-btn" href={FACEBOOK_EVENT_URL} target="_blank" rel="noopener noreferrer">Facebook-tapahtuma</a>
+    </p>
+  </section>
+
+  <section class="section" id="in-english" aria-labelledby="en-heading">
+    <h2 id="en-heading">In English</h2>
+    <div class="prose">
+      <p>
+        Join us for the final Old Forest Echoes forest concert of the season, featuring Tapani Rinne and Niklas Winter.
+      </p>
+      <p>
+        Before the concert, you can join a guided walk through <span lang="fi">Stansvikin metsä</span> with a forest expert
+        from <span lang="fi">Metsäryhmä Luonto-Liitto</span> and learn more about the area's unique nature and history.
+      </p>
+      <p>
+        Both walks lead directly to the concert site. Please note that the walks take place on forest paths, so
+        comfortable footwear suitable for walking in the forest is recommended.
+      </p>
+      <p>You are also very welcome to come directly to the concert without joining the hike.</p>
+    </div>
+
+    <h3 id="en-schedule-heading">Guided Walks &amp; Concert</h3>
+    <ScheduleList items={scheduleEn} labelledby="en-schedule-heading" />
+
+    <h3 id="en-getting-there-heading">Getting There</h3>
+    <div class="prose">
+      <p>
+        From <span lang="fi">Herttoniemi</span> metro station, you can continue by public transport and then walk approximately
+        10 minutes into the forest. If arriving by car, follow the signs from the <span lang="fi"
+          >Stansvikin kartano</span
+        > parking area towards the concert site.
+      </p>
+    </div>
+
+    <p class="booking-cta">
+      <a class="support-btn" href={FACEBOOK_EVENT_URL} target="_blank" rel="noopener noreferrer">Facebook event</a>
+    </p>
+  </section>
+
+  <Support />
+  <Contact />
+</Base>
