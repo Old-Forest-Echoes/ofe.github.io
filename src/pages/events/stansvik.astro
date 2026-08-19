@@ -16,6 +16,11 @@ const EVENT_DATE = '2026-08-30';
 const TZ_OFFSET = '+03:00'; // Finland observes EEST in August
 const FACEBOOK_EVENT_URL = 'https://fb.me/e/8YXtboCnh';
 const REGISTRATION_URL = 'https://forms.gle/TF4e82E3p4GYRaD2A';
+const SPOTIFY_URLS = {
+  barboraXu: 'https://open.spotify.com/artist/2GKK9tOmJ5WLDoqEFLJwAN',
+  tapaniRinne: 'https://open.spotify.com/artist/3444FAqjOpZGe7qdyshHg1',
+  niklasWinter: 'https://open.spotify.com/artist/7z8P55fksPikrpZlDkmqdo',
+};
 
 const scheduleFi: ScheduleEntry[] = [
   { time: '13.00', datetime: `${EVENT_DATE}T13:00:00${TZ_OFFSET}`, what: [{ text: 'Pidempi opastettu kävely' }] },
@@ -39,7 +44,7 @@ const eventGraph = {
     {
       '@type': 'MusicEvent',
       '@id': `${pageUrl}#event`,
-      name: 'Old Forest Echoes — Forest Concert with Barbora Xu',
+      name: 'Old Forest Echoes — Forest Concert in Stansvik, Helsinki',
       description,
       image: new URL('/images/og-image-landscape.webp', siteUrl).href,
       url: pageUrl,
@@ -76,19 +81,21 @@ const eventGraph = {
 ---
 
 <Base
-  title="Metsäkonsertti Stansvikissa / Forest Concert in Stansvik 30.8.2026 — Old Forest Echoes"
+  title="Metsäkonsertti Stansvikissa, Helsingissä / Forest Concert in Stansvik, Helsinki 30.8.2026 — Old Forest Echoes"
   description={description}
   breadcrumbs={[
     { name: 'Events', href: '/events/' },
-    { name: 'Stansvik Forest Concert', href: PAGE_PATH },
+    { name: 'Forest Concert in Stansvik, Helsinki', href: PAGE_PATH },
   ]}
 >
   <JsonLd data={eventGraph} />
 
   <section class="section" aria-labelledby="event-heading">
     <h1 id="event-heading">
-      <span class="heading-line heading-accented heading-cursive" lang="fi">Metsäkonsertti Stansvikissa</span>
-      <span class="heading-line">Forest Concert in <span lang="sv">Stansvik</span></span>
+      <span class="heading-line heading-accented heading-cursive" lang="fi"
+        >Metsäkonsertti Stansvikissa, Helsingissä</span
+      >
+      <span class="heading-line">Forest Concert in <span lang="sv">Stansvik</span>, Helsinki</span>
     </h1>
     <p class="calendar-subtitle">
       <span lang="fi">Stansvikin metsä</span>, <span lang="fi">Laajasalo</span>, Helsinki<br />
@@ -102,8 +109,12 @@ const eventGraph = {
     <h2 id="fi-heading">Suomeksi</h2>
     <div class="prose">
       <p>
-        Tule mukaan Old Forest Echoes -kauden viimeiseen metsäkonserttiin, jossa esiintyvät Tapani Rinne ja Niklas
-        Winter.
+        Old Forest Echoes luo paikkasidonnaisia musiikkielämyksiä, jotka kutsuvat ihmisiä kuuntelemaan toisin —
+        musiikkia, paikkaa ja metsää itseään. Jokainen konsertti muotoutuu metsän ainutlaatuisen luonteen mukaan.
+      </p>
+      <p>
+        Tule mukaan Old Forest Echoes -kauden viimeiseen metsäkonserttiin, jossa esiintyvät Barbora Xu, Tapani Rinne ja
+        Niklas Winter.
       </p>
       <h3 id="fi-land-art-heading">Maataideinstallaatio</h3>
       <p>
@@ -120,6 +131,16 @@ const eventGraph = {
         suosittelemme mukavia metsään sopivia jalkineita.
       </p>
       <p>Olet myös lämpimästi tervetullut suoraan konserttiin osallistumatta kävelyyn.</p>
+      <p>
+        Kuuntele lisää musiikkia täältä:
+        <a href={SPOTIFY_URLS.barboraXu} target="_blank" rel="noopener noreferrer">Barbora Xu</a>,
+        <a href={SPOTIFY_URLS.tapaniRinne} target="_blank" rel="noopener noreferrer">Tapani Rinne</a> ja
+        <a href={SPOTIFY_URLS.niklasWinter} target="_blank" rel="noopener noreferrer">Niklas Winter</a> Spotifyssa.
+      </p>
+      <p>
+        Jos sinulla on kysyttävää, ota meihin yhteyttä osoitteessa
+        <a href="mailto:info@oldforestechoes.com">info@oldforestechoes.com</a>.
+      </p>
     </div>
 
     <h3 id="fi-schedule-heading">Opastetut retket ja konsertti</h3>
@@ -146,7 +167,12 @@ const eventGraph = {
     <h2 id="en-heading">In English</h2>
     <div class="prose">
       <p>
-        Join us for the final Old Forest Echoes forest concert of the season, featuring Tapani Rinne and Niklas Winter.
+        Old Forest Echoes creates site-specific musical experiences that invite people to listen differently, to music,
+        to place, and to the forest itself. Each concert is shaped by the unique character of the forest.
+      </p>
+      <p>
+        Join us for the final Old Forest Echoes forest concert of the season, featuring Barbora Xu, Tapani Rinne, and
+        Niklas Winter.
       </p>
       <h3 id="en-land-art-heading">Land Art Installation</h3>
       <p>
@@ -163,6 +189,15 @@ const eventGraph = {
         comfortable footwear suitable for walking in the forest is recommended.
       </p>
       <p>You are also very welcome to come directly to the concert without joining the hike.</p>
+      <p>
+        Listen to more music here:
+        <a href={SPOTIFY_URLS.barboraXu} target="_blank" rel="noopener noreferrer">Barbora Xu</a>,
+        <a href={SPOTIFY_URLS.tapaniRinne} target="_blank" rel="noopener noreferrer">Tapani Rinne</a>, and
+        <a href={SPOTIFY_URLS.niklasWinter} target="_blank" rel="noopener noreferrer">Niklas Winter</a> on Spotify.
+      </p>
+      <p>
+        If you have any questions, contact us at <a href="mailto:info@oldforestechoes.com">info@oldforestechoes.com</a>.
+      </p>
     </div>
 
     <h3 id="en-schedule-heading">Guided Walks &amp; Concert</h3>
