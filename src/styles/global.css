@@ -511,6 +511,17 @@ body.nav-scroll-lock {
 }
 
 /* === Content sections === */
+.event-poster {
+  display: block;
+  margin-block-end: 3rem;
+}
+
+.event-poster img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .section {
   padding-block: 3rem;
 }

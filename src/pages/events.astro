@@ -1,5 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
+import { Image } from 'astro:assets';
+import caisaPoster from '../assets/images/caisa-concert-poster.jpg';
 import Contact from '../components/Contact.astro';
 import Support from '../components/Support.astro';
 import JsonLd from '../components/JsonLd.astro';
@@ -400,6 +402,22 @@ function formatDateAccessible(dateStr: string, endDateStr?: string): string {
   </section>
 
   <section class="section" id="forest" aria-labelledby="forest-heading">
+    <a
+      class="event-poster"
+      href={caisaPoster.src}
+      target="_blank"
+      rel="noopener"
+      aria-label="View the full-size Caisa concert poster"
+    >
+      <Image
+        src={caisaPoster}
+        alt="Old Forest Echoes with Barbora Xu at Cultural Centre Caisa, Helsinki, 31 October and 1 November 2026. Saturday: Milla Aalto’s forest expert introduction at 18.30 and immersive concert at 19.00–20.00. Sunday: family workshop at 13.00–13.45, forest expert introduction and concert at 14.00–15.00, and workshop for all audiences at 15.15–16.00."
+        widths={[480, 960, 1440, 1920]}
+        sizes="(max-width: 940px) calc(100vw - 2rem), 908px"
+        format="webp"
+        quality={90}
+      />
+    </a>
     <h2 id="forest-heading">Forest Concerts</h2>
     <div class="prose">
       <p>
