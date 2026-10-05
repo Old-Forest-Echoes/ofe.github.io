@@ -146,7 +146,7 @@
   --color-yt-red: #f00;
   --color-yt-white: #fff;
   --color-input-bg: rgb(0 0 0 / 30%);
-  --color-announcement-bg: rgb(10 10 8 / 85%);
+  --color-announcement-bg: rgb(10 10 8 / 95%);
 
   --z-bg: -2;
   --z-overlay: -1;
@@ -522,14 +522,42 @@ body.nav-scroll-lock {
 .event-feature {
   max-width: 52rem;
   margin: 2.5rem auto;
-  padding: 1.5rem;
+  padding: clamp(1.5rem, 5vw, 3rem);
   text-align: center;
   background-color: var(--color-announcement-bg);
-  border: 1px solid var(--color-section-border);
+  border: 2px solid var(--color-gold);
+  box-shadow: 0 0 2.5rem var(--color-section-border);
 }
 
 .event-feature h2 {
   margin-block: 0 1rem;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+.event-feature-label {
+  margin-block-end: 1rem;
+  color: var(--color-gold);
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.event-feature-venue,
+.event-feature-dates {
+  font-size: clamp(1.15rem, 3vw, 1.5rem);
+}
+
+.event-feature-dates {
+  margin-block: 0.75rem 1.5rem;
+}
+
+.event-feature-tickets {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
 }
 
 .heading-cursive {
@@ -541,7 +569,15 @@ body.nav-scroll-lock {
 }
 
 .event-feature .support-btn {
-  margin-block-start: 0.5rem;
+  background-color: var(--color-gold);
+  color: var(--color-bg);
+  text-shadow: none;
+}
+
+.event-feature .support-btn:hover,
+.event-feature .support-btn:focus-visible {
+  background-color: var(--color-text);
+  border-color: var(--color-text);
 }
 
 .role-intro {
