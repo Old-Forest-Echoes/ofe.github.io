@@ -565,6 +565,10 @@ body.nav-scroll-lock {
   color: var(--color-gold);
 }
 
+.event-feature-facebook {
+  margin-block-start: 1.5rem;
+}
+
 .event-feature-venue {
   font-size: clamp(1.15rem, 3vw, 1.5rem);
 }

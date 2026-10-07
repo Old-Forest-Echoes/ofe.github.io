@@ -16,6 +16,7 @@ interface EventBase {
   /** Local finish time with UTC offset. Uses endDate when present, otherwise date. */
   endTime?: string;
   ticketUrl?: string;
+  facebookUrl?: string;
   venueUrl?: string;
   venueLinkText?: string;
   freeAdmission?: boolean;
@@ -120,6 +121,7 @@ const events: EventEntry[] = [
   },
   {
     date: '2026-10-31',
+    facebookUrl: 'https://fb.me/e/7ysUgYRhP',
     venueUrl:
       'https://www.caisa.fi/fi/tapahtumat/event/4315416BF35517CB764A83C690F786FD/Old_Forest_Echoes___Ikimets_n_kaiku__immersiivinen_luontokonsertti',
     venueLinkText: 'Cultural Centre Caisa',
@@ -133,6 +135,7 @@ const events: EventEntry[] = [
   },
   {
     date: '2026-11-01',
+    facebookUrl: 'https://fb.me/e/7ysUgYRhP',
     startTime: '14:00:00+02:00',
     venueUrl:
       'https://www.caisa.fi/fi/tapahtumat/event/8376C1D627E9F010009A7F12E757C791/Old_Forest_Echoes___Ikimets_n_kaiku__immersiivinen_luontokonsertti',
@@ -389,6 +392,15 @@ function formatDateAccessible(dateStr: string, endDateStr?: string): string {
                     —{' '}
                     <a href={event.ticketUrl} target="_blank" rel="noopener noreferrer">
                       Buy tickets
+                    </a>
+                  </>
+                )}
+                {event.facebookUrl && (
+                  <>
+                    {' '}
+                    —{' '}
+                    <a href={event.facebookUrl} target="_blank" rel="noopener noreferrer">
+                      Facebook event
                     </a>
                   </>
                 )}
