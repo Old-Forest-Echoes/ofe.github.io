@@ -21,6 +21,10 @@ import { newsletter } from '../data/support';
       />
       <button type="submit" class="support-btn">Subscribe</button>
     </div>
+    <label>
+      <input type="checkbox" name="consent" required />
+      I consent to receiving your newsletter and special offers via email.
+    </label>
     <p class="newsletter-status" aria-live="polite"></p>
   </form>
 </section>
@@ -39,11 +43,17 @@ import { newsletter } from '../data/support';
       status.classList.remove('newsletter-error');
 
       try {
+        // EmailOctopus blocks multipart submissions; match its embed's URL encoding.
+        const body = new URLSearchParams();
+        new FormData(form).forEach((value, name) => {
+          if (typeof value === 'string') body.append(name, value);
+        });
         const res = await fetch(form.action, {
           method: 'POST',
-          body: new FormData(form),
+          body,
         });
-        if (res.ok) {
+        const result = await res.json();
+        if (res.ok && result.success === true) {
           status.textContent = 'Welcome to the community! Please check your email to confirm your subscription.';
           form.reset();
         } else {
